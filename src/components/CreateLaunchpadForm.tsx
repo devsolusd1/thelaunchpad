@@ -285,7 +285,7 @@ export default function CreateLaunchpadForm() {
                 onClick={() => setQuoteSymbol(q)}
                 className={
                   quoteSymbol === q
-                    ? 'btn bg-accent text-white'
+                    ? 'btn bg-accent text-cream'
                     : 'btn-outline'
                 }
               >
@@ -310,7 +310,7 @@ export default function CreateLaunchpadForm() {
             step={0.5}
             value={feePct}
             onChange={(e) => setFeePct(Number(e.target.value))}
-            className="w-full accent-[#7c5cff]"
+            className="w-full accent-[#e05f10]"
           />
         </div>
 

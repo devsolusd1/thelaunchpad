@@ -262,13 +262,13 @@ export default function TradePanel(props: Props) {
 
       <div className="grid grid-cols-2 gap-2">
         <button
-          className={side === 'buy' ? 'btn bg-accent2 text-black' : 'btn-outline'}
+          className={side === 'buy' ? 'btn bg-accent2 text-cream' : 'btn-outline'}
           onClick={() => { setSide('buy'); setAmount(''); }}
         >
           Buy
         </button>
         <button
-          className={side === 'sell' ? 'btn bg-red-500 text-white' : 'btn-outline'}
+          className={side === 'sell' ? 'btn bg-red-500 text-cream' : 'btn-outline'}
           onClick={() => { setSide('sell'); setAmount(''); }}
         >
           Sell
@@ -328,7 +328,7 @@ export default function TradePanel(props: Props) {
               key={s}
               className={`rounded px-2 py-0.5 ${
                 slippagePct === s
-                  ? 'bg-accent text-white'
+                  ? 'bg-accent text-cream'
                   : 'border border-line bg-panel2'
               }`}
               onClick={() => setSlippagePct(s)}
@@ -371,7 +371,7 @@ export default function TradePanel(props: Props) {
       )}
 
       <button
-        className={side === 'buy' ? 'btn bg-accent2 text-black w-full py-3' : 'btn bg-red-500 text-white w-full py-3'}
+        className={side === 'buy' ? 'btn bg-accent2 text-cream w-full py-3' : 'btn bg-red-500 text-cream w-full py-3'}
         disabled={busy || (!estimate && wallet.connected)}
         onClick={doSwap}
       >

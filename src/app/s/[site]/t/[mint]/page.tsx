@@ -70,7 +70,7 @@ export default async function TokenPage({
           <div className="lg:col-span-2">
             <div className="card overflow-hidden">
               <iframe
-                src={`https://www.gmgn.cc/kline/sol/${token.mint}`}
+                src={`https://www.gmgn.cc/kline/sol/${token.mint}?theme=light`}
                 className="h-[480px] w-full"
                 title="chart"
               />
