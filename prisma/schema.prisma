@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Launchpad {
+  id             String      @id @default(cuid())
+  slug           String      @unique
+  name           String
+  description    String?
+  ownerWallet    String
+  configKey      String      @unique
+  quoteMint      String
+  quoteSymbol    String // "SOL" | "USDC"
+  feeBps         Int
+  initialMcUsd   Float
+  migrationMcUsd Float
+  logoId         String?
+  accentColor    String?
+  twitter        String?
+  telegram       String?
+  website        String?
+  mainTokenMint  String?
+  createTx       String
+  createdAt      DateTime    @default(now())
+  tokens         Token[]
+  payouts        FeePayout[]
+}
+
+model Token {
+  id           String    @id @default(cuid())
+  status       String    @default("pending") // pending | live
+  mint         String?   @unique
+  pool         String?   @unique
+  launchpadId  String
+  launchpad    Launchpad @relation(fields: [launchpadId], references: [id])
+  name         String
+  symbol       String
+  description  String?
+  imageId      String?
+  website      String?
+  twitter      String?
+  telegram     String?
+  creatorWallet String?
+  createTx     String?
+  migrated     Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+}
+
+model Image {
+  id   String @id @default(cuid())
+  mime String
+  data Bytes
+}
+
+model FeePayout {
+  id          String    @id @default(cuid())
+  launchpadId String
+  launchpad   Launchpad @relation(fields: [launchpadId], references: [id])
+  wallet      String
+  mint        String // quote mint pago
+  amountRaw   String // lamports / unidades cruas
+  claimedRaw  String // total clamado que originou o payout
+  txSig       String
+  createdAt   DateTime  @default(now())
+}
+
+model Buyback {
+  id          String   @id @default(cuid())
+  spentLamports String
+  tokenMint   String
+  boughtRaw   String
+  burnedRaw   String
+  swapTx      String
+  burnTx      String
+  createdAt   DateTime @default(now())
+}

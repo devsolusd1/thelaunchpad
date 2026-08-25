@@ -1,0 +1,47 @@
+{
+  "name": "the-launchpad",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "vercel-build": "prisma db push --schema=prisma/schema.postgres.prisma --accept-data-loss && prisma generate --schema=prisma/schema.postgres.prisma && next build",
+    "start": "next start",
+    "db:push": "prisma db push",
+    "bot:fees": "node bots/split-fees.js",
+    "bot:buyback": "node bots/buyback-burn.js"
+  },
+  "dependencies": {
+    "@meteora-ag/dynamic-bonding-curve-sdk": "1.5.11",
+    "@prisma/client": "5.22.0",
+    "@solana/spl-token": "0.4.9",
+    "@solana/wallet-adapter-base": "0.9.23",
+    "@solana/wallet-adapter-react": "0.15.35",
+    "@solana/wallet-adapter-react-ui": "0.9.35",
+    "@solana/web3.js": "1.98.0",
+    "bn.js": "5.2.1",
+    "bs58": "6.0.0",
+    "buffer": "6.0.3",
+    "decimal.js": "10.4.3",
+    "dotenv": "16.4.5",
+    "next": "14.2.32",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "overrides": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@solana/wallet-adapter-react": "0.15.35"
+  },
+  "devDependencies": {
+    "@types/bn.js": "5.1.6",
+    "@types/node": "22.9.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.47",
+    "prisma": "5.22.0",
+    "tailwindcss": "3.4.14",
+    "typescript": "5.6.3"
+  }
+}
