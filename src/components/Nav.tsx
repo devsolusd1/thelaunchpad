@@ -26,11 +26,9 @@ export default function Nav({
     <nav className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href={homeHref} className="flex items-center gap-3">
-          {logoUrl ? (
+          {logoUrl && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={logoUrl} alt="" className="h-8 w-8 rounded-lg object-cover" />
-          ) : (
-            <span className="text-2xl">🚀</span>
           )}
           <span className="text-lg font-bold text-white">{title}</span>
         </Link>

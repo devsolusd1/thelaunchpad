@@ -111,8 +111,8 @@ export default async function LaunchpadHome({
                       className="h-12 w-12 rounded-lg object-cover"
                     />
                   ) : (
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-panel2">
-                      🪙
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-panel2 text-xl font-black text-accent2">
+                      {t.symbol.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <div className="min-w-0">

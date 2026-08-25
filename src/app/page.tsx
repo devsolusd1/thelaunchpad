@@ -75,8 +75,8 @@ export default async function Home() {
                       className="h-12 w-12 rounded-lg object-cover"
                     />
                   ) : (
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-panel2 text-xl">
-                      🚀
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-panel2 text-xl font-black text-accent">
+                      {p.name.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <div>
@@ -113,7 +113,7 @@ export default async function Home() {
       <section className="border-t border-line bg-panel/40">
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 md:grid-cols-3">
           <div>
-            <h3 className="font-bold text-white">💸 50/50 fees</h3>
+            <h3 className="font-bold text-white">50/50 fees</h3>
             <p className="mt-2 text-sm text-gray-400">
               Every token&apos;s trading fee accrues to the protocol as partner
               fee. A public bot splits it: half to the platform, half to the
@@ -122,7 +122,7 @@ export default async function Home() {
             </p>
           </div>
           <div>
-            <h3 className="font-bold text-white">🔥 Flywheel</h3>
+            <h3 className="font-bold text-white">Flywheel</h3>
             <p className="mt-2 text-sm text-gray-400">
               Every {CREATION_FEE_SOL} SOL launchpad-creation fee goes straight
               into buying &amp; burning the platform token. More launchpads,
@@ -130,7 +130,7 @@ export default async function Home() {
             </p>
           </div>
           <div>
-            <h3 className="font-bold text-white">⚙️ Meteora DBC</h3>
+            <h3 className="font-bold text-white">Meteora DBC</h3>
             <p className="mt-2 text-sm text-gray-400">
               Audited dynamic bonding curves by Meteora. On graduation,
               liquidity migrates to a DAMM v2 pool with the LP permanently
