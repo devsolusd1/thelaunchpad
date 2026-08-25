@@ -16,6 +16,6 @@ export async function GET(
       },
     },
   });
-  if (!pad) return NextResponse.json({ error: 'nao encontrada' }, { status: 404 });
+  if (!pad) return NextResponse.json({ error: 'not found' }, { status: 404 });
   return NextResponse.json({ launchpad: pad });
 }

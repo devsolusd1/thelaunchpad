@@ -46,7 +46,7 @@ export default async function TokenPage({
             </h1>
             <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-500">
               <span className="font-mono">{shortAddr(token.mint, 6)}</span>
-              {token.website && <a className="text-accent" href={token.website} target="_blank">site</a>}
+              {token.website && <a className="text-accent" href={token.website} target="_blank">website</a>}
               {token.twitter && <a className="text-accent" href={token.twitter} target="_blank">twitter</a>}
               {token.telegram && <a className="text-accent" href={token.telegram} target="_blank">telegram</a>}
               <a

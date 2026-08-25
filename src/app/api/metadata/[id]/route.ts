@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const token = await prisma.token.findUnique({ where: { id: params.id } });
-  if (!token) return NextResponse.json({ error: 'nao encontrado' }, { status: 404 });
+  if (!token) return NextResponse.json({ error: 'not found' }, { status: 404 });
   const origin = req.nextUrl.origin;
   return NextResponse.json(
     {

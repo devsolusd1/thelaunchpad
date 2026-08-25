@@ -50,7 +50,7 @@ export default function CreateLaunchpadForm() {
   const [error, setError] = useState('');
   const [doneUrl, setDoneUrl] = useState('');
 
-  // checagem de disponibilidade do subdominio (debounce)
+  // subdomain availability check (debounced)
   useEffect(() => {
     setSlugFree(null);
     if (!SLUG_RE.test(slug)) return;
@@ -67,6 +67,9 @@ export default function CreateLaunchpadForm() {
   }, [slug]);
 
   const feeBps = Math.round(feePct * 100);
+  // the platform's own wallet creates pads for free (official/example pads)
+  const isTreasury =
+    !!wallet.publicKey && wallet.publicKey.toBase58() === TREASURY_WALLET;
   const validForm =
     SLUG_RE.test(slug) &&
     slugFree === true &&
@@ -84,19 +87,19 @@ export default function CreateLaunchpadForm() {
       return;
     }
     if (!TREASURY_WALLET) {
-      setError('NEXT_PUBLIC_TREASURY_WALLET nao configurada no servidor');
+      setError('NEXT_PUBLIC_TREASURY_WALLET is not configured on the server');
       return;
     }
     try {
       setPhase('sending');
       const quote = QUOTES[quoteSymbol];
 
-      // preco do quote em USD (curva e' construida na unidade do quote)
+      // quote price in USD (the curve is built in quote units)
       let quoteUsd = 1;
       if (quoteSymbol === 'SOL') {
         const r = await fetch('/api/price');
         const j = await r.json();
-        if (!j.solUsd) throw new Error('nao consegui o preco do SOL');
+        if (!j.solUsd) throw new Error('could not fetch the SOL price');
         quoteUsd = j.solUsd;
       }
 
@@ -121,14 +124,16 @@ export default function CreateLaunchpadForm() {
         payer: wallet.publicKey,
       });
 
-      // taxa de criacao anti-flood -> treasury (mesma tx)
-      tx.add(
-        SystemProgram.transfer({
-          fromPubkey: wallet.publicKey,
-          toPubkey: treasury,
-          lamports: Math.round(CREATION_FEE_SOL * LAMPORTS_PER_SOL),
-        })
-      );
+      // anti-spam creation fee -> treasury (same tx); waived for the treasury itself
+      if (!isTreasury) {
+        tx.add(
+          SystemProgram.transfer({
+            fromPubkey: wallet.publicKey,
+            toPubkey: treasury,
+            lamports: Math.round(CREATION_FEE_SOL * LAMPORTS_PER_SOL),
+          })
+        );
+      }
 
       const { blockhash, lastValidBlockHeight } =
         await connection.getLatestBlockhash('confirmed');
@@ -143,7 +148,7 @@ export default function CreateLaunchpadForm() {
         'confirmed'
       );
       if (conf.value.err)
-        throw new Error(`transacao falhou on-chain: ${JSON.stringify(conf.value.err)}`);
+        throw new Error(`transaction failed on-chain: ${JSON.stringify(conf.value.err)}`);
 
       setPhase('registering');
       let logoBase64: string | undefined;
@@ -174,7 +179,7 @@ export default function CreateLaunchpadForm() {
         }),
       });
       const j = await res.json();
-      if (!res.ok) throw new Error(j.error || 'falha ao registrar');
+      if (!res.ok) throw new Error(j.error || 'failed to register');
 
       setDoneUrl(launchpadUrl(slug));
       setPhase('done');
@@ -189,16 +194,16 @@ export default function CreateLaunchpadForm() {
       <div className="card p-8 text-center">
         <div className="text-5xl">🎉</div>
         <h2 className="mt-4 text-2xl font-bold text-white">
-          Launchpad criada!
+          Launchpad created!
         </h2>
         <p className="mt-2 text-gray-400">
-          Sua launchpad esta no ar em{' '}
+          Your launchpad is live at{' '}
           <a href={doneUrl} className="text-accent underline">
             {slug}.{ROOT_DOMAIN}
           </a>
         </p>
         <a href={doneUrl} className="btn-primary mt-6">
-          Abrir minha launchpad
+          Open my launchpad
         </a>
       </div>
     );
@@ -208,7 +213,7 @@ export default function CreateLaunchpadForm() {
     <div className="space-y-5">
       <div className="card space-y-4 p-5">
         <div>
-          <label className="label">Subdominio</label>
+          <label className="label">Subdomain</label>
           <div className="flex items-center gap-2">
             <input
               className="input"
@@ -224,18 +229,18 @@ export default function CreateLaunchpadForm() {
             </span>
           </div>
           {slug && !SLUG_RE.test(slug) && (
-            <p className="mt-1 text-xs text-warn">3–32 caracteres, a-z, 0-9 e hifen</p>
+            <p className="mt-1 text-xs text-warn">3–32 chars, a-z, 0-9 and hyphen</p>
           )}
           {slugFree === false && (
-            <p className="mt-1 text-xs text-red-400">ja esta em uso</p>
+            <p className="mt-1 text-xs text-red-400">already taken</p>
           )}
           {slugFree === true && (
-            <p className="mt-1 text-xs text-accent2">disponivel ✓</p>
+            <p className="mt-1 text-xs text-accent2">available ✓</p>
           )}
         </div>
 
         <div>
-          <label className="label">Nome</label>
+          <label className="label">Name</label>
           <input
             className="input"
             placeholder="Prosperity Launchpad"
@@ -246,7 +251,7 @@ export default function CreateLaunchpadForm() {
         </div>
 
         <div>
-          <label className="label">Descricao (opcional)</label>
+          <label className="label">Description (optional)</label>
           <textarea
             className="input"
             rows={2}
@@ -257,7 +262,7 @@ export default function CreateLaunchpadForm() {
         </div>
 
         <div>
-          <label className="label">Logo (opcional, max 1.5MB)</label>
+          <label className="label">Logo (optional, max 1.5MB)</label>
           <input
             type="file"
             accept="image/png,image/jpeg,image/gif,image/webp"
@@ -268,7 +273,7 @@ export default function CreateLaunchpadForm() {
       </div>
 
       <div className="card space-y-4 p-5">
-        <h3 className="font-bold text-white">Curva (vale pra todos os tokens da sua launchpad)</h3>
+        <h3 className="font-bold text-white">Curve (applies to every token on your pad)</h3>
 
         <div>
           <label className="label">Quote token</label>
@@ -292,10 +297,10 @@ export default function CreateLaunchpadForm() {
 
         <div>
           <label className="label">
-            Fee de trade: <b className="text-white">{feePct.toFixed(1)}%</b>{' '}
+            Trading fee: <b className="text-white">{feePct.toFixed(1)}%</b>{' '}
             <span className="text-gray-500">
-              (voce recebe {(feePct / 2).toFixed(2)}% de todo volume, antes da
-              parte da Meteora)
+              (you earn {(feePct / 2).toFixed(2)}% of all volume, before
+              Meteora&apos;s cut)
             </span>
           </label>
           <input
@@ -311,7 +316,7 @@ export default function CreateLaunchpadForm() {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="label">MC inicial (USD)</label>
+            <label className="label">Starting MC (USD)</label>
             <input
               type="number"
               className="input"
@@ -326,7 +331,7 @@ export default function CreateLaunchpadForm() {
             </p>
           </div>
           <div>
-            <label className="label">MC de graduacao (USD)</label>
+            <label className="label">Graduation MC (USD)</label>
             <input
               type="number"
               className="input"
@@ -335,14 +340,14 @@ export default function CreateLaunchpadForm() {
               onChange={(e) => setMigrationMc(Number(e.target.value))}
             />
             <p className="mt-1 text-xs text-gray-500">
-              minimo {MIN_MIGRATION_RATIO}x o inicial; sem teto
+              at least {MIN_MIGRATION_RATIO}x the starting MC; no cap
             </p>
           </div>
         </div>
       </div>
 
       <div className="card space-y-4 p-5">
-        <h3 className="font-bold text-white">Links (opcional)</h3>
+        <h3 className="font-bold text-white">Links (optional)</h3>
         <div className="grid gap-3 md:grid-cols-3">
           <input className="input" placeholder="Twitter/X" value={twitter} onChange={(e) => setTwitter(e.target.value)} />
           <input className="input" placeholder="Telegram" value={telegram} onChange={(e) => setTelegram(e.target.value)} />
@@ -362,16 +367,18 @@ export default function CreateLaunchpadForm() {
         onClick={submit}
       >
         {phase === 'sending'
-          ? 'Confirme na wallet...'
+          ? 'Confirm in your wallet...'
           : phase === 'registering'
-            ? 'Registrando...'
+            ? 'Registering...'
             : wallet.connected
-              ? `Criar launchpad — ${CREATION_FEE_SOL} SOL`
-              : 'Conectar wallet'}
+              ? isTreasury
+                ? 'Create launchpad — free (platform wallet)'
+                : `Create launchpad — ${CREATION_FEE_SOL} SOL`
+              : 'Connect wallet'}
       </button>
       <p className="text-center text-xs text-gray-500">
-        A taxa de {CREATION_FEE_SOL} SOL vira buyback & burn do token da
-        plataforma. + ~0.03 SOL de rent da config on-chain.
+        The {CREATION_FEE_SOL} SOL fee goes into buyback &amp; burn of the
+        platform token. Plus ~0.03 SOL of on-chain config rent.
       </p>
     </div>
   );

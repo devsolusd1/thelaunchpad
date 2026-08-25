@@ -24,11 +24,11 @@ export async function verifyLaunchpadConfig(
   const connection = serverConnection();
   const client = new DynamicBondingCurveClient(connection, 'confirmed');
   const cfg = await client.state.getPoolConfig(new PublicKey(configKey));
-  if (!cfg) throw new Error('config nao encontrado on-chain');
+  if (!cfg) throw new Error('config not found on-chain');
 
   const feeClaimer = (cfg as any).feeClaimer?.toBase58?.();
   if (feeClaimer !== TREASURY_WALLET)
-    throw new Error('feeClaimer do config nao e o treasury da plataforma');
+    throw new Error('config feeClaimer is not the platform treasury');
 
   const cliff = (cfg as any).poolFees?.baseFee?.cliffFeeNumerator;
   const feeBps = cliff ? feeNumeratorToBps(cliff) : 0;
@@ -43,17 +43,17 @@ export async function verifyCreationPayment(txSig: string): Promise<void> {
     commitment: 'confirmed',
     maxSupportedTransactionVersion: 0,
   });
-  if (!tx || tx.meta?.err) throw new Error('transacao de criacao invalida');
+  if (!tx || tx.meta?.err) throw new Error('invalid creation transaction');
 
   const keys = tx.transaction.message.staticAccountKeys.map((k) => k.toBase58());
   const idx = keys.indexOf(TREASURY_WALLET);
-  if (idx < 0) throw new Error('treasury nao aparece na transacao');
+  if (idx < 0) throw new Error('treasury not present in the transaction');
   const delta =
     (tx.meta!.postBalances[idx] || 0) - (tx.meta!.preBalances[idx] || 0);
   const expected = CREATION_FEE_SOL * LAMPORTS_PER_SOL;
   if (delta < expected * 0.999)
     throw new Error(
-      `pagamento da taxa de criacao nao encontrado (recebido ${delta / LAMPORTS_PER_SOL} SOL)`
+      `creation fee payment not found (received ${delta / LAMPORTS_PER_SOL} SOL)`
     );
 }
 
@@ -66,9 +66,9 @@ export async function verifyTokenPool(
   const connection = serverConnection();
   const client = new DynamicBondingCurveClient(connection, 'confirmed');
   const vp = await client.state.getPool(new PublicKey(pool));
-  if (!vp) throw new Error('pool nao encontrado on-chain');
+  if (!vp) throw new Error('pool not found on-chain');
   if ((vp as any).config?.toBase58?.() !== configKey)
-    throw new Error('pool nao pertence ao config desta launchpad');
+    throw new Error('pool does not belong to this launchpad config');
   if ((vp as any).baseMint?.toBase58?.() !== mint)
-    throw new Error('mint nao bate com o pool');
+    throw new Error('mint does not match the pool');
 }

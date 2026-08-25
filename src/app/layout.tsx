@@ -5,7 +5,7 @@ import { SITE_NAME } from '@/lib/env';
 
 export const metadata: Metadata = {
   title: SITE_NAME,
-  description: 'A launchpad de launchpads na Solana',
+  description: 'The launchpad of launchpads on Solana',
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang="en">
       <body>
         <WalletProviders>{children}</WalletProviders>
       </body>

@@ -10,6 +10,7 @@ import {
   MIN_INITIAL_MC_USD,
   MAX_INITIAL_MC_USD,
   MIN_MIGRATION_RATIO,
+  TREASURY_WALLET,
 } from '@/lib/env';
 import { verifyLaunchpadConfig, verifyCreationPayment } from '@/lib/verify';
 
@@ -57,39 +58,40 @@ export async function POST(req: NextRequest) {
     } = body || {};
 
     if (typeof slug !== 'string' || !SLUG_RE.test(slug))
-      return err('subdominio invalido (3-32 chars, a-z, 0-9 e hifen)');
-    if (RESERVED_SLUGS.includes(slug)) return err('subdominio reservado');
-    if (!name || String(name).length > 60) return err('nome invalido');
-    if (!ownerWallet || !configKey || !txSig) return err('campos faltando');
+      return err('invalid subdomain (3-32 chars, a-z, 0-9 and hyphen)');
+    if (RESERVED_SLUGS.includes(slug)) return err('reserved subdomain');
+    if (!name || String(name).length > 60) return err('invalid name');
+    if (!ownerWallet || !configKey || !txSig) return err('missing fields');
 
     const quote = QUOTES[quoteSymbol as QuoteSymbol];
-    if (!quote) return err('quote invalido');
+    if (!quote) return err('invalid quote token');
     const fee = Number(feeBps);
-    if (!(fee >= MIN_FEE_BPS && fee <= MAX_FEE_BPS)) return err('fee fora do limite');
+    if (!(fee >= MIN_FEE_BPS && fee <= MAX_FEE_BPS)) return err('fee out of range');
     const mc0 = Number(initialMcUsd);
     const mc1 = Number(migrationMcUsd);
     if (!(mc0 >= MIN_INITIAL_MC_USD && mc0 <= MAX_INITIAL_MC_USD))
-      return err('MC inicial fora do limite');
-    if (!(mc1 >= mc0 * MIN_MIGRATION_RATIO)) return err('MC final baixo demais');
+      return err('starting market cap out of range');
+    if (!(mc1 >= mc0 * MIN_MIGRATION_RATIO)) return err('graduation market cap too low');
 
     const exists = await prisma.launchpad.findFirst({
       where: { OR: [{ slug }, { configKey }] },
     });
-    if (exists) return err('subdominio ou config ja registrado');
+    if (exists) return err('subdomain or config already registered');
 
-    // Verificacao on-chain: config real, feeClaimer = treasury, taxa paga.
+    // On-chain verification: real config, feeClaimer = treasury, fee paid.
     const onchain = await verifyLaunchpadConfig(configKey);
     if (onchain.quoteMint !== quote.mint)
-      return err('quote do config nao bate com o informado');
+      return err('config quote mint does not match');
     if (onchain.feeBps !== fee)
-      return err(`fee do config on-chain (${onchain.feeBps} bps) nao bate`);
-    await verifyCreationPayment(txSig);
+      return err(`on-chain config fee (${onchain.feeBps} bps) does not match`);
+    // the platform's own wallet creates pads for free (official/example pads)
+    if (String(ownerWallet) !== TREASURY_WALLET) await verifyCreationPayment(txSig);
 
     let logoId: string | undefined;
     if (logoBase64 && logoMime) {
       const buf = Buffer.from(String(logoBase64), 'base64');
-      if (buf.length > 1_500_000) return err('logo maior que 1.5MB');
-      if (!/^image\/(png|jpe?g|gif|webp)$/.test(logoMime)) return err('formato de logo invalido');
+      if (buf.length > 1_500_000) return err('logo larger than 1.5MB');
+      if (!/^image\/(png|jpe?g|gif|webp)$/.test(logoMime)) return err('invalid logo format');
       const img = await prisma.image.create({
         data: { mime: logoMime, data: buf },
       });
@@ -118,7 +120,7 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ ok: true, slug: pad.slug });
   } catch (e: any) {
-    return err(e?.message || 'erro interno', 500);
+    return err(e?.message || 'internal error', 500);
   }
 }
 

@@ -196,7 +196,7 @@ export default function TradePanel(props: Props) {
         'confirmed'
       );
       if (conf.value.err)
-        throw new Error(`swap falhou: ${JSON.stringify(conf.value.err)}`);
+        throw new Error(`swap failed: ${JSON.stringify(conf.value.err)}`);
       setLastSig(sig);
       setAmount('');
       await Promise.all([refresh(), refreshBalances()]);
@@ -210,17 +210,17 @@ export default function TradePanel(props: Props) {
   if (migrated) {
     return (
       <div className="card space-y-4 p-5">
-        <h3 className="text-lg font-bold text-white">🎓 Token graduado!</h3>
+        <h3 className="text-lg font-bold text-white">🎓 Token graduated!</h3>
         <p className="text-sm text-gray-400">
-          A curva completou e a liquidez migrou pra um pool DAMM v2 da Meteora.
-          Negocie pela Jupiter:
+          The curve completed and liquidity migrated to a Meteora DAMM v2
+          pool. Trade it on Jupiter:
         </p>
         <a
           className="btn-primary w-full"
           href={`https://jup.ag/tokens/${props.mint}`}
           target="_blank"
         >
-          Trocar na Jupiter
+          Swap on Jupiter
         </a>
       </div>
     );
@@ -231,7 +231,7 @@ export default function TradePanel(props: Props) {
       {stats && (
         <div className="grid grid-cols-3 gap-2 text-center">
           <div>
-            <div className="text-[10px] uppercase text-gray-500">Preco</div>
+            <div className="text-[10px] uppercase text-gray-500">Price</div>
             <div className="text-sm font-bold text-white">
               {stats.price < 0.000001
                 ? stats.price.toExponential(2)
@@ -244,7 +244,7 @@ export default function TradePanel(props: Props) {
             <div className="text-sm font-bold text-white">{fmtUsd(stats.mcUsd)}</div>
           </div>
           <div>
-            <div className="text-[10px] uppercase text-gray-500">Curva</div>
+            <div className="text-[10px] uppercase text-gray-500">Curve</div>
             <div className="text-sm font-bold text-accent2">
               {(stats.progress * 100).toFixed(1)}%
             </div>
@@ -265,23 +265,23 @@ export default function TradePanel(props: Props) {
           className={side === 'buy' ? 'btn bg-accent2 text-black' : 'btn-outline'}
           onClick={() => { setSide('buy'); setAmount(''); }}
         >
-          Comprar
+          Buy
         </button>
         <button
           className={side === 'sell' ? 'btn bg-red-500 text-white' : 'btn-outline'}
           onClick={() => { setSide('sell'); setAmount(''); }}
         >
-          Vender
+          Sell
         </button>
       </div>
 
       <div>
         <div className="mb-1 flex justify-between text-xs text-gray-500">
           <span>
-            Quantidade ({side === 'buy' ? props.quoteSymbol : `$${props.symbol}`})
+            Amount ({side === 'buy' ? props.quoteSymbol : `$${props.symbol}`})
           </span>
           <span>
-            saldo:{' '}
+            balance:{' '}
             {side === 'buy'
               ? `${fmtAmount(quoteBalance)} ${props.quoteSymbol}`
               : fmtAmount(tokenBalance)}
@@ -342,14 +342,14 @@ export default function TradePanel(props: Props) {
       {estimate && (
         <div className="rounded-lg bg-panel2 p-3 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-500">Recebe ~</span>
+            <span className="text-gray-500">You receive ~</span>
             <span className="font-bold text-white">
               {fmtAmount(estimate.out)}{' '}
               {side === 'buy' ? `$${props.symbol}` : props.quoteSymbol}
             </span>
           </div>
           <div className="mt-1 flex justify-between text-xs text-gray-500">
-            <span>Fee da launchpad</span>
+            <span>Launchpad fee</span>
             <span>{props.feeBps / 100}%</span>
           </div>
         </div>
@@ -366,7 +366,7 @@ export default function TradePanel(props: Props) {
           href={`https://solscan.io/tx/${lastSig}`}
           target="_blank"
         >
-          ✓ swap confirmado — ver no Solscan
+          ✓ swap confirmed — view on Solscan
         </a>
       )}
 
@@ -376,12 +376,12 @@ export default function TradePanel(props: Props) {
         onClick={doSwap}
       >
         {busy
-          ? 'Enviando...'
+          ? 'Sending...'
           : wallet.connected
             ? side === 'buy'
-              ? `Comprar $${props.symbol}`
-              : `Vender $${props.symbol}`
-            : 'Conectar wallet'}
+              ? `Buy $${props.symbol}`
+              : `Sell $${props.symbol}`
+            : 'Connect wallet'}
       </button>
     </div>
   );

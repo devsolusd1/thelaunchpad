@@ -22,10 +22,10 @@ export default async function DashboardPage({
         logoUrl={pad.logoId ? `/api/img/${pad.logoId}` : null}
       />
       <div className="mx-auto max-w-3xl px-4 py-10">
-        <h1 className="text-3xl font-black text-white">Fees da launchpad</h1>
+        <h1 className="text-3xl font-black text-white">Launchpad fees</h1>
         <p className="mt-2 text-sm text-gray-400">
-          Metade de toda fee de trade dos tokens desta launchpad e paga
-          automaticamente pra wallet do dono. Historico publico abaixo.
+          Half of every trading fee from this launchpad&apos;s tokens is paid
+          automatically to the owner&apos;s wallet. Public history below.
         </p>
         <div className="mt-8">
           <FeeDashboard slug={pad.slug} />

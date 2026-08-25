@@ -44,21 +44,21 @@ export default async function LaunchpadHome({
               <p className="mt-2 max-w-xl text-gray-400">{pad.description}</p>
             )}
             <div className="mt-3 flex flex-wrap gap-2 text-xs">
-              <Badge>fee {pad.feeBps / 100}%</Badge>
-              <Badge>quote {pad.quoteSymbol}</Badge>
+              <Badge>{pad.feeBps / 100}% fee</Badge>
+              <Badge>{pad.quoteSymbol} quote</Badge>
               <Badge>
                 {fmtUsd(pad.initialMcUsd)} → {fmtUsd(pad.migrationMcUsd)}
               </Badge>
-              <Badge>dono {shortAddr(pad.ownerWallet)}</Badge>
+              <Badge>owner {shortAddr(pad.ownerWallet)}</Badge>
             </div>
             <div className="mt-2 flex gap-3 text-sm text-accent">
               {pad.twitter && <a href={pad.twitter} target="_blank">Twitter</a>}
               {pad.telegram && <a href={pad.telegram} target="_blank">Telegram</a>}
-              {pad.website && <a href={pad.website} target="_blank">Site</a>}
+              {pad.website && <a href={pad.website} target="_blank">Website</a>}
             </div>
           </div>
           <a href="/create" className="btn-green text-lg">
-            + Lancar token
+            + Launch token
           </a>
         </div>
 
@@ -77,7 +77,7 @@ export default async function LaunchpadHome({
             )}
             <div>
               <div className="text-xs uppercase tracking-wide text-accent">
-                Token principal
+                Main token
               </div>
               <div className="text-lg font-bold text-white">
                 {main.name}{' '}
@@ -92,7 +92,7 @@ export default async function LaunchpadHome({
         </h2>
         {pad.tokens.length === 0 ? (
           <div className="card p-10 text-center text-gray-400">
-            Nenhum token ainda. Seja o primeiro a lancar aqui.
+            No tokens yet. Be the first to launch here.
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

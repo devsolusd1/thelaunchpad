@@ -68,7 +68,7 @@ export default function CreateTokenForm({
         }),
       });
       const prepJson = await prep.json();
-      if (!prep.ok) throw new Error(prepJson.error || 'falha ao preparar');
+      if (!prep.ok) throw new Error(prepJson.error || 'failed to prepare metadata');
 
       setPhase('sending');
       const mintKp = Keypair.generate();
@@ -97,7 +97,7 @@ export default function CreateTokenForm({
         'confirmed'
       );
       if (conf.value.err)
-        throw new Error(`transacao falhou: ${JSON.stringify(conf.value.err)}`);
+        throw new Error(`transaction failed: ${JSON.stringify(conf.value.err)}`);
 
       const pool = deriveDbcPoolAddress(
         new PublicKey(quoteMint),
@@ -116,7 +116,7 @@ export default function CreateTokenForm({
         }),
       });
       const j = await res.json();
-      if (!res.ok) throw new Error(j.error || 'falha ao confirmar');
+      if (!res.ok) throw new Error(j.error || 'failed to confirm');
 
       setMintDone(mintKp.publicKey.toBase58());
       setPhase('done');
@@ -130,12 +130,12 @@ export default function CreateTokenForm({
     return (
       <div className="card p-8 text-center">
         <div className="text-5xl">🚀</div>
-        <h2 className="mt-4 text-2xl font-bold text-white">Token lancado!</h2>
+        <h2 className="mt-4 text-2xl font-bold text-white">Token launched!</h2>
         <p className="mt-2 break-all font-mono text-xs text-gray-500">
           {mintDone}
         </p>
         <a href={`/t/${mintDone}`} className="btn-green mt-6">
-          Ir pra pagina do token
+          Go to token page
         </a>
       </div>
     );
@@ -146,7 +146,7 @@ export default function CreateTokenForm({
       <div className="card space-y-4 p-5">
         <div className="grid grid-cols-3 gap-3">
           <div className="col-span-2">
-            <label className="label">Nome</label>
+            <label className="label">Name</label>
             <input
               className="input"
               value={name}
@@ -167,7 +167,7 @@ export default function CreateTokenForm({
           </div>
         </div>
         <div>
-          <label className="label">Descricao (opcional)</label>
+          <label className="label">Description (optional)</label>
           <textarea
             className="input"
             rows={3}
@@ -177,7 +177,7 @@ export default function CreateTokenForm({
           />
         </div>
         <div>
-          <label className="label">Imagem (opcional, max 1.5MB)</label>
+          <label className="label">Image (optional, max 1.5MB)</label>
           <input
             type="file"
             accept="image/png,image/jpeg,image/gif,image/webp"
@@ -204,14 +204,14 @@ export default function CreateTokenForm({
         onClick={submit}
       >
         {phase === 'preparing'
-          ? 'Preparando metadata...'
+          ? 'Preparing metadata...'
           : phase === 'sending'
-            ? 'Confirme na wallet...'
+            ? 'Confirm in your wallet...'
             : phase === 'confirming'
-              ? 'Confirmando...'
+              ? 'Confirming...'
               : wallet.connected
-                ? 'Lancar token'
-                : 'Conectar wallet'}
+                ? 'Launch token'
+                : 'Connect wallet'}
       </button>
     </div>
   );

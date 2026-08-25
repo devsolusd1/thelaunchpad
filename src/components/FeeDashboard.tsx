@@ -29,7 +29,7 @@ export default function FeeDashboard({ slug }: { slug: string }) {
   if (err)
     return <div className="card p-6 text-sm text-red-300">{err}</div>;
   if (!data)
-    return <div className="card p-6 text-sm text-gray-400">Carregando fees on-chain...</div>;
+    return <div className="card p-6 text-sm text-gray-400">Loading on-chain fees...</div>;
 
   const dec = data.quoteSymbol === 'USDC' ? 1e6 : 1e9;
   const unclaimed = Number(data.unclaimedRaw) / dec;
@@ -39,20 +39,20 @@ export default function FeeDashboard({ slug }: { slug: string }) {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-3 gap-4">
-        <Card label="Fees geradas (total)" value={`${lifetime.toFixed(4)} ${data.quoteSymbol}`} />
-        <Card label="A clamar (pool)" value={`${unclaimed.toFixed(4)} ${data.quoteSymbol}`} />
-        <Card label="Ja pago ao dono" value={`${paid.toFixed(4)} ${data.quoteSymbol}`} accent />
+        <Card label="Lifetime fees" value={`${lifetime.toFixed(4)} ${data.quoteSymbol}`} />
+        <Card label="Unclaimed (pools)" value={`${unclaimed.toFixed(4)} ${data.quoteSymbol}`} />
+        <Card label="Paid to owner" value={`${paid.toFixed(4)} ${data.quoteSymbol}`} accent />
       </div>
 
       <div className="card p-5">
         <div className="mb-3 text-sm text-gray-400">
-          Dono: <span className="font-mono text-white">{shortAddr(data.ownerWallet, 6)}</span>
+          Owner: <span className="font-mono text-white">{shortAddr(data.ownerWallet, 6)}</span>
         </div>
-        <h3 className="mb-3 font-bold text-white">Pagamentos</h3>
+        <h3 className="mb-3 font-bold text-white">Payouts</h3>
         {data.payouts.length === 0 ? (
           <p className="text-sm text-gray-500">
-            Nenhum pagamento ainda — o bot roda periodicamente e paga quando as
-            fees acumuladas passam do minimo.
+            No payouts yet — the bot runs periodically and pays out once
+            accrued fees pass the minimum.
           </p>
         ) : (
           <table className="w-full text-sm">

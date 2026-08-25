@@ -19,6 +19,6 @@ export async function GET(_req: NextRequest) {
     return NextResponse.json({ solUsd: price });
   } catch (e) {
     if (cache) return NextResponse.json({ solUsd: cache.price });
-    return NextResponse.json({ error: 'falha ao obter preco do SOL' }, { status: 502 });
+    return NextResponse.json({ error: 'failed to fetch SOL price' }, { status: 502 });
   }
 }

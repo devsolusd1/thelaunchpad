@@ -11,20 +11,20 @@ export async function POST(req: NextRequest) {
     const { launchpadSlug, name, symbol, description, imageBase64, imageMime, website, twitter, telegram } =
       body || {};
 
-    if (!name || String(name).length > 32) return err('nome invalido (max 32)');
+    if (!name || String(name).length > 32) return err('invalid name (max 32)');
     if (!symbol || !/^[A-Za-z0-9$]{1,10}$/.test(String(symbol)))
-      return err('ticker invalido (1-10 alfanumerico)');
+      return err('invalid ticker (1-10 alphanumeric)');
 
     const pad = await prisma.launchpad.findUnique({
       where: { slug: String(launchpadSlug || '').toLowerCase() },
     });
-    if (!pad) return err('launchpad nao encontrada', 404);
+    if (!pad) return err('launchpad not found', 404);
 
     let imageId: string | undefined;
     if (imageBase64 && imageMime) {
       const buf = Buffer.from(String(imageBase64), 'base64');
-      if (buf.length > 1_500_000) return err('imagem maior que 1.5MB');
-      if (!/^image\/(png|jpe?g|gif|webp)$/.test(imageMime)) return err('formato invalido');
+      if (buf.length > 1_500_000) return err('image larger than 1.5MB');
+      if (!/^image\/(png|jpe?g|gif|webp)$/.test(imageMime)) return err('invalid image format');
       const img = await prisma.image.create({ data: { mime: imageMime, data: buf } });
       imageId = img.id;
     }
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
       quoteMint: pad.quoteMint,
     });
   } catch (e: any) {
-    return err(e?.message || 'erro interno', 500);
+    return err(e?.message || 'internal error', 500);
   }
 }
 

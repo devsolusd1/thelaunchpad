@@ -24,7 +24,7 @@ export async function GET(
       payouts: { orderBy: { createdAt: 'desc' }, take: 50 },
     },
   });
-  if (!pad) return NextResponse.json({ error: 'nao encontrada' }, { status: 404 });
+  if (!pad) return NextResponse.json({ error: 'not found' }, { status: 404 });
 
   const connection = serverConnection();
   const client = new DynamicBondingCurveClient(connection, 'confirmed');
