@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Keypair, PublicKey } from '@solana/web3.js';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import BN from 'bn.js';
 import {
   DynamicBondingCurveClient,
   deriveDbcPoolAddress,
@@ -15,10 +16,14 @@ export default function CreateTokenForm({
   slug,
   configKey,
   quoteMint,
+  quoteSymbol,
+  quoteDecimals,
 }: {
   slug: string;
   configKey: string;
   quoteMint: string;
+  quoteSymbol: string;
+  quoteDecimals: number;
 }) {
   const { connection } = useConnection();
   const wallet = useWallet();
@@ -31,6 +36,7 @@ export default function CreateTokenForm({
   const [website, setWebsite] = useState('');
   const [twitter, setTwitter] = useState('');
   const [telegram, setTelegram] = useState('');
+  const [devBuy, setDevBuy] = useState('');
 
   const [phase, setPhase] = useState<Phase>('form');
   const [error, setError] = useState('');
@@ -73,7 +79,7 @@ export default function CreateTokenForm({
       setPhase('sending');
       const mintKp = Keypair.generate();
       const client = new DynamicBondingCurveClient(connection, 'confirmed');
-      const tx = await client.creator.createPool({
+      const createPoolParam = {
         name,
         symbol: symbol.toUpperCase(),
         uri: prepJson.uri,
@@ -81,7 +87,23 @@ export default function CreateTokenForm({
         poolCreator: wallet.publicKey,
         config: new PublicKey(configKey),
         baseMint: mintKp.publicKey,
-      });
+      };
+      const devBuyNum = Number(devBuy);
+      // dev buy opcional: pool + primeira compra na MESMA transacao
+      const tx =
+        devBuyNum > 0
+          ? await client.creator.createPoolWithFirstBuy({
+              createPoolParam,
+              firstBuyParam: {
+                buyer: wallet.publicKey,
+                buyAmount: new BN(
+                  Math.round(devBuyNum * 10 ** quoteDecimals).toString()
+                ),
+                minimumAmountOut: new BN(1),
+                referralTokenAccount: null,
+              },
+            })
+          : await client.creator.createPool(createPoolParam);
 
       const { blockhash, lastValidBlockHeight } =
         await connection.getLatestBlockhash('confirmed');
@@ -189,6 +211,21 @@ export default function CreateTokenForm({
           <input className="input" placeholder="Website" value={website} onChange={(e) => setWebsite(e.target.value)} />
           <input className="input" placeholder="Twitter/X" value={twitter} onChange={(e) => setTwitter(e.target.value)} />
           <input className="input" placeholder="Telegram" value={telegram} onChange={(e) => setTelegram(e.target.value)} />
+        </div>
+        <div>
+          <label className="label">
+            Dev buy (optional, {quoteSymbol}) — buy your own token in the same
+            transaction as the launch
+          </label>
+          <input
+            className="input"
+            type="number"
+            min={0}
+            step="any"
+            placeholder={`0.0 ${quoteSymbol}`}
+            value={devBuy}
+            onChange={(e) => setDevBuy(e.target.value)}
+          />
         </div>
       </div>
 

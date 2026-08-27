@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/db';
 import Nav from '@/components/Nav';
+import OwnerPanel from '@/components/OwnerPanel';
+import { launchpadUrl } from '@/lib/env';
 import { fmtUsd, shortAddr } from '@/lib/format';
 
 export const revalidate = 0;
@@ -36,7 +38,16 @@ export default async function LaunchpadHome({
 
       <section className="mx-auto max-w-6xl px-4 py-12">
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div>
+          <div className="flex items-start gap-5">
+            {pad.logoId && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={`/api/img/${pad.logoId}`}
+                alt=""
+                className="h-20 w-20 rounded-2xl border border-line object-cover md:h-24 md:w-24"
+              />
+            )}
+            <div>
             <h1 className="text-3xl font-black text-white md:text-5xl">
               {pad.name}
             </h1>
@@ -56,11 +67,23 @@ export default async function LaunchpadHome({
               {pad.telegram && <a href={pad.telegram} target="_blank">Telegram</a>}
               {pad.website && <a href={pad.website} target="_blank">Website</a>}
             </div>
+            </div>
           </div>
-          <a href="/create" className="btn-green text-lg">
-            + Launch token
-          </a>
+          <div className="flex flex-wrap gap-3">
+            <a href="/create" className="btn-green text-lg">
+              + Launch token
+            </a>
+            <a href="/dashboard" className="btn-outline text-lg">
+              Fees
+            </a>
+          </div>
         </div>
+
+        <OwnerPanel
+          slug={pad.slug}
+          ownerWallet={pad.ownerWallet}
+          subdomainUrl={launchpadUrl(pad.slug)}
+        />
 
         {main && main.mint && (
           <a

@@ -33,6 +33,8 @@ export default async function CreateTokenPage({
             slug={pad.slug}
             configKey={pad.configKey}
             quoteMint={pad.quoteMint}
+            quoteSymbol={pad.quoteSymbol}
+            quoteDecimals={pad.quoteSymbol === 'USDC' ? 6 : 9}
           />
         </div>
       </div>

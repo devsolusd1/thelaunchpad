@@ -192,19 +192,31 @@ export default function CreateLaunchpadForm() {
   if (phase === 'done') {
     return (
       <div className="card p-8 text-center">
-        <div className="text-5xl">🎉</div>
-        <h2 className="mt-4 text-2xl font-bold text-white">
-          Launchpad created!
-        </h2>
-        <p className="mt-2 text-gray-400">
-          Your launchpad is live at{' '}
+        <h2 className="text-2xl font-bold text-white">Launchpad created!</h2>
+        <p className="mt-3 text-gray-400">
+          Your launchpad lives at{' '}
           <a href={doneUrl} className="text-accent underline">
             {slug}.{ROOT_DOMAIN}
           </a>
         </p>
-        <a href={doneUrl} className="btn-primary mt-6">
-          Open my launchpad
-        </a>
+        <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">
+          Heads up: new subdomains can take a little while to start resolving.
+          Until then, this direct link works right away — use it to set up
+          your pad and launch tokens:
+        </p>
+        <p className="mt-2">
+          <a href={`/s/${slug}`} className="break-all text-accent underline">
+            {typeof window !== 'undefined' ? window.location.origin : ''}/s/{slug}
+          </a>
+        </p>
+        <div className="mt-6 flex justify-center gap-3">
+          <a href={`/s/${slug}`} className="btn-primary">
+            Open my launchpad hub
+          </a>
+          <a href={`/s/${slug}/create`} className="btn-outline">
+            Launch a token
+          </a>
+        </div>
       </div>
     );
   }
