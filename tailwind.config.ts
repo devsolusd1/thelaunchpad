@@ -1,45 +1,42 @@
 import type { Config } from 'tailwindcss';
 
-// Tema "desert halftone": creme + laranja queimado + tinta marrom.
-// white/black/gray/red sao REMAPEADOS de proposito — todo o app foi escrito
-// com esses nomes e o remap retematiza tudo num lugar so.
+// Paleta casada com o tema dos mockups (src/styles/theme.css).
+// white/black/gray/red sao REMAPEADOS de proposito — o app foi escrito com
+// esses nomes e o remap retematiza as paginas tailwind num lugar so.
 const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        bg: '#fdf0dc', // areia clara (ceu da arte)
-        panel: '#fae7c9',
-        panel2: '#f4dcb4',
-        line: '#e8c895',
-        accent: '#e05f10', // laranja queimado
-        accent2: '#b3490c', // laranja profundo (CTAs de token / progresso)
+        bg: '#fdf4e5',
+        paper: '#fffaf1',
+        panel: '#faecd4',
+        panel2: '#f6e3c3',
+        line: '#ecdcbe',
+        line2: '#dcc39a',
+        accent: '#d9631c',
+        ember: '#f2913c',
+        accent2: '#4f8a45', // ok/verde (buy, sucesso)
         warn: '#a16207',
-        cream: '#fff7e8', // texto sobre laranja/vermelho
-        white: '#3b2210', // "white" = tinta marrom (tema claro)
-        black: '#fff7e8', // "black" = creme (texto de botao colorido)
+        cream: '#fffaf1',
+        white: '#2b1e13', // "white" = tinta
+        black: '#fffaf1', // "black" = creme (texto em botao colorido)
         gray: {
-          200: '#4a2c17',
-          300: '#5d3a1f',
-          400: '#7a5230',
-          500: '#95693f',
-          600: '#b08753',
+          200: '#4a3928',
+          300: '#5d4830',
+          400: '#8c7860',
+          500: '#8c7860',
+          600: '#bda57f',
         },
         red: {
           300: '#9a2c0e',
           400: '#8f280d',
-          500: '#bf3411',
+          500: '#c4324f',
         },
       },
       fontFamily: {
-        sans: [
-          'ui-sans-serif',
-          'system-ui',
-          '-apple-system',
-          'Segoe UI',
-          'Roboto',
-          'sans-serif',
-        ],
+        sans: ['var(--font-body)', 'Segoe UI', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'Consolas', 'monospace'],
       },
     },

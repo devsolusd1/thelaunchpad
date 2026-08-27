@@ -18,3 +18,13 @@ export function shortAddr(a?: string | null, n = 4) {
 export function fmtPct(n: number) {
   return `${(n * 100).toFixed(1)}%`;
 }
+
+// clareia/escurece um hex (#rrggbb); amt 1 = igual, >1 clareia, <1 escurece
+export function shadeHex(hex: string, amt: number): string {
+  const n = parseInt(hex.replace('#', ''), 16);
+  const f = (v: number) => Math.max(0, Math.min(255, Math.round(v * amt)));
+  const r = f(n >> 16);
+  const g = f((n >> 8) & 255);
+  const b = f(n & 255);
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+}

@@ -11,6 +11,15 @@ const WalletMultiButton = dynamic(
   { ssr: false }
 );
 
+export function FlameMark({ size = 16 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3c3.6 2.6 5.6 6 5.6 9.4A5.6 5.6 0 0 1 12 18a5.6 5.6 0 0 1-5.6-5.6C6.4 9 8.4 5.6 12 3Z" />
+      <path d="M12 18v3" />
+    </svg>
+  );
+}
+
 export default function Nav({
   title,
   homeHref = '/',
@@ -25,28 +34,32 @@ export default function Nav({
   siteLinks?: boolean;
 }) {
   return (
-    <nav className="sticky top-0 z-40 border-b border-line bg-bg/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <div className="flex items-center gap-8">
-          <Link href={homeHref} className="flex items-center gap-3">
-            {logoUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={logoUrl} alt="" className="h-8 w-8 rounded-lg object-cover" />
-            )}
-            <span className="text-lg font-bold text-white">{title}</span>
-          </Link>
-          {siteLinks && (
-            <div className="hidden items-center gap-6 text-sm font-semibold text-gray-400 md:flex">
-              <Link href="/flywheel" className="hover:text-accent">
-                Flywheel
-              </Link>
-              <Link href="/docs" className="hover:text-accent">
-                Docs
-              </Link>
-            </div>
+    <nav className="t-nav">
+      <div className="t-nav-in">
+        <Link href={homeHref} className="t-logo">
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={logoUrl}
+              alt=""
+              style={{ width: 31, height: 31, borderRadius: 10, objectFit: 'cover' }}
+            />
+          ) : (
+            <span className="t-mark">
+              <FlameMark />
+            </span>
           )}
-        </div>
-        <div className="flex items-center gap-3">
+          {title}
+        </Link>
+        {siteLinks && (
+          <div className="t-links">
+            <Link href="/#launchpads">Explore</Link>
+            <Link href="/#how-it-works">How it works</Link>
+            <Link href="/flywheel">Flywheel</Link>
+            <Link href="/docs">Docs</Link>
+          </div>
+        )}
+        <div className="t-right">
           {rightExtra}
           <WalletMultiButton />
         </div>

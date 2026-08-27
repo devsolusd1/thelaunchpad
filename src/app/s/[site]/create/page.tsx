@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/db';
-import Nav from '@/components/Nav';
+import PadNav from '@/components/pad/PadNav';
 import CreateTokenForm from '@/components/CreateTokenForm';
+import { SITE_NAME, ROOT_DOMAIN } from '@/lib/env';
 
 export const revalidate = 0;
 
@@ -19,9 +20,13 @@ export default async function CreateTokenPage({
 
   return (
     <main>
-      <Nav
-        title={pad.name}
+      <PadNav
+        siteName={SITE_NAME}
+        siteUrl={`${ROOT_DOMAIN.includes('localhost') ? 'http' : 'https'}://${ROOT_DOMAIN}`}
+        slug={pad.slug}
+        padName={pad.name}
         logoUrl={pad.logoId ? `/api/img/${pad.logoId}` : null}
+        ownerWallet={pad.ownerWallet}
       />
       <div className="mx-auto max-w-xl px-4 py-10">
         <h1 className="text-3xl font-black text-white">Launch token</h1>

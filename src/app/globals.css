@@ -2,16 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-bg text-gray-200 antialiased;
-}
+/* utilidades tailwind usadas pelas paginas de token/forms — paleta casada
+   com o tema dos mockups (src/styles/theme.css) */
 
 .card {
-  @apply bg-panel/85 backdrop-blur-sm border border-line rounded-xl;
+  @apply bg-panel/85 backdrop-blur-sm border border-line rounded-2xl;
 }
 
 .btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed;
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-extrabold transition-colors disabled:opacity-40 disabled:cursor-not-allowed;
 }
 .btn-primary {
   @apply btn bg-accent text-cream hover:bg-accent/85;
@@ -24,18 +23,9 @@ body {
 }
 
 .input {
-  @apply w-full rounded-lg bg-cream/70 border border-line px-3 py-2 text-sm outline-none focus:border-accent placeholder:text-gray-600;
+  @apply w-full rounded-xl bg-cream/70 border border-line px-3 py-2 text-sm font-bold outline-none focus:border-accent placeholder:text-gray-600;
 }
 
 .label {
-  @apply block text-xs uppercase tracking-wide text-gray-500 mb-1;
-}
-
-/* wallet-adapter overrides pra combinar com o tema */
-.wallet-adapter-button-trigger {
-  background-color: #e05f10 !important;
-  color: #fff7e8 !important;
-  border-radius: 0.5rem !important;
-  height: 40px !important;
-  font-size: 14px !important;
+  @apply block text-[10px] font-black uppercase tracking-[0.13em] text-gray-500 mb-1.5;
 }

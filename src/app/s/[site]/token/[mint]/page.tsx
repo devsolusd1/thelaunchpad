@@ -1,8 +1,8 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/db';
-import Nav from '@/components/Nav';
+import PadNav from '@/components/pad/PadNav';
 import TradePanel from '@/components/TradePanel';
-import { QUOTES } from '@/lib/env';
+import { QUOTES, SITE_NAME, ROOT_DOMAIN } from '@/lib/env';
 import { shortAddr } from '@/lib/format';
 
 export const revalidate = 0;
@@ -25,9 +25,13 @@ export default async function TokenPage({
 
   return (
     <main>
-      <Nav
-        title={pad.name}
+      <PadNav
+        siteName={SITE_NAME}
+        siteUrl={`${ROOT_DOMAIN.includes('localhost') ? 'http' : 'https'}://${ROOT_DOMAIN}`}
+        slug={pad.slug}
+        padName={pad.name}
         logoUrl={pad.logoId ? `/api/img/${pad.logoId}` : null}
+        ownerWallet={pad.ownerWallet}
       />
       <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="flex items-center gap-4">

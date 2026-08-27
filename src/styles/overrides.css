@@ -1,0 +1,20 @@
+/* Ajustes por cima dos CSS gerados dos mockups (importado por ultimo). */
+
+/* paginas transparentes pra imagem de fundo (Background.tsx) aparecer */
+.pg-home,
+.pg-create,
+.pg-pad,
+.pg-admin,
+.pg-terms {
+  background: transparent;
+}
+
+/* o t-nav dos mocks e' reaproveitado globalmente; garante wallet button alinhado */
+.t-right .wallet-adapter-dropdown {
+  display: flex;
+}
+
+/* inputs dentro do t-search sem outline feio */
+.t-search input:focus {
+  outline: none;
+}

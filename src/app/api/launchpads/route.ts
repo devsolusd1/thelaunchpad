@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
       logoBase64,
       logoMime,
       accentColor,
+      gaId,
       twitter,
       telegram,
       website,
@@ -111,7 +112,14 @@ export async function POST(req: NextRequest) {
         initialMcUsd: mc0,
         migrationMcUsd: mc1,
         logoId,
-        accentColor: accentColor ? String(accentColor).slice(0, 16) : null,
+        accentColor:
+          accentColor && /^#[0-9a-fA-F]{6}$/.test(String(accentColor))
+            ? String(accentColor)
+            : null,
+        gaId:
+          gaId && /^G-[A-Z0-9]{4,16}$/.test(String(gaId).trim())
+            ? String(gaId).trim()
+            : null,
         twitter: clean(twitter),
         telegram: clean(telegram),
         website: clean(website),

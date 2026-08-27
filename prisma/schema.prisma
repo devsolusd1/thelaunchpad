@@ -25,6 +25,7 @@ model Launchpad {
   telegram       String?
   website        String?
   mainTokenMint  String?
+  gaId           String?
   xHandle        String?
   xVerified      Boolean     @default(false)
   createTx       String
