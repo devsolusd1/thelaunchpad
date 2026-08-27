@@ -36,49 +36,57 @@ export default async function LaunchpadHome({
         }
       />
 
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <div className="flex items-start gap-5">
-            {pad.logoId && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={`/api/img/${pad.logoId}`}
-                alt=""
-                className="h-20 w-20 rounded-2xl border border-line object-cover md:h-24 md:w-24"
-              />
-            )}
-            <div>
-            <h1 className="text-3xl font-black text-white md:text-5xl">
-              {pad.name}
-            </h1>
-            {pad.description && (
-              <p className="mt-2 max-w-xl text-gray-400">{pad.description}</p>
-            )}
-            <div className="mt-3 flex flex-wrap gap-2 text-xs">
-              <Badge>{pad.feeBps / 100}% fee</Badge>
-              <Badge>{pad.quoteSymbol} quote</Badge>
-              <Badge>
-                {fmtUsd(pad.initialMcUsd)} → {fmtUsd(pad.migrationMcUsd)}
-              </Badge>
-              <Badge>owner {shortAddr(pad.ownerWallet)}</Badge>
-            </div>
-            <div className="mt-2 flex gap-3 text-sm text-accent">
-              {pad.twitter && <a href={pad.twitter} target="_blank">Twitter</a>}
-              {pad.telegram && <a href={pad.telegram} target="_blank">Telegram</a>}
-              {pad.website && <a href={pad.website} target="_blank">Website</a>}
-            </div>
-            </div>
+      {/* hub central da launchpad: logo grande, nome, descricao, acoes */}
+      <section className="mx-auto max-w-3xl px-4 pb-6 pt-14 text-center">
+        {pad.logoId ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`/api/img/${pad.logoId}`}
+            alt=""
+            className="mx-auto h-28 w-28 rounded-3xl border border-line object-cover shadow-lg md:h-32 md:w-32"
+          />
+        ) : (
+          <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-3xl border border-line bg-panel2 text-5xl font-black text-accent md:h-32 md:w-32">
+            {pad.name.charAt(0).toUpperCase()}
           </div>
-          <div className="flex flex-wrap gap-3">
-            <a href="/create" className="btn-green text-lg">
-              + Launch token
-            </a>
-            <a href="/dashboard" className="btn-outline text-lg">
-              Fees
-            </a>
-          </div>
+        )}
+        <h1 className="mt-5 text-3xl font-black text-white md:text-5xl">
+          {pad.name}
+        </h1>
+        {pad.description && (
+          <p className="mx-auto mt-3 max-w-xl text-gray-400">
+            {pad.description}
+          </p>
+        )}
+
+        <div className="mt-4 flex flex-wrap justify-center gap-2 text-xs">
+          <Badge>{pad.feeBps / 100}% fee</Badge>
+          <Badge>{pad.quoteSymbol} quote</Badge>
+          <Badge>
+            {fmtUsd(pad.initialMcUsd)} → {fmtUsd(pad.migrationMcUsd)}
+          </Badge>
+          <Badge>owner {shortAddr(pad.ownerWallet)}</Badge>
         </div>
 
+        {(pad.twitter || pad.telegram || pad.website) && (
+          <div className="mt-3 flex justify-center gap-4 text-sm text-accent">
+            {pad.twitter && <a href={pad.twitter} target="_blank">Twitter</a>}
+            {pad.telegram && <a href={pad.telegram} target="_blank">Telegram</a>}
+            {pad.website && <a href={pad.website} target="_blank">Website</a>}
+          </div>
+        )}
+
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <a href="/create" className="btn-green px-8 py-3 text-lg">
+            + Launch token
+          </a>
+          <a href="/dashboard" className="btn-outline px-6 py-3 text-lg">
+            Fees
+          </a>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-16">
         <OwnerPanel
           slug={pad.slug}
           ownerWallet={pad.ownerWallet}
@@ -110,7 +118,7 @@ export default async function LaunchpadHome({
           </a>
         )}
 
-        <h2 className="mt-12 mb-4 text-xl font-bold text-white">
+        <h2 className="mt-10 mb-4 text-xl font-bold text-white">
           Tokens ({pad.tokens.length})
         </h2>
         {pad.tokens.length === 0 ? (

@@ -56,7 +56,12 @@ export default async function Home() {
       </section>
 
       <section id="launchpads" className="mx-auto max-w-6xl px-4 pb-20">
-        <h2 className="mb-6 text-2xl font-bold text-white">Launchpads</h2>
+        <h2 className="mb-2 text-2xl font-bold text-white">Launchpads</h2>
+        <p className="mb-6 text-sm text-gray-500">
+          Just-created launchpads (less than ~1 hour old) may still have an
+          unstable subdomain while DNS propagates — use the pad&apos;s direct
+          link in the meantime.
+        </p>
         {pads.length === 0 ? (
           <div className="card p-10 text-center text-gray-400">
             No launchpads yet — be the first to create one.
@@ -64,12 +69,11 @@ export default async function Home() {
         ) : (
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {pads.map((p) => (
-              <a
+              <div
                 key={p.slug}
-                href={launchpadUrl(p.slug)}
-                className="card group p-5 transition-colors hover:border-accent"
+                className="card group flex flex-col p-5 transition-colors hover:border-accent"
               >
-                <div className="flex items-center gap-3">
+                <a href={launchpadUrl(p.slug)} className="flex items-center gap-3">
                   {p.logoId ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -90,7 +94,7 @@ export default async function Home() {
                       {p.slug}.{process.env.NEXT_PUBLIC_ROOT_DOMAIN}
                     </div>
                   </div>
-                </div>
+                </a>
                 {p.description && (
                   <p className="mt-3 line-clamp-2 text-sm text-gray-400">
                     {p.description}
@@ -104,10 +108,16 @@ export default async function Home() {
                     {fmtUsd(p.initialMcUsd)} → {fmtUsd(p.migrationMcUsd)}
                   </Badge>
                 </div>
-                <div className="mt-3 text-xs text-gray-500">
-                  owner: {shortAddr(p.ownerWallet)}
+                <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
+                  <span>owner: {shortAddr(p.ownerWallet)}</span>
+                  <a
+                    href={`/s/${p.slug}`}
+                    className="font-semibold text-accent hover:underline"
+                  >
+                    direct link →
+                  </a>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         )}
