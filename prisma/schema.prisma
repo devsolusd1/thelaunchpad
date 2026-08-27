@@ -25,6 +25,8 @@ model Launchpad {
   telegram       String?
   website        String?
   mainTokenMint  String?
+  xHandle        String?
+  xVerified      Boolean     @default(false)
   createTx       String
   createdAt      DateTime    @default(now())
   tokens         Token[]

@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db';
 import Nav from '@/components/Nav';
 import { SITE_NAME, CREATION_FEE_SOL, TREASURY_WALLET, launchpadUrl } from '@/lib/env';
 import { fmtUsd, shortAddr } from '@/lib/format';
+import VerifiedBadge from '@/components/VerifiedBadge';
 
 export const revalidate = 0;
 
@@ -25,7 +26,7 @@ export default async function Home() {
 
   return (
     <main>
-      <Nav title={SITE_NAME} />
+      <Nav title={SITE_NAME} siteLinks />
 
       <section className="mx-auto max-w-6xl px-4 py-16 text-center">
         <h1 className="mx-auto max-w-3xl text-4xl font-black text-white md:text-6xl">
@@ -87,8 +88,9 @@ export default async function Home() {
                     </div>
                   )}
                   <div>
-                    <div className="font-bold text-white group-hover:text-accent">
+                    <div className="flex items-center gap-1.5 font-bold text-white group-hover:text-accent">
                       {p.name}
+                      {p.xVerified && <VerifiedBadge xHandle={p.xHandle} />}
                     </div>
                     <div className="text-xs text-gray-500">
                       {p.slug}.{process.env.NEXT_PUBLIC_ROOT_DOMAIN}

@@ -4,6 +4,7 @@ import Nav from '@/components/Nav';
 import OwnerPanel from '@/components/OwnerPanel';
 import { launchpadUrl } from '@/lib/env';
 import { fmtUsd, shortAddr } from '@/lib/format';
+import VerifiedBadge from '@/components/VerifiedBadge';
 
 export const revalidate = 0;
 
@@ -50,8 +51,9 @@ export default async function LaunchpadHome({
             {pad.name.charAt(0).toUpperCase()}
           </div>
         )}
-        <h1 className="mt-5 text-3xl font-black text-white md:text-5xl">
+        <h1 className="mt-5 inline-flex items-center gap-2 text-3xl font-black text-white md:text-5xl">
           {pad.name}
+          {pad.xVerified && <VerifiedBadge xHandle={pad.xHandle} className="h-7 w-7" />}
         </h1>
         {pad.description && (
           <p className="mx-auto mt-3 max-w-xl text-gray-400">
