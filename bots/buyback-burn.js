@@ -16,7 +16,6 @@ const {
   getAssociatedTokenAddressSync,
   createBurnInstruction,
 } = require('@solana/spl-token');
-const { PrismaClient } = require('@prisma/client');
 const L = require('./lib');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -107,7 +106,7 @@ async function main() {
   const mint = new PublicKey(mintStr);
   const connection = L.makeConnection();
   const treasury = L.loadTreasury();
-  const prisma = new PrismaClient();
+  const prisma = L.makePrisma();
   log(`Treasury: ${treasury.publicKey.toBase58()}`);
   log(`Token:    ${mint.toBase58()}`);
 

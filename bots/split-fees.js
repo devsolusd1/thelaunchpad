@@ -33,7 +33,6 @@ const {
   DynamicBondingCurveClient,
   U64_MAX,
 } = require('@meteora-ag/dynamic-bonding-curve-sdk');
-const { PrismaClient } = require('@prisma/client');
 const L = require('./lib');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -161,7 +160,7 @@ async function main() {
     DRY_RUN && !process.env.TREASURY_SECRET_BASE58
       ? { publicKey: new PublicKey(process.env.NEXT_PUBLIC_TREASURY_WALLET) }
       : L.loadTreasury();
-  const prisma = new PrismaClient();
+  const prisma = L.makePrisma();
   const client = new DynamicBondingCurveClient(connection, 'confirmed');
   log(`Treasury: ${treasury.publicKey.toBase58()}`);
 

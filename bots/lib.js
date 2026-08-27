@@ -123,9 +123,18 @@ async function jupSwap({ connection, wallet, quote }) {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// Banco dos bots: em producao aponte BOT_DATABASE_URL pro Postgres (Neon)
+// e gere o client certo antes: npm run bots:gen
+function makePrisma() {
+  const { PrismaClient } = require('@prisma/client');
+  const url = (process.env.BOT_DATABASE_URL || process.env.DATABASE_URL || '').trim();
+  return new PrismaClient(url ? { datasourceUrl: url } : undefined);
+}
+
 module.exports = {
   JUP,
   SOL_MINT,
+  makePrisma,
   log,
   warn,
   fail,

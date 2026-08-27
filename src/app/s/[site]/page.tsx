@@ -112,7 +112,7 @@ export default async function LaunchpadHome({
 
         {main && main.mint && (
           <a
-            href={`/t/${main.mint}`}
+            href={`/token/${main.mint}`}
             className="card mt-8 flex items-center gap-4 border-accent/50 p-5 hover:border-accent"
           >
             {main.imageId && (
@@ -147,7 +147,7 @@ export default async function LaunchpadHome({
             {pad.tokens.map((t) => (
               <a
                 key={t.id}
-                href={`/t/${t.mint}`}
+                href={`/token/${t.mint}`}
                 className="card group p-4 transition-colors hover:border-accent2"
               >
                 <div className="flex items-center gap-3">

@@ -162,7 +162,7 @@ export default function CreateTokenForm({
         <p className="mt-2 break-all font-mono text-xs text-gray-500">
           {mintDone}
         </p>
-        <a href={`/t/${mintDone}`} className="btn-green mt-6">
+        <a href={`/token/${mintDone}`} className="btn-green mt-6">
           Go to token page
         </a>
       </div>
