@@ -11,10 +11,14 @@ export default function OwnerPanel({
   slug,
   ownerWallet,
   subdomainUrl,
+  xVerified,
+  xHandle,
 }: {
   slug: string;
   ownerWallet: string;
   subdomainUrl: string;
+  xVerified?: boolean;
+  xHandle?: string | null;
 }) {
   const wallet = useWallet();
   const router = useRouter();
@@ -26,6 +30,38 @@ export default function OwnerPanel({
   const isOwner =
     wallet.connected && wallet.publicKey?.toBase58() === ownerWallet;
   if (!isOwner) return null;
+
+  async function verifyX() {
+    setMsg('');
+    if (!wallet.publicKey) return;
+    if (!wallet.signMessage) {
+      setMsg('your wallet does not support message signing');
+      return;
+    }
+    try {
+      setBusy(true);
+      const timestamp = Date.now();
+      const sig = await wallet.signMessage(
+        new TextEncoder().encode(`thelaunchpad:verify-x:${slug}:${timestamp}`)
+      );
+      const res = await fetch('/api/x/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug,
+          wallet: wallet.publicKey.toBase58(),
+          timestamp,
+          signature: bs58.encode(sig),
+        }),
+      });
+      const j = await res.json();
+      if (!res.ok) throw new Error(j.error || 'failed to start X verification');
+      window.location.href = j.url;
+    } catch (e: any) {
+      setMsg(e?.message || String(e));
+      setBusy(false);
+    }
+  }
 
   async function saveLogo() {
     setMsg('');
@@ -67,13 +103,24 @@ export default function OwnerPanel({
     <div className="card mt-8 space-y-4 border-accent/40 p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h3 className="font-bold text-white">Owner tools</h3>
-        <button
-          className="btn-outline"
-          onClick={() => setDomainSoon(true)}
-          disabled={domainSoon}
-        >
-          {domainSoon ? 'Coming soon' : 'Configure your domain'}
-        </button>
+        <div className="flex flex-wrap gap-2">
+          {xVerified ? (
+            <span className="btn-outline cursor-default">
+              ✓ Verified as @{xHandle}
+            </span>
+          ) : (
+            <button className="btn-outline" onClick={verifyX} disabled={busy}>
+              Verify with X
+            </button>
+          )}
+          <button
+            className="btn-outline"
+            onClick={() => setDomainSoon(true)}
+            disabled={domainSoon}
+          >
+            {domainSoon ? 'Coming soon' : 'Configure your domain'}
+          </button>
+        </div>
       </div>
 
       <div className="text-sm text-gray-400">

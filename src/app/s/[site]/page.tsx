@@ -93,6 +93,8 @@ export default async function LaunchpadHome({
           slug={pad.slug}
           ownerWallet={pad.ownerWallet}
           subdomainUrl={launchpadUrl(pad.slug)}
+          xVerified={pad.xVerified}
+          xHandle={pad.xHandle}
         />
 
         {main && main.mint && (
