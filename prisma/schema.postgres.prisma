@@ -46,6 +46,7 @@ model Token {
   symbol       String
   description  String?
   imageId      String?
+  uri          String?
   website      String?
   twitter      String?
   telegram     String?

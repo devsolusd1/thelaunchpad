@@ -1,10 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
+import { pinataEnabled, pinImage, pinJson } from '@/lib/pinata';
 
 export const revalidate = 0;
 
 // Registra o token como "pending" e devolve a URI de metadata que o mint
-// vai usar — precisa existir ANTES do createPool.
+// vai usar — precisa existir ANTES do createPool. Com PINATA_JWT definida,
+// imagem e JSON vao pro IPFS (URI independente do dominio do site);
+// sem ela (ou se a Pinata falhar), o proprio site serve a metadata.
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -21,11 +24,14 @@ export async function POST(req: NextRequest) {
     if (!pad) return err('launchpad not found', 404);
 
     let imageId: string | undefined;
+    let imageBuf: Buffer | undefined;
     if (imageBase64 && imageMime) {
-      const buf = Buffer.from(String(imageBase64), 'base64');
-      if (buf.length > 1_500_000) return err('image larger than 1.5MB');
+      imageBuf = Buffer.from(String(imageBase64), 'base64');
+      if (imageBuf.length > 1_500_000) return err('image larger than 1.5MB');
       if (!/^image\/(png|jpe?g|gif|webp)$/.test(imageMime)) return err('invalid image format');
-      const img = await prisma.image.create({ data: { mime: imageMime, data: buf } });
+      const img = await prisma.image.create({
+        data: { mime: imageMime, data: imageBuf },
+      });
       imageId = img.id;
     }
 
@@ -43,9 +49,38 @@ export async function POST(req: NextRequest) {
     });
 
     const origin = req.nextUrl.origin;
+    let uri = `${origin}/api/metadata/${token.id}`;
+
+    if (pinataEnabled()) {
+      try {
+        let imageUrl = imageId ? `${origin}/api/img/${imageId}` : '';
+        if (imageBuf && imageMime)
+          imageUrl = await pinImage(imageBuf, String(imageMime), token.symbol);
+        uri = await pinJson(
+          {
+            name: token.name,
+            symbol: token.symbol,
+            description: token.description || '',
+            image: imageUrl,
+            website: token.website || '',
+            twitter: token.twitter || '',
+            telegram: token.telegram || '',
+          },
+          token.symbol
+        );
+        await prisma.token.update({
+          where: { id: token.id },
+          data: { uri },
+        });
+      } catch (e) {
+        // IPFS fora do ar nao pode travar o launch — usa a URI do site
+        console.error('pinata upload failed, falling back to self-hosted:', e);
+      }
+    }
+
     return NextResponse.json({
       id: token.id,
-      uri: `${origin}/api/metadata/${token.id}`,
+      uri,
       configKey: pad.configKey,
       quoteMint: pad.quoteMint,
     });
