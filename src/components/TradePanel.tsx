@@ -50,12 +50,14 @@ export default function TradePanel(props: Props) {
 
   const refresh = useCallback(async () => {
     try {
-      const vp = await client.state.getPool(new PublicKey(props.pool));
+      const raw: any = await client.state.getPool(new PublicKey(props.pool));
+      // o SDK 1.5.x devolve o estado embrulhado em poolState
+      const vp = raw?.poolState ?? raw;
       if (!vp) return;
       setVirtualPool(vp);
-      setMigrated(Number((vp as any).isMigrated) !== 0);
+      setMigrated(Number(vp.isMigrated) !== 0);
       if (!poolConfig) {
-        const cfg = await client.state.getPoolConfig((vp as any).config);
+        const cfg = await client.state.getPoolConfig(vp.config);
         setPoolConfig(cfg);
       }
       if (props.quoteMint === SOL_MINT) {

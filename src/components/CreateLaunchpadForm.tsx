@@ -10,6 +10,7 @@ import {
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { DynamicBondingCurveClient } from '@meteora-ag/dynamic-bonding-curve-sdk';
+import ImagePicker from '@/components/ImagePicker';
 import { buildLaunchpadCurve, validateLaunchpadCurve } from '@/lib/dbc';
 import {
   QUOTES,
@@ -273,15 +274,11 @@ export default function CreateLaunchpadForm() {
           />
         </div>
 
-        <div>
-          <label className="label">Logo (optional, max 1.5MB)</label>
-          <input
-            type="file"
-            accept="image/png,image/jpeg,image/gif,image/webp"
-            className="text-sm text-gray-400"
-            onChange={(e) => setLogo(e.target.files?.[0] || null)}
-          />
-        </div>
+        <ImagePicker
+          label="Logo (optional, max 1.5MB)"
+          file={logo}
+          onChange={setLogo}
+        />
       </div>
 
       <div className="card space-y-4 p-5">

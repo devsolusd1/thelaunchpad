@@ -66,7 +66,9 @@ export async function verifyTokenPool(
 ): Promise<{ creator: string }> {
   const connection = serverConnection();
   const client = new DynamicBondingCurveClient(connection, 'confirmed');
-  const vp = await client.state.getPool(new PublicKey(pool));
+  const raw: any = await client.state.getPool(new PublicKey(pool));
+  // o SDK 1.5.x devolve o estado embrulhado em poolState
+  const vp = raw?.poolState ?? raw;
   if (!vp) throw new Error('pool not found on-chain');
   if ((vp as any).config?.toBase58?.() !== configKey)
     throw new Error('pool does not belong to this launchpad config');

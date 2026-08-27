@@ -6,13 +6,29 @@ export const revalidate = 0;
 
 export async function POST(req: NextRequest) {
   try {
-    const { id, mint, pool, txSig, creatorWallet } = (await req.json()) || {};
-    if (!id || !mint || !pool || !txSig) return err('missing fields');
+    const { id, slug, mint, pool, txSig, creatorWallet } = (await req.json()) || {};
+    if (!mint || !pool) return err('missing fields');
 
-    const token = await prisma.token.findUnique({
-      where: { id: String(id) },
-      include: { launchpad: true },
-    });
+    let token = id
+      ? await prisma.token.findUnique({
+          where: { id: String(id) },
+          include: { launchpad: true },
+        })
+      : null;
+
+    // reconciliacao: o pool existe on-chain mas o registro ficou pendente
+    // (ex.: confirmacao falhou no browser) — recupera o pending mais recente
+    if (!token && slug) {
+      const pad = await prisma.launchpad.findUnique({
+        where: { slug: String(slug).toLowerCase() },
+      });
+      if (pad)
+        token = await prisma.token.findFirst({
+          where: { launchpadId: pad.id, status: 'pending' },
+          orderBy: { createdAt: 'desc' },
+          include: { launchpad: true },
+        });
+    }
     if (!token) return err('token not found', 404);
     if (token.status === 'live') return NextResponse.json({ ok: true });
 
@@ -28,8 +44,10 @@ export async function POST(req: NextRequest) {
         status: 'live',
         mint: String(mint),
         pool: String(pool),
-        creatorWallet: creatorWallet ? String(creatorWallet) : null,
-        createTx: String(txSig),
+        creatorWallet: creatorWallet
+          ? String(creatorWallet)
+          : onchain.creator || null,
+        createTx: txSig ? String(txSig) : null,
       },
     });
 
