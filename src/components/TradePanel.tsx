@@ -34,7 +34,8 @@ export default function TradePanel(props: Props) {
     [connection]
   );
 
-  const [virtualPool, setVirtualPool] = useState<any>(null);
+  const [virtualPool, setVirtualPool] = useState<any>(null); // estado desembrulhado (campos)
+  const [poolRaw, setPoolRaw] = useState<any>(null); // objeto cru do SDK (swapQuote exige)
   const [poolConfig, setPoolConfig] = useState<any>(null);
   const [quoteUsd, setQuoteUsd] = useState(1);
   const [migrated, setMigrated] = useState(false);
@@ -51,9 +52,11 @@ export default function TradePanel(props: Props) {
   const refresh = useCallback(async () => {
     try {
       const raw: any = await client.state.getPool(new PublicKey(props.pool));
-      // o SDK 1.5.x devolve o estado embrulhado em poolState
+      // o SDK 1.5.x devolve o estado embrulhado em poolState; swapQuote
+      // quer o objeto cru, o resto dos campos vem do desembrulhado
       const vp = raw?.poolState ?? raw;
       if (!vp) return;
+      setPoolRaw(raw);
       setVirtualPool(vp);
       setMigrated(Number(vp.isMigrated) !== 0);
       if (!poolConfig) {
@@ -144,15 +147,16 @@ export default function TradePanel(props: Props) {
 
   // estimativa de saida
   const estimate = useMemo(() => {
-    if (!virtualPool || !poolConfig) return null;
-    const amt = Number(amount);
-    if (!amt || amt <= 0) return null;
+    if (!poolRaw || !poolConfig) return null;
+    // aceita virgula decimal (teclados pt-BR)
+    const amt = Number(String(amount).replace(',', '.'));
+    if (!amt || amt <= 0 || !isFinite(amt)) return null;
     try {
       const swapBaseForQuote = side === 'sell';
       const decimalsIn = swapBaseForQuote ? TOKEN_DECIMALS : props.quoteDecimals;
       const amountIn = new BN(Math.round(amt * 10 ** decimalsIn).toString());
       const q: any = swapQuote(
-        virtualPool,
+        poolRaw,
         poolConfig,
         swapBaseForQuote,
         amountIn,
@@ -161,14 +165,16 @@ export default function TradePanel(props: Props) {
         new BN(Math.floor(Date.now() / 1000)),
         false
       );
+      const outRaw = q.outputAmount ?? q.amountOut;
+      const minOut = q.minimumAmountOut ?? outRaw;
+      if (!outRaw || !minOut) return null;
       const outDecimals = swapBaseForQuote ? props.quoteDecimals : TOKEN_DECIMALS;
-      const out = Number(q.amountOut?.toString?.() || '0') / 10 ** outDecimals;
-      const minOut = q.minimumAmountOut ?? q.amountOut;
+      const out = Number(outRaw.toString()) / 10 ** outDecimals;
       return { out, amountIn, minOut: new BN(minOut.toString()) };
     } catch {
       return null;
     }
-  }, [virtualPool, poolConfig, amount, side, slippagePct, props.quoteDecimals]);
+  }, [poolRaw, poolConfig, amount, side, slippagePct, props.quoteDecimals]);
 
   async function doSwap() {
     setError('');
@@ -231,7 +237,7 @@ export default function TradePanel(props: Props) {
   return (
     <div className="card h-fit space-y-4 p-5">
       {stats && (
-        <div className="grid grid-cols-3 gap-2 text-center">
+        <div className="grid grid-cols-4 gap-2 text-center">
           <div>
             <div className="text-[10px] uppercase text-gray-500">Price</div>
             <div className="text-sm font-bold text-white">
@@ -249,6 +255,12 @@ export default function TradePanel(props: Props) {
             <div className="text-[10px] uppercase text-gray-500">Curve</div>
             <div className="text-sm font-bold text-accent2">
               {(stats.progress * 100).toFixed(1)}%
+            </div>
+          </div>
+          <div>
+            <div className="text-[10px] uppercase text-gray-500">Fee</div>
+            <div className="text-sm font-bold text-accent">
+              {props.feeBps / 100}%
             </div>
           </div>
         </div>
