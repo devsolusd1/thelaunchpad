@@ -21,6 +21,7 @@ export default function OwnerPanel({
   const [logo, setLogo] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState('');
+  const [domainSoon, setDomainSoon] = useState(false);
 
   const isOwner =
     wallet.connected && wallet.publicKey?.toBase58() === ownerWallet;
@@ -64,7 +65,16 @@ export default function OwnerPanel({
 
   return (
     <div className="card mt-8 space-y-4 border-accent/40 p-5">
-      <h3 className="font-bold text-white">Owner tools</h3>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="font-bold text-white">Owner tools</h3>
+        <button
+          className="btn-outline"
+          onClick={() => setDomainSoon(true)}
+          disabled={domainSoon}
+        >
+          {domainSoon ? 'Coming soon' : 'Configure your domain'}
+        </button>
+      </div>
 
       <div className="text-sm text-gray-400">
         <p>
