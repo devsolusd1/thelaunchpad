@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import Nav from '@/components/Nav';
-import { SITE_NAME, CREATION_FEE_SOL, launchpadUrl } from '@/lib/env';
+import { SITE_NAME, CREATION_FEE_SOL, TREASURY_WALLET, launchpadUrl } from '@/lib/env';
 import { fmtUsd, shortAddr } from '@/lib/format';
 
 export const revalidate = 0;
@@ -16,7 +16,10 @@ export default async function Home() {
     prisma.buyback.findMany(),
   ]);
 
-  const solCollected = pads.length * CREATION_FEE_SOL;
+  // pads criadas pela wallet da plataforma nao pagam a taxa
+  const solCollected =
+    pads.filter((p) => p.ownerWallet !== TREASURY_WALLET).length *
+    CREATION_FEE_SOL;
   const solBurned =
     buybacks.reduce((s, b) => s + Number(b.spentLamports), 0) / 1e9;
 

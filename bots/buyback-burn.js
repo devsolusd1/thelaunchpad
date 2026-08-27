@@ -27,8 +27,11 @@ const CREATION_FEE_SOL = Number(process.env.NEXT_PUBLIC_CREATION_FEE_SOL || 0.5)
 const MIN_POT_SOL = Number(process.env.BOT_MIN_BUYBACK_SOL || 0.1);
 
 async function runRound({ connection, treasury, prisma, mint }) {
+  // pads criadas pela wallet da plataforma nao pagaram a taxa — nao entram no pote
   const [padCount, buybacks] = await Promise.all([
-    prisma.launchpad.count(),
+    prisma.launchpad.count({
+      where: { ownerWallet: { not: treasury.publicKey.toBase58() } },
+    }),
     prisma.buyback.findMany(),
   ]);
   const collected = BigInt(Math.round(padCount * CREATION_FEE_SOL * LAMPORTS_PER_SOL));
