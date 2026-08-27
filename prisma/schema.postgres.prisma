@@ -49,6 +49,7 @@ model Token {
   description  String?
   imageId      String?
   uri          String?
+  isMain       Boolean   @default(false)
   website      String?
   twitter      String?
   telegram     String?

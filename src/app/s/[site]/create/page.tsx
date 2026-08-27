@@ -7,8 +7,10 @@ export const revalidate = 0;
 
 export default async function CreateTokenPage({
   params,
+  searchParams,
 }: {
   params: { site: string };
+  searchParams?: { main?: string };
 }) {
   const pad = await prisma.launchpad.findUnique({
     where: { slug: params.site.toLowerCase() },
@@ -35,6 +37,8 @@ export default async function CreateTokenPage({
             quoteMint={pad.quoteMint}
             quoteSymbol={pad.quoteSymbol}
             quoteDecimals={pad.quoteSymbol === 'USDC' ? 6 : 9}
+            asMain={searchParams?.main === '1'}
+            padName={pad.name}
           />
         </div>
       </div>

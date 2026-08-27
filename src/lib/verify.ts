@@ -57,12 +57,13 @@ export async function verifyCreationPayment(txSig: string): Promise<void> {
     );
 }
 
-// Confere que o pool existe, pertence ao config da launchpad e usa o mint dado.
+// Confere que o pool existe, pertence ao config da launchpad e usa o mint
+// dado; devolve o criador on-chain do pool.
 export async function verifyTokenPool(
   pool: string,
   mint: string,
   configKey: string
-): Promise<void> {
+): Promise<{ creator: string }> {
   const connection = serverConnection();
   const client = new DynamicBondingCurveClient(connection, 'confirmed');
   const vp = await client.state.getPool(new PublicKey(pool));
@@ -71,4 +72,5 @@ export async function verifyTokenPool(
     throw new Error('pool does not belong to this launchpad config');
   if ((vp as any).baseMint?.toBase58?.() !== mint)
     throw new Error('mint does not match the pool');
+  return { creator: (vp as any).creator?.toBase58?.() || '' };
 }

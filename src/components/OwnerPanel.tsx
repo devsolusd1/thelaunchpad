@@ -13,12 +13,14 @@ export default function OwnerPanel({
   subdomainUrl,
   xVerified,
   xHandle,
+  mainTokenMint,
 }: {
   slug: string;
   ownerWallet: string;
   subdomainUrl: string;
   xVerified?: boolean;
   xHandle?: string | null;
+  mainTokenMint?: string | null;
 }) {
   const wallet = useWallet();
   const router = useRouter();
@@ -104,6 +106,11 @@ export default function OwnerPanel({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h3 className="font-bold text-white">Owner tools</h3>
         <div className="flex flex-wrap gap-2">
+          {!mainTokenMint && (
+            <a href="/create?main=1" className="btn-primary">
+              Launch main token
+            </a>
+          )}
           {xVerified ? (
             <span className="btn-outline cursor-default">
               ✓ Verified as @{xHandle}

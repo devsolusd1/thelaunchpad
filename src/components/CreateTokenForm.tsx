@@ -5,6 +5,7 @@ import { Keypair, PublicKey } from '@solana/web3.js';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import BN from 'bn.js';
+import bs58 from 'bs58';
 import {
   DynamicBondingCurveClient,
   deriveDbcPoolAddress,
@@ -18,12 +19,16 @@ export default function CreateTokenForm({
   quoteMint,
   quoteSymbol,
   quoteDecimals,
+  asMain = false,
+  padName,
 }: {
   slug: string;
   configKey: string;
   quoteMint: string;
   quoteSymbol: string;
   quoteDecimals: number;
+  asMain?: boolean;
+  padName?: string;
 }) {
   const { connection } = useConnection();
   const wallet = useWallet();
@@ -37,6 +42,7 @@ export default function CreateTokenForm({
   const [twitter, setTwitter] = useState('');
   const [telegram, setTelegram] = useState('');
   const [devBuy, setDevBuy] = useState('');
+  const [vanitySecret, setVanitySecret] = useState('');
 
   const [phase, setPhase] = useState<Phase>('form');
   const [error, setError] = useState('');
@@ -71,13 +77,23 @@ export default function CreateTokenForm({
           website,
           twitter,
           telegram,
+          asMain,
         }),
       });
       const prepJson = await prep.json();
       if (!prep.ok) throw new Error(prepJson.error || 'failed to prepare metadata');
 
       setPhase('sending');
-      const mintKp = Keypair.generate();
+      let mintKp: Keypair;
+      if (vanitySecret.trim()) {
+        try {
+          mintKp = Keypair.fromSecretKey(bs58.decode(vanitySecret.trim()));
+        } catch {
+          throw new Error('invalid custom mint secret (expected base58)');
+        }
+      } else {
+        mintKp = Keypair.generate();
+      }
       const client = new DynamicBondingCurveClient(connection, 'confirmed');
       const createPoolParam = {
         name,
@@ -165,6 +181,16 @@ export default function CreateTokenForm({
 
   return (
     <div className="space-y-5">
+      {asMain && (
+        <div className="rounded-xl border border-accent/50 bg-accent/10 p-4 text-sm">
+          <b className="text-accent">Launching as the pad&apos;s MAIN token.</b>{' '}
+          <span className="text-gray-400">
+            It will be featured on {padName || 'the launchpad'}&apos;s hub.
+            Only the launchpad owner&apos;s wallet can set this — for anyone
+            else it launches as a regular token.
+          </span>
+        </div>
+      )}
       <div className="card space-y-4 p-5">
         <div className="grid grid-cols-3 gap-3">
           <div className="col-span-2">
@@ -211,6 +237,18 @@ export default function CreateTokenForm({
           <input className="input" placeholder="Website" value={website} onChange={(e) => setWebsite(e.target.value)} />
           <input className="input" placeholder="Twitter/X" value={twitter} onChange={(e) => setTwitter(e.target.value)} />
           <input className="input" placeholder="Telegram" value={telegram} onChange={(e) => setTelegram(e.target.value)} />
+        </div>
+        <div>
+          <label className="label">
+            Custom mint (optional, advanced) — base58 secret of a vanity
+            keypair; the token address will be its public key
+          </label>
+          <input
+            className="input font-mono"
+            placeholder="paste vanity mint secret key"
+            value={vanitySecret}
+            onChange={(e) => setVanitySecret(e.target.value)}
+          />
         </div>
         <div>
           <label className="label">

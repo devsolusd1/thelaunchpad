@@ -107,6 +107,7 @@ export default async function LaunchpadHome({
           subdomainUrl={launchpadUrl(pad.slug)}
           xVerified={pad.xVerified}
           xHandle={pad.xHandle}
+          mainTokenMint={pad.mainTokenMint}
         />
 
         {main && main.mint && (

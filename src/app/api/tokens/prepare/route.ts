@@ -11,7 +11,7 @@ export const revalidate = 0;
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { launchpadSlug, name, symbol, description, imageBase64, imageMime, website, twitter, telegram } =
+    const { launchpadSlug, name, symbol, description, imageBase64, imageMime, website, twitter, telegram, asMain } =
       body || {};
 
     if (!name || String(name).length > 32) return err('invalid name (max 32)');
@@ -42,6 +42,9 @@ export async function POST(req: NextRequest) {
         symbol: String(symbol).toUpperCase(),
         description: description ? String(description).slice(0, 500) : null,
         imageId,
+        // pedido de "token principal": so vale se, na confirmacao, o criador
+        // on-chain do pool for o dono da launchpad
+        isMain: !!asMain,
         website: opt(website),
         twitter: opt(twitter),
         telegram: opt(telegram),

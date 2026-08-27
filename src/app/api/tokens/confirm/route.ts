@@ -16,7 +16,11 @@ export async function POST(req: NextRequest) {
     if (!token) return err('token not found', 404);
     if (token.status === 'live') return NextResponse.json({ ok: true });
 
-    await verifyTokenPool(String(pool), String(mint), token.launchpad.configKey);
+    const onchain = await verifyTokenPool(
+      String(pool),
+      String(mint),
+      token.launchpad.configKey
+    );
 
     await prisma.token.update({
       where: { id: token.id },
@@ -28,6 +32,15 @@ export async function POST(req: NextRequest) {
         createTx: String(txSig),
       },
     });
+
+    // marca como token principal da launchpad — apenas se quem criou o pool
+    // on-chain for a wallet dona da launchpad
+    if (token.isMain && onchain.creator === token.launchpad.ownerWallet) {
+      await prisma.launchpad.update({
+        where: { id: token.launchpadId },
+        data: { mainTokenMint: String(mint) },
+      });
+    }
     return NextResponse.json({ ok: true });
   } catch (e: any) {
     return err(e?.message || 'internal error', 500);
