@@ -55,6 +55,18 @@ export default async function LaunchpadHome({
           {pad.name}
           {pad.xVerified && <VerifiedBadge xHandle={pad.xHandle} className="h-7 w-7" />}
         </h1>
+        {pad.xVerified && pad.xHandle && (
+          <div className="mt-2">
+            <a
+              href={`https://x.com/${pad.xHandle}`}
+              target="_blank"
+              className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-sm font-bold text-accent transition-colors hover:bg-accent/20"
+            >
+              <VerifiedBadge xHandle={pad.xHandle} className="h-4 w-4" />
+              @{pad.xHandle}
+            </a>
+          </div>
+        )}
         {pad.description && (
           <p className="mx-auto mt-3 max-w-xl text-gray-400">
             {pad.description}

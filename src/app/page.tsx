@@ -111,7 +111,18 @@ export default async function Home() {
                   </Badge>
                 </div>
                 <div className="mt-3 flex items-center justify-between text-xs text-gray-500">
-                  <span>owner: {shortAddr(p.ownerWallet)}</span>
+                  <span className="flex items-center gap-2">
+                    owner: {shortAddr(p.ownerWallet)}
+                    {p.xVerified && p.xHandle && (
+                      <a
+                        href={`https://x.com/${p.xHandle}`}
+                        target="_blank"
+                        className="font-semibold text-accent hover:underline"
+                      >
+                        @{p.xHandle}
+                      </a>
+                    )}
+                  </span>
                   <a
                     href={`/s/${p.slug}`}
                     className="font-semibold text-accent hover:underline"
