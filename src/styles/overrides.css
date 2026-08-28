@@ -19,6 +19,16 @@
   outline: none;
 }
 
+/* stats da home abaixo do product shot (o mock sobrepunha e cobria o card) */
+.pg-home .t-stats {
+  margin-top: 34px;
+}
+@media (max-width: 940px) {
+  .pg-home .t-stats {
+    margin-top: 20px;
+  }
+}
+
 /* ══════════ sem brilhos: sweep dos botoes, glares e textos em degrade ══ */
 .t-btn::after {
   display: none !important;

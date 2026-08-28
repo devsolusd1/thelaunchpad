@@ -19,7 +19,31 @@ const AVATAR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><d
 
 const out = (f) => path.join(__dirname, '..', 'public', f);
 
+const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs>${GRAD('g')}</defs><rect width="64" height="64" rx="14.08" fill="url(#g)"/><g transform="translate(32,32) scale(0.474) translate(0,8.25)">${MARK_CREAM}</g></svg>`;
+
+// embrulha um PNG num container .ico (formato aceito por todo browser moderno)
+function pngToIco(png) {
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(0, 0); // reservado
+  header.writeUInt16LE(1, 2); // tipo: icone
+  header.writeUInt16LE(1, 4); // 1 imagem
+  const entry = Buffer.alloc(16);
+  entry.writeUInt8(64, 0); // largura
+  entry.writeUInt8(64, 1); // altura
+  entry.writeUInt8(0, 2); // paleta
+  entry.writeUInt8(0, 3);
+  entry.writeUInt16LE(1, 4); // planos
+  entry.writeUInt16LE(32, 6); // bpp
+  entry.writeUInt32LE(png.length, 8);
+  entry.writeUInt32LE(22, 12); // offset
+  return Buffer.concat([header, entry, png]);
+}
+
 (async () => {
+  const fs = require('fs');
+  const fav = await sharp(Buffer.from(FAVICON), { density: 300 }).resize(64, 64).png().toBuffer();
+  fs.writeFileSync(out('favicon.ico'), pngToIco(fav));
+  console.log('ok favicon.ico (64x64)');
   await sharp(Buffer.from(APPLE), { density: 300 }).resize(180, 180).png().toFile(out('apple-touch-icon.png'));
   console.log('ok apple-touch-icon.png (180x180)');
   await sharp(Buffer.from(OG), { density: 300 }).resize(1200, 630).png().toFile(out('og.png'));

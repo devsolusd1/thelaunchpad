@@ -27,7 +27,13 @@ const body = Nunito({
 export const metadata: Metadata = {
   title: SITE_NAME,
   description: 'The launchpad of launchpads on Solana',
-  icons: { apple: '/apple-touch-icon.png' },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     title: SITE_NAME,
     description:
