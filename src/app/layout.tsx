@@ -10,6 +10,7 @@ import '@/styles/pg-terms.css';
 import '@/styles/overrides.css';
 import WalletProviders from '@/components/WalletProviders';
 import Background from '@/components/Background';
+import AccentFromQuery from '@/components/AccentFromQuery';
 import { SITE_NAME } from '@/lib/env';
 
 const display = Bricolage_Grotesque({
@@ -44,6 +45,7 @@ export default function RootLayout({
           }}
         />
         <Background />
+        <AccentFromQuery />
         <WalletProviders>{children}</WalletProviders>
       </body>
     </html>
