@@ -1,4 +1,4 @@
-# The Launchpad — a launchpad de launchpads (Solana / Meteora DBC)
+# Padcore (padcore.io) — a launchpad de launchpads (Solana / Meteora DBC)
 
 Qualquer um cria a propria launchpad num subdominio (`prosperity.seudominio.com`),
 define fee (2–10%), MC inicial ($1k–20k), MC de graduacao (livre) e quote
