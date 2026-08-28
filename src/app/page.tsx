@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
-import Nav, { FlameMark } from '@/components/Nav';
+import Nav from '@/components/Nav';
+import { PadLockup, PadMark } from '@/components/brand';
 import CountUp from '@/components/home/CountUp';
 import PadsExplorer, { PadCard } from '@/components/home/PadsExplorer';
 import HowItWorks from '@/components/home/HowItWorks';
@@ -271,8 +272,7 @@ export default async function Home() {
           <div className="bf-grid">
             <div className="bf-brand">
               <div className="logo-row">
-                <span className="mk"><FlameMark /></span>
-                {SITE_NAME}
+                <PadLockup height={30} title={SITE_NAME} />
               </div>
               <p>
                 The launchpad of launchpads on Solana. You set the curve, you
@@ -306,7 +306,7 @@ export default async function Home() {
 
             <div className="bf-burn">
               <div className="k">
-                <FlameMark size={13} />
+                <PadMark size={14} />
                 Bought &amp; burned
               </div>
               <div className="n">{solBurned.toFixed(2)} SOL</div>

@@ -17,6 +17,7 @@ import {
   deriveDbcPoolAddress,
 } from '@meteora-ag/dynamic-bonding-curve-sdk';
 import { buildLaunchpadCurve, validateLaunchpadCurve } from '@/lib/dbc';
+import { PadSpinner } from '@/components/brand';
 import {
   QUOTES,
   QuoteSymbol,
@@ -713,6 +714,7 @@ export default function CreatePadWizard() {
             </div>
           </div>
           <button className="btn" disabled={busy || (wallet.connected && !valid)} onClick={submit}>
+            {busy && <PadSpinner size={18} />}
             {busy
               ? PHASE_LABEL[phase]
               : wallet.connected

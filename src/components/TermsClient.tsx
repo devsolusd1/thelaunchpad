@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { termsHtml } from './terms-html';
-import { FlameMark } from './Nav';
+import { PadLockup } from './brand';
 import ThemeToggle from './ThemeToggle';
 import { SITE_NAME, ROOT_DOMAIN, CREATION_FEE_SOL } from '@/lib/env';
 
@@ -55,11 +55,8 @@ export default function TermsClient() {
 
       <nav className="nav">
         <div className="nav-in">
-          <Link className="logo" href="/">
-            <span className="mark">
-              <FlameMark size={15} />
-            </span>
-            {SITE_NAME}
+          <Link className="logo" href="/" aria-label={SITE_NAME}>
+            <PadLockup height={24} title={SITE_NAME} />
           </Link>
           <button className="print" onClick={() => window.print()}>
             Print / save PDF

@@ -5,6 +5,7 @@
 import dynamic from 'next/dynamic';
 import { useWallet } from '@solana/wallet-adapter-react';
 import ThemeToggle from '@/components/ThemeToggle';
+import { PadWordmark } from '@/components/brand';
 
 const WalletMultiButton = dynamic(
   () =>
@@ -38,7 +39,9 @@ export default function PadNav({
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 12H5" /><path d="m11 18-6-6 6-6" />
           </svg>
-          <span>{siteName}</span>
+          <span style={{ display: 'flex' }}>
+            <PadWordmark height={10} title={siteName} />
+          </span>
         </a>
         <a href={`/s/${slug}`} className="nav-pad" style={{ textDecoration: 'none', color: 'inherit' }}>
           {logoUrl ? (

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import ThemeToggle from './ThemeToggle';
+import { PadLockup } from './brand';
 
 const WalletMultiButton = dynamic(
   () =>
@@ -11,15 +12,6 @@ const WalletMultiButton = dynamic(
     ),
   { ssr: false }
 );
-
-export function FlameMark({ size = 16 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 3c3.6 2.6 5.6 6 5.6 9.4A5.6 5.6 0 0 1 12 18a5.6 5.6 0 0 1-5.6-5.6C6.4 9 8.4 5.6 12 3Z" />
-      <path d="M12 18v3" />
-    </svg>
-  );
-}
 
 export default function Nav({
   title,
@@ -37,20 +29,20 @@ export default function Nav({
   return (
     <nav className="t-nav">
       <div className="t-nav-in">
-        <Link href={homeHref} className="t-logo">
+        <Link href={homeHref} className="t-logo" aria-label={title}>
           {logoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={logoUrl}
-              alt=""
-              style={{ width: 31, height: 31, borderRadius: 10, objectFit: 'cover' }}
-            />
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={logoUrl}
+                alt=""
+                style={{ width: 31, height: 31, borderRadius: 10, objectFit: 'cover' }}
+              />
+              {title}
+            </>
           ) : (
-            <span className="t-mark">
-              <FlameMark />
-            </span>
+            <PadLockup height={27} title={title} />
           )}
-          {title}
         </Link>
         {siteLinks && (
           <div className="t-links">

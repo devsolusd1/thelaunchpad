@@ -27,6 +27,14 @@ const body = Nunito({
 export const metadata: Metadata = {
   title: SITE_NAME,
   description: 'The launchpad of launchpads on Solana',
+  icons: { apple: '/apple-touch-icon.png' },
+  openGraph: {
+    title: SITE_NAME,
+    description:
+      'Your subdomain, your brand, your curve — keep half of every trading fee.',
+    images: ['/og.png'],
+  },
+  twitter: { card: 'summary_large_image', images: ['/og.png'] },
 };
 
 export default function RootLayout({

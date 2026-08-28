@@ -2,7 +2,7 @@ import Script from 'next/script';
 import { prisma } from '@/lib/db';
 import { shadeHex } from '@/lib/format';
 import { SITE_NAME, ROOT_DOMAIN } from '@/lib/env';
-import { FlameMark } from '@/components/Nav';
+import { PadTile, PadWordmark } from '@/components/brand';
 
 // Layout de todas as paginas de um pad: injeta a cor do dono (--pad),
 // o Google Analytics do dono (se configurado) e o selo "Powered by".
@@ -42,12 +42,12 @@ export default async function PadLayout({
         href={`${ROOT_DOMAIN.includes('localhost') ? 'http' : 'https'}://${ROOT_DOMAIN}`}
         title="Launch your own launchpad"
       >
-        <span className="pw-mark">
-          <FlameMark size={15} />
-        </span>
+        <PadTile size={28} radius={14} />
         <span>
           <em>Powered by</em>
-          <b>{SITE_NAME}</b>
+          <b style={{ display: 'block', marginTop: 3 }}>
+            <PadWordmark height={11} title={SITE_NAME} />
+          </b>
         </span>
       </a>
     </div>
