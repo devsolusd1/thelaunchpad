@@ -20,11 +20,7 @@ export default function ThemeToggle() {
   function toggle() {
     const d = !dark;
     setDark(d);
-    // transicao suave: liga a classe de animacao so' durante a troca
-    const root = document.documentElement;
-    root.classList.add('theme-anim');
-    root.dataset.theme = d ? 'dark' : 'light';
-    window.setTimeout(() => root.classList.remove('theme-anim'), 500);
+    document.documentElement.dataset.theme = d ? 'dark' : 'light';
     try {
       localStorage.setItem('theme', d ? 'dark' : 'light');
     } catch {

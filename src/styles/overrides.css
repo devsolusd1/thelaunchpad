@@ -19,10 +19,14 @@
   outline: none;
 }
 
-/* ══════════ sem brilhos: sweep dos botoes e textos em degrade ══════════ */
+/* ══════════ sem brilhos: sweep dos botoes, glares e textos em degrade ══ */
 .t-btn::after {
   display: none !important;
   animation: none !important;
+}
+.pg-pad .cover .glare,
+.pg-home .t-band-card::before {
+  display: none !important;
 }
 .pg-home :is(h2 em, .t-hero h1 em, .big2, .t-stat .n.hot, .bf-burn .n) {
   background: none !important;

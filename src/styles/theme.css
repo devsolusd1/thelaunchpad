@@ -97,12 +97,6 @@ button{font:inherit;color:inherit}
 /* selo de verificado (paginas que ainda usam o componente) */
 .verif{width:24px;height:24px;border-radius:99px;background:var(--pad);color:#fff;display:grid;place-items:center;flex:none}
 
-/* transicao suave ao alternar o tema (classe ligada so' durante o toggle) */
-html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *::after{
-  transition: background-color .45s ease, color .45s ease, border-color .45s ease,
-    fill .45s ease, stroke .45s ease, box-shadow .45s ease, opacity .45s ease !important;
-}
-
 /* ── botao de tema ───────────────────────────────────────────────────── */
 .theme-toggle{width:40px;height:40px;flex:none;border-radius:12px;border:1px solid var(--line2);
   background:var(--paper);display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:.2s}
