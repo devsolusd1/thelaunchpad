@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
       configKey,
       quoteSymbol,
       feeBps,
+      creatorFeePct,
       initialMcUsd,
       migrationMcUsd,
       logoBase64,
@@ -68,6 +69,8 @@ export async function POST(req: NextRequest) {
     if (!quote) return err('invalid quote token');
     const fee = Number(feeBps);
     if (!(fee >= MIN_FEE_BPS && fee <= MAX_FEE_BPS)) return err('fee out of range');
+    const cShare = Number(creatorFeePct) || 0;
+    if (cShare !== 0 && cShare !== 25) return err('invalid creator fee share');
     const mc0 = Number(initialMcUsd);
     const mc1 = Number(migrationMcUsd);
     if (!(mc0 >= MIN_INITIAL_MC_USD && mc0 <= MAX_INITIAL_MC_USD))
@@ -85,6 +88,8 @@ export async function POST(req: NextRequest) {
       return err('config quote mint does not match');
     if (onchain.feeBps !== fee)
       return err(`on-chain config fee (${onchain.feeBps} bps) does not match`);
+    if (onchain.creatorFeePct !== cShare)
+      return err('on-chain creator fee share does not match');
     // the platform's own wallet creates pads for free (official/example pads)
     if (String(ownerWallet) !== TREASURY_WALLET) await verifyCreationPayment(txSig);
 
@@ -109,6 +114,7 @@ export async function POST(req: NextRequest) {
         quoteMint: quote.mint,
         quoteSymbol: quote.symbol,
         feeBps: fee,
+        creatorFeePct: cShare,
         initialMcUsd: mc0,
         migrationMcUsd: mc1,
         logoId,

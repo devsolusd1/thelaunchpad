@@ -40,6 +40,10 @@ export interface LaunchpadCurveInput {
   initialMcUsd: number;
   migrationMcUsd: number;
   quoteUsdPrice: number; // preco do quote em USD (USDC = 1)
+  // % do claimable (pos-Meteora) que vai ON-CHAIN pro criador de cada token.
+  // 0 = tudo pro partner (dono fica com a metade cheia via bot);
+  // 25 = criador do token ganha 25% direto do protocolo, dono fica com 25%.
+  creatorFeePct?: number;
 }
 
 export function buildLaunchpadCurve(input: LaunchpadCurveInput) {
@@ -68,9 +72,9 @@ export function buildLaunchpadCurve(input: LaunchpadCurveInput) {
       dynamicFeeEnabled: false,
       // fee sempre no quote -> facil de dividir 50/50 e de fazer buyback
       collectFeeMode: CollectFeeMode.QuoteToken,
-      // 100% da fee (pos-Meteora) vai pro partner (treasury da plataforma);
-      // o bot reparte metade com o dono da launchpad off-chain
-      creatorTradingFeePercentage: 0,
+      // parte do criador do token e' nativa do programa (ele clama sozinho);
+      // o resto vai pro partner (treasury) e o bot reparte com o dono
+      creatorTradingFeePercentage: input.creatorFeePct ?? 0,
       poolCreationFee: 0,
       enableFirstSwapWithMinFee: false,
     },

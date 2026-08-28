@@ -21,6 +21,7 @@ model Launchpad {
   quoteMint      String
   quoteSymbol    String // "SOL" | "USDC"
   feeBps         Int
+  creatorFeePct  Int         @default(0) // 0 = dono fica com tudo; 25 = criador do token ganha 25% do liquido on-chain
   initialMcUsd   Float
   migrationMcUsd Float
   logoId         String?

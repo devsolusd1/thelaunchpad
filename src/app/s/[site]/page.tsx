@@ -113,6 +113,9 @@ export default async function PadHome({
               <span className="chip">
                 {fmtUsd(pad.initialMcUsd)} → {fmtUsd(pad.migrationMcUsd)}
               </span>
+              {pad.creatorFeePct > 0 && (
+                <span className="chip hot">creators earn {pad.creatorFeePct}% of fees</span>
+              )}
               <span className="chip">owner <code>{shortAddr(pad.ownerWallet)}</code></span>
               <span className="chip">since {since}</span>
               {pad.twitter && <a className="chip" href={pad.twitter} target="_blank" style={{ textDecoration: 'none' }}>Twitter</a>}

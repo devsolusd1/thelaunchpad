@@ -178,14 +178,16 @@ export default function HowItWorks({ domain }: { domain: string }) {
       fine.textContent =
         "Estimate of your 50% of net fees (Meteora's protocol keeps 20% of the gross fee). Real payouts follow on-chain volume and are listed on your pad's dashboard.";
 
-    /* reposiciona o rotulo "volume" do diagrama (colidia com a moeda) */
+    /* rotulo "volume": centraliza no vao de 32px entre os cards (fonte 8
+       pra caber sem invadir os cards nem o cano das moedas) */
     const volLabel = [...root.querySelectorAll('text')].find(
       (t) => t.textContent === 'volume'
     );
     if (volLabel) {
-      volLabel.setAttribute('x', '158');
-      volLabel.setAttribute('y', '103');
+      volLabel.setAttribute('x', '172');
+      volLabel.setAttribute('y', '111');
       volLabel.setAttribute('text-anchor', 'middle');
+      volLabel.setAttribute('font-size', '8');
     }
 
     if (reduce)

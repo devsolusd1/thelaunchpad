@@ -76,6 +76,7 @@ export default function CreatePadWizard() {
   /* curva */
   const [quoteSymbol, setQuoteSymbol] = useState<QuoteSymbol>('SOL');
   const [feePct, setFeePct] = useState(3.5);
+  const [creatorSplit, setCreatorSplit] = useState(false);
   const [mc0, setMc0] = useState(5000);
   const [mc1, setMc1] = useState(69000);
 
@@ -176,6 +177,7 @@ export default function CreatePadWizard() {
         initialMcUsd: mc0,
         migrationMcUsd: mc1,
         quoteUsdPrice: quoteUsd,
+        creatorFeePct: creatorSplit ? 25 : 0,
       });
       const treasury = new PublicKey(TREASURY_WALLET);
       validateLaunchpadCurve(curve, treasury);
@@ -231,6 +233,7 @@ export default function CreatePadWizard() {
           configKey: configKp.publicKey.toBase58(),
           quoteSymbol,
           feeBps,
+          creatorFeePct: creatorSplit ? 25 : 0,
           initialMcUsd: mc0,
           migrationMcUsd: mc1,
           logoBase64,
@@ -481,8 +484,18 @@ export default function CreatePadWizard() {
                 <div className="feehead">
                   <span className="feebig">{feePct.toFixed(1)}%</span>
                   <span className="feenote">
-                    you keep <b>{(feePct * 0.4).toFixed(2)}%</b> of all volume
-                    (your half, net of Meteora&apos;s 20%)
+                    {creatorSplit ? (
+                      <>
+                        you keep <b>{(feePct * 0.2).toFixed(2)}%</b> · token
+                        creators earn <b>{(feePct * 0.2).toFixed(2)}%</b> of
+                        all volume (net of Meteora&apos;s cut)
+                      </>
+                    ) : (
+                      <>
+                        you keep <b>{(feePct * 0.4).toFixed(2)}%</b> of all
+                        volume (your half, net of Meteora&apos;s 20%)
+                      </>
+                    )}
                   </span>
                 </div>
                 <input
@@ -494,6 +507,30 @@ export default function CreatePadWizard() {
                   onChange={(e) => setFeePct(Number(e.target.value))}
                 />
                 <div className="ticks"><span>2% · more traders</span><span>10% · more per trade</span></div>
+              </div>
+
+              <div className="field">
+                <div
+                  className={`tgl-row${creatorSplit ? ' on' : ''}`}
+                  onClick={() => setCreatorSplit(!creatorSplit)}
+                >
+                  <span className="tgl"><i></i></span>
+                  <span>
+                    <span className="tt">Share your half with token creators</span>
+                    <span className="ts">
+                      Whoever launches a token here earns half of YOUR half —
+                      enforced on-chain, claimed by them directly. Great bait
+                      for creators.
+                    </span>
+                  </span>
+                </div>
+                {creatorSplit && (
+                  <p className="hint">
+                    Split becomes: platform 50% · you 25% · token creator 25%
+                    (of net fees). Written into the on-chain config — cannot
+                    be changed later.
+                  </p>
+                )}
               </div>
 
               <div className="row2">

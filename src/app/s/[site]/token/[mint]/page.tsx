@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/db';
 import PadNav from '@/components/pad/PadNav';
 import TradePanel from '@/components/TradePanel';
+import CreatorClaim from '@/components/CreatorClaim';
 import { QUOTES, SITE_NAME, ROOT_DOMAIN } from '@/lib/env';
 import { shortAddr } from '@/lib/format';
 
@@ -104,15 +105,24 @@ export default async function TokenPage({
             </div>
           </div>
 
-          <TradePanel
-            pool={token.pool}
-            mint={token.mint}
-            symbol={token.symbol}
-            quoteSymbol={quote.symbol}
-            quoteMint={quote.mint}
-            quoteDecimals={quote.decimals}
-            feeBps={pad.feeBps}
-          />
+          <div>
+            <TradePanel
+              pool={token.pool}
+              mint={token.mint}
+              symbol={token.symbol}
+              quoteSymbol={quote.symbol}
+              quoteMint={quote.mint}
+              quoteDecimals={quote.decimals}
+              feeBps={pad.feeBps}
+            />
+            <CreatorClaim
+              pool={token.pool}
+              creatorWallet={token.creatorWallet}
+              quoteSymbol={quote.symbol}
+              quoteDecimals={quote.decimals}
+              creatorFeePct={pad.creatorFeePct}
+            />
+          </div>
         </div>
       </div>
     </main>

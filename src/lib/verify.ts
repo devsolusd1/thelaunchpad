@@ -14,6 +14,7 @@ export function serverConnection() {
 export interface VerifiedConfig {
   feeBps: number;
   quoteMint: string;
+  creatorFeePct: number;
 }
 
 // Confere que o config existe, que o feeClaimer e' o treasury da plataforma
@@ -33,7 +34,10 @@ export async function verifyLaunchpadConfig(
   const cliff = (cfg as any).poolFees?.baseFee?.cliffFeeNumerator;
   const feeBps = cliff ? feeNumeratorToBps(cliff) : 0;
   const quoteMint = (cfg as any).quoteMint?.toBase58?.() || '';
-  return { feeBps, quoteMint };
+  const creatorFeePct = Number(
+    (cfg as any).creatorTradingFeePercentage ?? 0
+  );
+  return { feeBps, quoteMint, creatorFeePct };
 }
 
 // Confere que a transacao pagou a taxa de criacao (0.5 SOL) pro treasury.

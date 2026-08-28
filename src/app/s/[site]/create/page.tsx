@@ -35,6 +35,16 @@ export default async function CreateTokenPage({
           {pad.quoteSymbol} quote · MC ${pad.initialMcUsd.toLocaleString()} → $
           {pad.migrationMcUsd.toLocaleString()}
         </p>
+        {pad.creatorFeePct > 0 && (
+          <div className="card mt-4 border-accent/50 p-4 text-sm">
+            <b className="text-accent">You earn fees on your own token.</b>{' '}
+            <span className="text-gray-400">
+              This pad shares {pad.creatorFeePct}% of every trade&apos;s net
+              fee with the token creator — paid on-chain by the protocol,
+              claimable by you anytime on your token&apos;s page.
+            </span>
+          </div>
+        )}
         <div className="mt-8">
           <CreateTokenForm
             slug={pad.slug}

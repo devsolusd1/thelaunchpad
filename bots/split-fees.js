@@ -103,8 +103,11 @@ async function runRound({ connection, client, treasury, prisma }) {
     }
     if (claimed === 0n) continue;
 
-    // 3. pagar metade pro dono
-    const ownerShare = claimed / 2n;
+    // 3. pagar a parte do dono. Sem split de criador: dono = 1/2 do clamado.
+    // Com split (creatorFeePct=25): o criador ja recebeu 25% do liquido
+    // on-chain, o partner clama 75% -> dono = 25/75 = 1/3 do clamado.
+    const ownerShare =
+      pad.creatorFeePct === 25 ? claimed / 3n : claimed / 2n;
     const owner = new PublicKey(pad.ownerWallet);
     let paySig;
     try {
