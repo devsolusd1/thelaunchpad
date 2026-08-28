@@ -19,6 +19,18 @@
   outline: none;
 }
 
+/* ══════════ sem brilhos: sweep dos botoes e textos em degrade ══════════ */
+.t-btn::after {
+  display: none !important;
+  animation: none !important;
+}
+.pg-home :is(h2 em, .t-hero h1 em, .big2, .t-stat .n.hot, .bf-burn .n) {
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  color: var(--accent) !important;
+}
+
 /* ══════════ tema escuro: fundos hardcoded dos mockups ══════════ */
 [data-theme='dark'] :is(.mock, .t-card, .t-stats, .split, .strip, .native-in,
   .bf-burn, .pg-terms .doc, .pg-create .card, .pg-admin .card) {

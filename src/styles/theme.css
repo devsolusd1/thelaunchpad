@@ -62,13 +62,8 @@ button{font:inherit;color:inherit}
   padding:15px 22px;box-shadow:0 16px 28px -18px rgba(190,90,25,1);transition:.2s;position:relative;
   overflow:hidden;border:0;cursor:pointer}
 .t-btn:hover{transform:translateY(-2px);box-shadow:0 20px 32px -18px rgba(190,90,25,1)}
-.t-btn::after{content:"";position:absolute;top:0;left:-60%;width:38%;height:100%;
-  background:linear-gradient(100deg,transparent,rgba(255,255,255,.42),transparent);
-  transform:skewX(-18deg);animation:shine 4.6s ease-in-out infinite}
-@keyframes shine{0%,72%{left:-60%}92%,100%{left:130%}}
 .t-btn .t-price{background:rgba(255,255,255,.22);border-radius:7px;padding:2px 8px;font-size:12.5px}
 .t-btn.ghost{background:var(--paper);color:var(--ink);border:1px solid var(--line2);box-shadow:none}
-.t-btn.ghost::after{display:none}
 .t-btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
 .t-btn.sm{padding:10px 16px;font-size:13.5px}
 .t-btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
