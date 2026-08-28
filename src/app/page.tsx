@@ -113,7 +113,7 @@ export default async function Home() {
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12h15" /><path d="m13 6 6 6-6 6" /></svg>
             </a>
             <h1>
-              Launch your own <em>launchpad</em> on Solana
+              Create your own <em>launchpad</em> on Solana
             </h1>
             <p>
               Your subdomain, your brand, your curve. Pick the fee, the
