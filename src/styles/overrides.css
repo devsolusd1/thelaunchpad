@@ -18,3 +18,61 @@
 .t-search input:focus {
   outline: none;
 }
+
+/* ══════════ tema escuro: fundos hardcoded dos mockups ══════════ */
+[data-theme='dark'] :is(.mock, .t-card, .t-stats, .split, .strip, .native-in,
+  .bf-burn, .pg-terms .doc, .pg-create .card, .pg-admin .card) {
+  background: linear-gradient(180deg, #241a10, #1c140b);
+}
+[data-theme='dark'] :is(.tab.on, .pg-create .ip:focus, .pg-create .affix:focus-within,
+  .pg-admin .ip:focus, .tgl-row.on, .pit.on, .pg-home .finput.focus,
+  .slide.on .wrow.sel) {
+  background: #241a10;
+}
+[data-theme='dark'] :is(.t-nav, .pg-create .nav, .pg-pad .nav, .pg-admin .nav,
+  .pg-terms .nav, .pg-create .dock, .pg-admin .dock) {
+  background: rgba(23, 16, 8, 0.88);
+}
+[data-theme='dark'] .pg-terms .doc :is(p, li) {
+  color: #d8c8b0;
+}
+[data-theme='dark'] .burnbox {
+  background: radial-gradient(120% 90% at 50% 120%, #3a2412, #201811 70%);
+}
+[data-theme='dark'] :is(.pg-home .callout, .pg-create .callout) {
+  background: #241a10;
+}
+[data-theme='dark'] :is(.pg-admin .claim, .pg-admin .nat) {
+  background: color-mix(in srgb, var(--pad) 12%, #1c140b);
+}
+[data-theme='dark'] .pg-pad .powered {
+  background: rgba(32, 24, 17, 0.9);
+}
+[data-theme='dark'] :is(.chg.up, .pg-home .side.buy) {
+  background: rgba(125, 192, 111, 0.16);
+  color: var(--ok);
+}
+[data-theme='dark'] :is(.chg.dn, .pg-home .side.sell) {
+  background: rgba(224, 99, 125, 0.16);
+  color: var(--dn);
+}
+[data-theme='dark'] .chg.grad {
+  background: rgba(125, 192, 111, 0.16);
+  color: var(--ok);
+}
+[data-theme='dark'] .t-banner .t-chip {
+  background: rgba(24, 16, 8, 0.8);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--ink);
+}
+[data-theme='dark'] .pg-create .notify.done {
+  background: rgba(125, 192, 111, 0.14);
+}
+/* imagem de fundo bem mais discreta no escuro */
+[data-theme='dark'] img[src='/bg.png'] {
+  opacity: 0.06;
+}
+/* tailwind: inputs claros viram escuros */
+[data-theme='dark'] .input {
+  background: rgb(var(--tw-panel2) / 0.5);
+}

@@ -8,6 +8,32 @@
   --shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 26px 54px -34px rgba(110,64,20,.5);
   --display:var(--font-display),"Nunito",system-ui,sans-serif;
   --body:var(--font-body),"Segoe UI",system-ui,-apple-system,sans-serif;
+
+  /* triplets RGB pro tailwind (paginas de token/forms) */
+  --tw-bg:253 244 229; --tw-paper:255 250 241; --tw-panel:250 236 212;
+  --tw-panel2:246 227 195; --tw-line:236 220 190; --tw-line2:220 195 154;
+  --tw-accent:217 99 28; --tw-ember:242 145 60; --tw-accent2:79 138 69;
+  --tw-warn:161 98 7; --tw-cream:255 250 241; --tw-ink:43 30 19;
+  --tw-gray200:74 57 40; --tw-gray300:93 72 48; --tw-gray400:140 120 96;
+  --tw-gray500:140 120 96; --tw-gray600:189 165 127;
+  --tw-red300:154 44 14; --tw-red400:143 40 13; --tw-red500:196 50 79;
+}
+
+/* ── tema escuro ─────────────────────────────────────────────────────── */
+[data-theme="dark"]{
+  --bg:#171008; --paper:#201811; --panel:#251b11; --panel2:#2e2214;
+  --line:#3a2c1a; --line2:#503c24;
+  --ink:#f2e6d3; --muted:#b39a7d; --sand:#8a7150;
+  --accent:#e8752e; --ember:#f2913c; --soft:#3a2412; --ok:#7dc06f; --dn:#e0637d;
+  --shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 26px 54px -34px rgba(0,0,0,.8);
+
+  --tw-bg:23 16 8; --tw-paper:32 24 17; --tw-panel:37 27 17;
+  --tw-panel2:46 34 20; --tw-line:58 44 26; --tw-line2:80 60 36;
+  --tw-accent:232 117 46; --tw-ember:242 145 60; --tw-accent2:125 192 111;
+  --tw-warn:214 158 46; --tw-cream:255 247 232; --tw-ink:242 230 211;
+  --tw-gray200:230 218 199; --tw-gray300:214 199 176; --tw-gray400:179 154 125;
+  --tw-gray500:163 138 110; --tw-gray600:122 100 74;
+  --tw-red300:240 130 120; --tw-red400:235 110 100; --tw-red500:224 82 95;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -75,3 +101,8 @@ button{font:inherit;color:inherit}
 
 /* selo de verificado (paginas que ainda usam o componente) */
 .verif{width:24px;height:24px;border-radius:99px;background:var(--pad);color:#fff;display:grid;place-items:center;flex:none}
+
+/* ── botao de tema ───────────────────────────────────────────────────── */
+.theme-toggle{width:40px;height:40px;flex:none;border-radius:12px;border:1px solid var(--line2);
+  background:var(--paper);display:grid;place-items:center;color:var(--muted);cursor:pointer;transition:.2s}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}

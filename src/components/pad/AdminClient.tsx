@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useWallet } from '@solana/wallet-adapter-react';
 import dynamic from 'next/dynamic';
 import bs58 from 'bs58';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const WalletMultiButton = dynamic(
   () => import('@solana/wallet-adapter-react-ui').then((m) => m.WalletMultiButton),
@@ -219,6 +220,7 @@ export default function AdminClient({ data }: { data: AdminData }) {
               View public page
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
             </a>
+            <ThemeToggle />
             <WalletMultiButton />
           </div>
         </div>

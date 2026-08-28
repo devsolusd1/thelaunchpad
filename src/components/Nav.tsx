@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import ThemeToggle from './ThemeToggle';
 
 const WalletMultiButton = dynamic(
   () =>
@@ -61,6 +62,7 @@ export default function Nav({
         )}
         <div className="t-right">
           {rightExtra}
+          <ThemeToggle />
           <WalletMultiButton />
         </div>
       </div>

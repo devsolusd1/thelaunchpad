@@ -36,6 +36,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body>
+        {/* aplica o tema salvo antes do primeiro paint (sem flash) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}",
+          }}
+        />
         <Background />
         <WalletProviders>{children}</WalletProviders>
       </body>

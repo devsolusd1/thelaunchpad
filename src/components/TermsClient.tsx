@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import { termsHtml } from './terms-html';
 import { FlameMark } from './Nav';
+import ThemeToggle from './ThemeToggle';
 import { SITE_NAME, ROOT_DOMAIN, CREATION_FEE_SOL } from '@/lib/env';
 
 export default function TermsClient() {
@@ -63,6 +64,7 @@ export default function TermsClient() {
           <button className="print" onClick={() => window.print()}>
             Print / save PDF
           </button>
+          <ThemeToggle />
         </div>
       </nav>
 

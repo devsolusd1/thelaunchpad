@@ -8,30 +8,31 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: '#fdf4e5',
-        paper: '#fffaf1',
-        panel: '#faecd4',
-        panel2: '#f6e3c3',
-        line: '#ecdcbe',
-        line2: '#dcc39a',
-        accent: '#d9631c',
-        ember: '#f2913c',
-        accent2: '#4f8a45', // ok/verde (buy, sucesso)
-        warn: '#a16207',
-        cream: '#fffaf1',
-        white: '#2b1e13', // "white" = tinta
-        black: '#fffaf1', // "black" = creme (texto em botao colorido)
+        // baseados em CSS vars (theme.css) — trocam junto com o tema dark
+        bg: 'rgb(var(--tw-bg) / <alpha-value>)',
+        paper: 'rgb(var(--tw-paper) / <alpha-value>)',
+        panel: 'rgb(var(--tw-panel) / <alpha-value>)',
+        panel2: 'rgb(var(--tw-panel2) / <alpha-value>)',
+        line: 'rgb(var(--tw-line) / <alpha-value>)',
+        line2: 'rgb(var(--tw-line2) / <alpha-value>)',
+        accent: 'rgb(var(--tw-accent) / <alpha-value>)',
+        ember: 'rgb(var(--tw-ember) / <alpha-value>)',
+        accent2: 'rgb(var(--tw-accent2) / <alpha-value>)', // ok/verde
+        warn: 'rgb(var(--tw-warn) / <alpha-value>)',
+        cream: 'rgb(var(--tw-cream) / <alpha-value>)',
+        white: 'rgb(var(--tw-ink) / <alpha-value>)', // "white" = tinta
+        black: 'rgb(var(--tw-cream) / <alpha-value>)', // "black" = creme
         gray: {
-          200: '#4a3928',
-          300: '#5d4830',
-          400: '#8c7860',
-          500: '#8c7860',
-          600: '#bda57f',
+          200: 'rgb(var(--tw-gray200) / <alpha-value>)',
+          300: 'rgb(var(--tw-gray300) / <alpha-value>)',
+          400: 'rgb(var(--tw-gray400) / <alpha-value>)',
+          500: 'rgb(var(--tw-gray500) / <alpha-value>)',
+          600: 'rgb(var(--tw-gray600) / <alpha-value>)',
         },
         red: {
-          300: '#9a2c0e',
-          400: '#8f280d',
-          500: '#c4324f',
+          300: 'rgb(var(--tw-red300) / <alpha-value>)',
+          400: 'rgb(var(--tw-red400) / <alpha-value>)',
+          500: 'rgb(var(--tw-red500) / <alpha-value>)',
         },
       },
       fontFamily: {

@@ -4,6 +4,7 @@
 // do pad, Fees, botao Manage (so pro dono) e wallet.
 import dynamic from 'next/dynamic';
 import { useWallet } from '@solana/wallet-adapter-react';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const WalletMultiButton = dynamic(
   () =>
@@ -61,6 +62,7 @@ export default function PadNav({
           <a className="btn ghost" href={`/s/${slug}/dashboard`}>
             Fees
           </a>
+          <ThemeToggle />
           <WalletMultiButton />
         </div>
       </div>
