@@ -11,6 +11,7 @@ import {
   MAX_INITIAL_MC_USD,
   MIN_MIGRATION_RATIO,
   TREASURY_WALLET,
+  CREATION_FEE_SOL,
 } from '@/lib/env';
 import { verifyLaunchpadConfig, verifyCreationPayment } from '@/lib/verify';
 
@@ -115,6 +116,9 @@ export async function POST(req: NextRequest) {
         quoteSymbol: quote.symbol,
         feeBps: fee,
         creatorFeePct: cShare,
+        // taxa efetivamente paga na criacao (0 pra pads da treasury);
+        // o pote do buyback soma esta coluna, imune a mudancas da env
+        creationFeeSol: String(ownerWallet) === TREASURY_WALLET ? 0 : CREATION_FEE_SOL,
         initialMcUsd: mc0,
         migrationMcUsd: mc1,
         logoId,

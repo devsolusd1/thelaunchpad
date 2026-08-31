@@ -33,15 +33,16 @@ const MIN_POT_SOL = Number(process.env.BOT_MIN_BUYBACK_SOL || 0.1);
 const MAX_BUY_SOL = Number(process.env.BOT_MAX_BUYBACK_SOL || 0);
 
 async function runRound({ connection, treasury, prisma, mint }) {
-  // pads criadas pela wallet da plataforma nao pagaram a taxa — nao entram no pote
-  const [padCount, buybacks, payouts] = await Promise.all([
-    prisma.launchpad.count({
-      where: { ownerWallet: { not: treasury.publicKey.toBase58() } },
-    }),
+  // criacao: soma a taxa PAGA por cada pad (coluna creationFeeSol), imune a
+  // mudancas da env NEXT_PUBLIC_CREATION_FEE_SOL depois da criacao
+  const [pads, buybacks, payouts] = await Promise.all([
+    prisma.launchpad.findMany({ select: { creationFeeSol: true } }),
     prisma.buyback.findMany(),
     prisma.feePayout.findMany({ select: { mint: true, claimedRaw: true, amountRaw: true } }),
   ]);
-  const creation = BigInt(Math.round(padCount * CREATION_FEE_SOL * LAMPORTS_PER_SOL));
+  const padCount = pads.length;
+  const creationSol = pads.reduce((s, p) => s + (p.creationFeeSol || 0), 0);
+  const creation = BigInt(Math.round(creationSol * LAMPORTS_PER_SOL));
   // metade da plataforma = clamado - pago ao dono, por payout (so quote SOL)
   let trading = 0n;
   let tradingUsdc = 0n;

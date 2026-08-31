@@ -18,6 +18,7 @@ model Launchpad {
   quoteSymbol    String // "SOL" | "USDC"
   feeBps         Int
   creatorFeePct  Int         @default(0) // 0 = dono fica com tudo; 25 = criador do token ganha 25% do liquido on-chain
+  creationFeeSol Float       @default(1) // taxa paga NA CRIACAO (a env pode mudar depois; o pote do burn soma isto)
   initialMcUsd   Float
   migrationMcUsd Float
   logoId         String?

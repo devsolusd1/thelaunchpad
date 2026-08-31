@@ -117,11 +117,11 @@ async function fetchData(ctx) {
   }
 
   // buyback & burn: pote (mesma conta do bot) + rodadas executadas
-  const [payingPads, buybacks] = await Promise.all([
-    prisma.launchpad.count({ where: { ownerWallet: { not: treasuryPub.toBase58() } } }),
+  const [allPads, buybacks] = await Promise.all([
+    prisma.launchpad.findMany({ select: { creationFeeSol: true } }),
     prisma.buyback.findMany({ orderBy: { createdAt: 'desc' } }),
   ]);
-  const creationPot = payingPads * CREATION_FEE_SOL;
+  const creationPot = allPads.reduce((s, p) => s + (p.creationFeeSol || 0), 0);
   const tradingPot = Number(hist.SOL.claimed - hist.SOL.paid) / 1e9;
   const burnSpent = buybacks.reduce((s, b) => s + Number(b.spentLamports), 0) / 1e9;
   // decimals do token pra formatar o queimado (se ja existir on-chain)
