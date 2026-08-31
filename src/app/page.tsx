@@ -10,6 +10,7 @@ import { payoutTotalsByPad } from '@/lib/padstats';
 import {
   SITE_NAME,
   DISPLAY_DOMAIN,
+  PAD_MINT,
   CREATION_FEE_SOL,
   TREASURY_WALLET,
   launchpadUrl,
@@ -109,10 +110,13 @@ export default async function Home() {
       <div className="t-top">
         <div className="t-in">
           <header className="t-hero">
-            <a className="t-pill" href="#how-it-works">
-              <b>LIVE</b> The 50/50 fee split is live on mainnet{' '}
+            <Link className="t-pill" href="/pad">
+              <b>$PAD</b>{' '}
+              {PAD_MINT
+                ? 'The official token is live — every fee burns it'
+                : 'The official platform token — every fee will burn it'}{' '}
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12h15" /><path d="m13 6 6 6-6 6" /></svg>
-            </a>
+            </Link>
             <h1>
               Create your own <em>launchpad</em> on Solana
             </h1>
