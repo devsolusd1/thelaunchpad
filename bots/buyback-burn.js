@@ -28,6 +28,9 @@ const { log, fail } = L;
 
 const CREATION_FEE_SOL = Number(process.env.NEXT_PUBLIC_CREATION_FEE_SOL || 0.5);
 const MIN_POT_SOL = Number(process.env.BOT_MIN_BUYBACK_SOL || 0.1);
+// teto de gasto POR RODADA (0 = sem teto). Limita impacto de preco por buy
+// e permite testes com valor pequeno.
+const MAX_BUY_SOL = Number(process.env.BOT_MAX_BUYBACK_SOL || 0);
 
 async function runRound({ connection, treasury, prisma, mint }) {
   // pads criadas pela wallet da plataforma nao pagaram a taxa — nao entram no pote
@@ -64,7 +67,14 @@ async function runRound({ connection, treasury, prisma, mint }) {
 
   const balance = await connection.getBalance(treasury.publicKey);
   const spendable = BigInt(Math.max(0, balance - 0.05 * LAMPORTS_PER_SOL));
-  const budget = pot < spendable ? pot : spendable;
+  let budget = pot < spendable ? pot : spendable;
+  if (MAX_BUY_SOL > 0) {
+    const cap = BigInt(Math.round(MAX_BUY_SOL * LAMPORTS_PER_SOL));
+    if (budget > cap) {
+      budget = cap;
+      log(`  teto por rodada: ${MAX_BUY_SOL} SOL (resto fica pro proximo ciclo)`);
+    }
+  }
   if (budget <= 0n) {
     log('  treasury sem saldo suficiente, pulando');
     return;
