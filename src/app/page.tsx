@@ -214,13 +214,13 @@ export default async function Home() {
               <div className="t-ficon">
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"><path d="M20.4 12a8.4 8.4 0 0 1-8.4 8.4 8.4 8.4 0 0 1-7.3-4.2" /><path d="M3.6 12A8.4 8.4 0 0 1 12 3.6a8.4 8.4 0 0 1 7.3 4.2" /><path d="M19.5 3.7v4.3h-4.3" /><path d="M4.5 20.3V16h4.3" /></svg>
               </div>
-              <h3>Flywheel</h3>
+              <h3>$PAD</h3>
               <p>
                 Every {CREATION_FEE_SOL} SOL creation fee goes straight into
                 buying and burning the platform token. More launchpads, more
                 burn — the supply only moves one way.{' '}
-                <Link href="/flywheel" style={{ color: 'var(--accent)', fontWeight: 900, textDecoration: 'none' }}>
-                  See the flywheel →
+                <Link href="/pad" style={{ color: 'var(--accent)', fontWeight: 900, textDecoration: 'none' }}>
+                  See $PAD →
                 </Link>
               </p>
             </div>
@@ -291,7 +291,7 @@ export default async function Home() {
               <Link href="/create">Create a launchpad</Link>
               <a href="#launchpads">Explore pads</a>
               <a href="#how-it-works">How it works</a>
-              <Link href="/flywheel">The flywheel</Link>
+              <Link href="/pad">$PAD token</Link>
               <a>Custom domains<span className="tagsoon">soon</span></a>
             </div>
 
@@ -337,7 +337,7 @@ export default async function Home() {
             <div className="bf-legal">
               <Link href="/terms">Terms</Link>
               <Link href="/docs">Docs</Link>
-              <Link href="/flywheel">Flywheel</Link>
+              <Link href="/pad">$PAD</Link>
             </div>
             <span className="netpill"><i></i>Solana Mainnet · Meteora DBC</span>
           </div>

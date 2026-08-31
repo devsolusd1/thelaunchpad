@@ -5,7 +5,8 @@
 .pg-create,
 .pg-pad,
 .pg-admin,
-.pg-terms {
+.pg-terms,
+.pg-padtoken {
   background: transparent;
 }
 
@@ -38,7 +39,8 @@
 .pg-home .t-band-card::before {
   display: none !important;
 }
-.pg-home :is(h2 em, .t-hero h1 em, .big2, .t-stat .n.hot, .bf-burn .n) {
+.pg-home :is(h2 em, .t-hero h1 em, .big2, .t-stat .n.hot, .bf-burn .n),
+.pg-padtoken :is(h1 em, .stats .n.hot) {
   background: none !important;
   -webkit-background-clip: initial !important;
   background-clip: initial !important;
@@ -101,4 +103,19 @@
 /* tailwind: inputs claros viram escuros */
 [data-theme='dark'] .input {
   background: rgb(var(--tw-panel2) / 0.5);
+}
+
+/* ══════════ pagina $PAD (.pg-padtoken) ══════════ */
+[data-theme='dark'] .pg-padtoken :is(.stats, .diagram, .chart, .tbl, .step) {
+  background: linear-gradient(180deg, #241a10, #1c140b);
+}
+[data-theme='dark'] .pg-padtoken .legal p {
+  color: #d8c8b0;
+}
+[data-theme='dark'] .pg-padtoken .diagram rect[fill='#fff'] {
+  fill: #241a10;
+}
+[data-theme='dark'] .pg-padtoken :is(text[fill='#6f5c46'], .ca, .demo) {
+  fill: #d8c8b0;
+  color: #d8c8b0;
 }

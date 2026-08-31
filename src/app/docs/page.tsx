@@ -135,8 +135,8 @@ export default function DocsPage() {
               100% of every {CREATION_FEE_SOL} SOL creation fee market-buys
               the platform token and burns it. Supply only goes down; every
               new launchpad is mechanical buy pressure. See the{' '}
-              <a href="/flywheel" className="text-accent underline">
-                Flywheel page
+              <a href="/pad" className="text-accent underline">
+                $PAD page
               </a>{' '}
               for the full diagram.
             </p>

@@ -48,7 +48,7 @@ export default function Nav({
           <div className="t-links">
             <Link href="/#launchpads">Explore</Link>
             <Link href="/#how-it-works">How it works</Link>
-            <Link href="/flywheel">Flywheel</Link>
+            <Link href="/pad">$PAD</Link>
             <Link href="/docs">Docs</Link>
           </div>
         )}
