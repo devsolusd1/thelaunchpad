@@ -43,11 +43,6 @@ const { log, warn } = L;
 const MIN_SOL = Number(process.env.BOT_MIN_CLAIM_SOL || 0.02);
 const MIN_USDC = Number(process.env.BOT_MIN_CLAIM_USDC || 2);
 
-// Fees do TOKEN PRINCIPAL ($PAD) nao entram no split nem no pote de burn:
-// 100% do clamado vai pra wallet de guarda (BOT_PAD_FEES_WALLET).
-const PAD_MINT = (process.env.PLATFORM_TOKEN_MINT || '').trim();
-const SAFE_WALLET = (process.env.BOT_PAD_FEES_WALLET || '').trim();
-
 async function runRound({ connection, client, treasury, prisma }) {
   const pads = await prisma.launchpad.findMany({
     include: { tokens: { where: { status: 'live' } } },
@@ -59,21 +54,15 @@ async function runRound({ connection, client, treasury, prisma }) {
     const dec = isSol ? 9 : 6;
     const min = BigInt(Math.round((isSol ? MIN_SOL : MIN_USDC) * 10 ** dec));
 
-    // 1. levantar fees nao clamadas (pools do token principal separados)
+    // 1. levantar fees nao clamadas
     let pending = [];
     let totalPending = 0n;
-    const mainPending = [];
-    let mainTotal = 0n;
     for (const t of pad.tokens) {
       if (!t.pool) continue;
       try {
         const m = await client.state.getPoolFeeMetrics(new PublicKey(t.pool));
         const fee = BigInt(m.current.partnerQuoteFee.toString());
-        if (fee <= 0n) continue;
-        if (PAD_MINT && t.mint === PAD_MINT) {
-          mainPending.push({ pool: t.pool, fee });
-          mainTotal += fee;
-        } else {
+        if (fee > 0n) {
           pending.push({ pool: t.pool, fee });
           totalPending += fee;
         }
@@ -112,53 +101,6 @@ async function runRound({ connection, client, treasury, prisma }) {
       return L.sendTx(connection, tx, [treasury], label);
     }
 
-    // fees do token principal: sem split, sem burn — 100% pra wallet de guarda
-    if (mainTotal > 0n) {
-      if (!SAFE_WALLET) {
-        warn(
-          `${pad.slug}: ${ui(mainTotal)} ${pad.quoteSymbol} de fees do token principal acumuladas on-chain — defina BOT_PAD_FEES_WALLET pra clamar`
-        );
-      } else if (mainTotal < min) {
-        log(`> ${pad.slug}: fees do token principal ${ui(mainTotal)} ${pad.quoteSymbol}, abaixo do minimo, acumulando`);
-      } else if (DRY_RUN) {
-        log(`> ${pad.slug}: (dry-run) enviaria ${ui(mainTotal)} ${pad.quoteSymbol} do token principal para ${SAFE_WALLET}`);
-      } else {
-        let claimedMain = 0n;
-        for (const p of mainPending) {
-          try {
-            const tx = await client.partner.claimPartnerTradingFee({
-              feeClaimer: treasury.publicKey,
-              payer: treasury.publicKey,
-              pool: new PublicKey(p.pool),
-              maxBaseAmount: new BN(0),
-              maxQuoteAmount: U64_MAX,
-            });
-            await L.sendTx(connection, tx, [treasury], `claim main ${p.pool.slice(0, 8)}`);
-            claimedMain += p.fee;
-          } catch (e) {
-            warn(`claim main falhou (${p.pool.slice(0, 8)}): ${e.message}`);
-          }
-        }
-        if (claimedMain > 0n) {
-          try {
-            const sig = await payQuote(SAFE_WALLET, claimedMain, `guarda ${pad.slug}`);
-            await prisma.feePayout.create({
-              data: {
-                launchpadId: pad.id,
-                wallet: SAFE_WALLET,
-                mint: pad.quoteMint,
-                amountRaw: claimedMain.toString(),
-                claimedRaw: claimedMain.toString(),
-                txSig: sig,
-              },
-            });
-            log(`  guardado ${ui(claimedMain)} ${pad.quoteSymbol} do token principal -> ${SAFE_WALLET}`);
-          } catch (e) {
-            warn(`envio pra guarda falhou (${pad.slug}): ${e.message} — fica na treasury, rode de novo`);
-          }
-        }
-      }
-    }
     log(
       `> ${pad.slug}: ${pending.length} pool(s) com fee, total ${ui(totalPending)} ${pad.quoteSymbol}`
     );

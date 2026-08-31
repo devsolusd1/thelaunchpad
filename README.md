@@ -43,10 +43,6 @@ node bots/buyback-burn.js --loop     # compra e queima o token da plataforma
 Contra o banco de producao (Neon): `npm run bots:gen` antes de rodar,
 `npm run dev:gen` depois pra voltar o client do dev local.
 
-Fees do token principal ($PAD): com `PLATFORM_TOKEN_MINT` e
-`BOT_PAD_FEES_WALLET` no .env, o split-fees manda 100% do clamado do pool
-do $PAD pra wallet de guarda — sem split e sem entrar no pote de burn.
-
 ## Deploy em producao (Vercel)
 
 1. Importe o repo na Vercel. O build usa `vercel-build`, que aplica o schema

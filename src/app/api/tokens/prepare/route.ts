@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { pinataEnabled, pinImage, pinJson } from '@/lib/pinata';
+import { tokenPageUrl } from '@/lib/env';
 
 export const revalidate = 0;
 
@@ -11,7 +12,7 @@ export const revalidate = 0;
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { launchpadSlug, name, symbol, description, imageBase64, imageMime, website, twitter, telegram, asMain } =
+    const { launchpadSlug, mint, name, symbol, description, imageBase64, imageMime, website, twitter, telegram, asMain } =
       body || {};
 
     if (!name || String(name).length > 32) return err('invalid name (max 32)');
@@ -59,13 +60,14 @@ export async function POST(req: NextRequest) {
         let imageUrl = imageId ? `${origin}/api/img/${imageId}` : '';
         if (imageBuf && imageMime)
           imageUrl = await pinImage(imageBuf, String(imageMime), token.symbol);
+        const mintStr = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(String(mint || '')) ? String(mint) : '';
         uri = await pinJson(
           {
             name: token.name,
             symbol: token.symbol,
             description: token.description || '',
             image: imageUrl,
-            website: token.website || '',
+            website: mintStr ? tokenPageUrl(pad.slug, mintStr) : token.website || '',
             twitter: token.twitter || '',
             telegram: token.telegram || '',
           },

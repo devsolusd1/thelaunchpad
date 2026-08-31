@@ -43,3 +43,9 @@ export function launchpadUrl(slug: string) {
   const proto = ROOT_DOMAIN.includes('localhost') ? 'http' : 'https';
   return `${proto}://${slug}.${ROOT_DOMAIN}`;
 }
+
+// Link permanente da pagina do token — vai fixo no campo `website` do
+// metadata JSON de todo token criado (o /s/<slug>/ funciona em qualquer host).
+export function tokenPageUrl(slug: string, mint: string) {
+  return `${launchpadUrl(slug)}/s/${slug}/token/${mint}`;
+}

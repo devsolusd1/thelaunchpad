@@ -63,11 +63,15 @@ export default function CreateTokenForm({
         imageBase64 = await fileToBase64(image);
         imageMime = image.type;
       }
+      // mint gerado ANTES do prepare: o metadata JSON fixa o link da pagina
+      // do token no campo website
+      const mintKp = Keypair.generate();
       const prep = await fetch('/api/tokens/prepare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           launchpadSlug: slug,
+          mint: mintKp.publicKey.toBase58(),
           name,
           symbol,
           description,
@@ -83,7 +87,6 @@ export default function CreateTokenForm({
       if (!prep.ok) throw new Error(prepJson.error || 'failed to prepare metadata');
 
       setPhase('sending');
-      const mintKp = Keypair.generate();
       const client = new DynamicBondingCurveClient(connection, 'confirmed');
       const createPoolParam = {
         name,
