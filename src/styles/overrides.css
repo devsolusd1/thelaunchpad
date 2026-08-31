@@ -6,8 +6,14 @@
 .pg-pad,
 .pg-admin,
 .pg-terms,
-.pg-padtoken {
+.pg-padtoken,
+.pg-docs {
   background: transparent;
+}
+
+/* docs: bloco de codigo sempre escuro (o mock usa var(--ink), que clareia no dark) */
+.pg-docs .code {
+  background: #2b1e13;
 }
 
 /* o t-nav dos mocks e' reaproveitado globalmente; garante wallet button alinhado */
@@ -103,6 +109,28 @@
 /* tailwind: inputs claros viram escuros */
 [data-theme='dark'] .input {
   background: rgb(var(--tw-panel2) / 0.5);
+}
+
+/* ══════════ docs (.pg-docs) ══════════ */
+[data-theme='dark'] .pg-docs .top {
+  background: rgba(23, 16, 8, 0.88);
+}
+[data-theme='dark'] .pg-docs :is(main p, main li, td) {
+  color: #d8c8b0;
+}
+[data-theme='dark'] .pg-docs main p.lead {
+  color: var(--ink);
+}
+[data-theme='dark'] .pg-docs .note {
+  background: #241a10;
+  border-color: #3a2c1c;
+}
+[data-theme='dark'] .pg-docs .note div,
+[data-theme='dark'] .pg-docs .note div p {
+  color: #d8c8b0;
+}
+[data-theme='dark'] .pg-docs nav.side.open {
+  background: #1c140b;
 }
 
 /* ══════════ pagina $PAD (.pg-padtoken) ══════════ */

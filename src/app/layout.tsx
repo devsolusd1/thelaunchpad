@@ -8,6 +8,7 @@ import '@/styles/pg-pad.css';
 import '@/styles/pg-admin.css';
 import '@/styles/pg-terms.css';
 import '@/styles/pg-padtoken.css';
+import '@/styles/pg-docs.css';
 import '@/styles/overrides.css';
 import WalletProviders from '@/components/WalletProviders';
 import Background from '@/components/Background';

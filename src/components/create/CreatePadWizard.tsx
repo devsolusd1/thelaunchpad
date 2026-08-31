@@ -18,6 +18,7 @@ import {
 } from '@meteora-ag/dynamic-bonding-curve-sdk';
 import { buildLaunchpadCurve, validateLaunchpadCurve } from '@/lib/dbc';
 import { PadSpinner } from '@/components/brand';
+import { SolLogo, UsdcLogo } from '@/components/token-logos';
 import {
   QUOTES,
   QuoteSymbol,
@@ -476,16 +477,19 @@ export default function CreatePadWizard() {
                       key={q}
                       type="button"
                       className={quoteSymbol === q ? 'on' : ''}
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}
                       onClick={() => { setQuoteSymbol(q); setStocksSoon(false); }}
                     >
+                      {q === 'SOL' ? <SolLogo size={13} /> : <UsdcLogo size={14} />}
                       {q}
                     </button>
                   ))}
                   <button
                     type="button"
-                    style={{ opacity: 0.62 }}
+                    style={{ opacity: 0.62, display: 'inline-flex', alignItems: 'center', gap: 7 }}
                     onClick={() => setStocksSoon(true)}
                   >
+                    <span aria-hidden="true">📈</span>
                     Stocks
                   </button>
                 </div>

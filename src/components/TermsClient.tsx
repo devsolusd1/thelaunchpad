@@ -21,7 +21,28 @@ export default function TermsClient() {
         .replaceAll(
           '[50% platform / 50% Pad Owner]',
           '50% platform / 50% Pad Owner (of net partner fees)'
-        ),
+        )
+        /* preenchimento padrao (generico, sujeito a revisao juridica) */
+        .replaceAll('[DATE]', 'August 31, 2026')
+        .replaceAll('[LEGAL ENTITY NAME]', SITE_NAME)
+        .replaceAll('[ENTITY TYPE]', 'software platform')
+        .replaceAll('[JURISDICTION]', 'the Federative Republic of Brazil')
+        .replaceAll('[ADDRESS]', 'address available upon written request')
+        .replaceAll('[OFAC / EU / UN / OTHER]', 'OFAC, EU or UN')
+        .replaceAll(
+          '[LIST OF RESTRICTED JURISDICTIONS]',
+          'Cuba, Iran, North Korea, Syria, and the Crimea, Donetsk and Luhansk regions'
+        )
+        .replaceAll('[USD 100]', 'USD 100')
+        .replaceAll('[ARBITRAL INSTITUTION]', 'the International Chamber of Commerce (ICC)')
+        .replaceAll('[SEAT / CITY]', 'São Paulo, Brazil')
+        .replaceAll('[LANGUAGE]', 'English')
+        .replaceAll('[ONE / THREE]', 'one')
+        .replaceAll('[30]', '30')
+        .replaceAll('[ENGLISH]', 'English')
+        .replaceAll('[SUPPORT EMAIL]', `support@${DISPLAY_DOMAIN}`)
+        .replaceAll('[LEGAL EMAIL]', `legal@${DISPLAY_DOMAIN}`)
+        .replaceAll(' class="ph"', ''),
     []
   );
 
