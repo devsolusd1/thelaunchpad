@@ -367,9 +367,9 @@ export function hiwHtml(DOMAIN: string, FEE: number = 1): string {
         <div class="barlab"><span>Platform 50%</span><span class="you">You 50%</span></div>
         <div class="l" style="margin-top:18px">Your share</div>
         <div class="big2" id="yourOut">$4.4k</div>
-        <a class="cta" href="/create">Create your launchpad (${FEE} SOL)
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></a>
-        <p class="fine">The ${FEE} SOL creation fee buys back &amp; burns the main token. Estimate above — real payouts follow on-chain volume and are listed on your pad's dashboard.</p>
+        <a class="cta" href="/create"><span style="display:flex;flex-direction:column;align-items:center;gap:2px"><span style="display:inline-flex;align-items:center;gap:9px">Create your launchpad (${FEE} SOL)
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></span><span style="font-size:10px;font-weight:800;opacity:.85;letter-spacing:.02em">Used to buyback &amp; burn $PAD</span></span></a>
+        <p class="fine">Estimate. Real payouts follow on-chain volume and are listed on your pad's dashboard.</p>
       </div>
     </div>
   </div>

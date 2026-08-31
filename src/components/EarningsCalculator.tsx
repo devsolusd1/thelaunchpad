@@ -104,12 +104,12 @@ export default function EarningsCalculator() {
           on your pad&apos;s dashboard.
         </p>
 
-        <a href="/create" className="btn-primary mt-5 w-full py-3">
+        <a href="/create" className="btn-primary mt-5 block w-full py-2.5 text-center">
           Create your launchpad ({CREATION_FEE_SOL} SOL)
+          <span className="block text-[10px] font-extrabold opacity-85">
+            Used to buyback &amp; burn $PAD
+          </span>
         </a>
-        <p className="mt-2 text-center text-xs text-gray-500">
-          The {CREATION_FEE_SOL} SOL fee buys back &amp; burns the main token.
-        </p>
       </div>
     </div>
   );

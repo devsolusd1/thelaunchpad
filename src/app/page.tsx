@@ -124,17 +124,20 @@ export default async function Home() {
             </p>
             <div className="t-ctas">
               <Link className="t-btn" href="/create">
-                Create launchpad <span className="t-price">{CREATION_FEE_SOL} SOL</span>
-                {ARROW}
+                <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 9 }}>
+                    Create launchpad <span className="t-price">{CREATION_FEE_SOL} SOL</span>
+                    {ARROW}
+                  </span>
+                  <span style={{ fontSize: 10, fontWeight: 800, opacity: 0.85, letterSpacing: '.02em' }}>
+                    Used to buyback &amp; burn $PAD
+                  </span>
+                </span>
               </Link>
               <a className="t-btn ghost" href="#launchpads">
                 Explore pads
               </a>
             </div>
-            <p className="fine">
-              The {CREATION_FEE_SOL} SOL creation fee is used to buy back
-              &amp; burn the main token.
-            </p>
             <ul className="t-trust">
               <li>{CHECK}Audited Meteora DBC</li>
               <li>{CHECK}LP locked on graduation</li>
