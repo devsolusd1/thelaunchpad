@@ -75,6 +75,7 @@ export default function CreatePadWizard() {
 
   /* curva */
   const [quoteSymbol, setQuoteSymbol] = useState<QuoteSymbol>('SOL');
+  const [stocksSoon, setStocksSoon] = useState(false);
   const [feePct, setFeePct] = useState(3.5);
   const [creatorSplit, setCreatorSplit] = useState(false);
   const [mc0, setMc0] = useState(5000);
@@ -375,7 +376,7 @@ export default function CreatePadWizard() {
                   {subFree === false ? (
                     <span style={{ color: 'var(--dn)' }}>Already taken — pick another one.</span>
                   ) : (
-                    "Lowercase letters, numbers and dashes. This is your pad's permanent address."
+                    "Lowercase letters, numbers and dashes — your pad's permanent address. New subdomains can take up to 5 minutes to go live."
                   )}
                 </p>
               </div>
@@ -471,12 +472,32 @@ export default function CreatePadWizard() {
                 <label className="lb">Quote token</label>
                 <div className="segm">
                   {(['SOL', 'USDC'] as QuoteSymbol[]).map((q) => (
-                    <button key={q} type="button" className={quoteSymbol === q ? 'on' : ''} onClick={() => setQuoteSymbol(q)}>
+                    <button
+                      key={q}
+                      type="button"
+                      className={quoteSymbol === q ? 'on' : ''}
+                      onClick={() => { setQuoteSymbol(q); setStocksSoon(false); }}
+                    >
                       {q}
                     </button>
                   ))}
+                  <button
+                    type="button"
+                    style={{ opacity: 0.62 }}
+                    onClick={() => setStocksSoon(true)}
+                  >
+                    Stocks
+                  </button>
                 </div>
-                <p className="hint">What people trade against. SOL is the default for memecoins; USDC keeps prices flat.</p>
+                <p className="hint">
+                  {stocksSoon ? (
+                    <span style={{ color: 'var(--accent)', fontWeight: 800 }}>
+                      Stocks as quote — coming soon.
+                    </span>
+                  ) : (
+                    'What people trade against. SOL is the default for memecoins; USDC keeps prices flat.'
+                  )}
+                </p>
               </div>
 
               <div className="field">
