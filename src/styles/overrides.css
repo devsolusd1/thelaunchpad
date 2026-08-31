@@ -29,6 +29,7 @@
 /* mini card do buyback & burn pendurado no canto do botao de criar */
 .pg-home .t-ctas .t-btn {
   position: relative;
+  overflow: visible; /* o mock usa hidden pro sweep de brilho (ja removido) */
 }
 .pg-home .t-burntag {
   position: absolute;
