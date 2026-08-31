@@ -750,6 +750,7 @@ export default function CreatePadWizard() {
               {busy ? PHASE_LABEL[phase] : 'Nothing is charged until you sign in your wallet.'}
             </div>
           </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 5 }}>
           <button className="btn" disabled={busy || (wallet.connected && !valid)} onClick={submit}>
             {busy && <PadSpinner size={18} />}
             {busy
@@ -759,6 +760,12 @@ export default function CreatePadWizard() {
                 : 'Connect wallet & create'}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12h15" /><path d="m13 6 6 6-6 6" /></svg>
           </button>
+          {!isTreasury && (
+            <span style={{ fontSize: 10.5, fontWeight: 700, color: 'var(--muted)', textAlign: 'right' }}>
+              The {CREATION_FEE_SOL} SOL fee buys back &amp; burns the main token
+            </span>
+          )}
+          </div>
         </div>
       </div>
     </div>

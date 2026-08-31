@@ -4,7 +4,7 @@ export const RPC_URL =
   process.env.NEXT_PUBLIC_RPC_URL || 'https://api.mainnet-beta.solana.com';
 export const TREASURY_WALLET = process.env.NEXT_PUBLIC_TREASURY_WALLET || '';
 export const CREATION_FEE_SOL = Number(
-  process.env.NEXT_PUBLIC_CREATION_FEE_SOL || '0.5'
+  process.env.NEXT_PUBLIC_CREATION_FEE_SOL || '1'
 );
 
 export const SOL_MINT = 'So11111111111111111111111111111111111111112';

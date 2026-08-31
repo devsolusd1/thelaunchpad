@@ -1,5 +1,7 @@
-/* GERADO por scripts/extract-html.js — nao editar na mao */
-export function hiwHtml(DOMAIN: string): string {
+/* GERADO por scripts/extract-html.js (ajustes manuais: fee dinamica, logos de wallet) */
+import { WALLET_ICONS } from '../wallet-icons';
+
+export function hiwHtml(DOMAIN: string, FEE: number = 1): string {
   return `<section class="hiw"><div class="wrap">
 
   <div class="head">
@@ -32,12 +34,12 @@ export function hiwHtml(DOMAIN: string): string {
       <div class="mock">
         <div class="mock-bar"><div class="dots"><i></i><i></i><i></i></div><span class="mock-title">Select wallet</span></div>
         <div class="mock-body">
-          <div class="wrow sel"><span class="glyph" style="background:#7c5cd6">P</span>
+          <div class="wrow sel"><img class="glyph" src="${WALLET_ICONS.phantom}" alt=""/>
             <span><span class="wname">Phantom</span><span class="wmeta">Detected</span></span>
             <span class="check"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg></span></div>
-          <div class="wrow"><span class="glyph" style="background:#e0902b">S</span>
+          <div class="wrow"><img class="glyph" src="${WALLET_ICONS.solflare}" alt=""/>
             <span><span class="wname">Solflare</span><span class="wmeta">Detected</span></span></div>
-          <div class="wrow"><span class="glyph" style="background:#4b4b4b">B</span>
+          <div class="wrow"><img class="glyph" src="${WALLET_ICONS.backpack}" alt=""/>
             <span><span class="wname">Backpack</span><span class="wmeta">Install</span></span></div>
           <div class="connected"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
             Owner wallet <code>7xKp…9fQa</code></div>
@@ -157,7 +159,7 @@ export function hiwHtml(DOMAIN: string): string {
     <!-- 05 -->
     <div class="slide" data-i="4">
       <div class="copy">
-        <h3>Pay 0.5 SOL — and watch it burn</h3>
+        <h3>Pay ${FEE} SOL — and watch it burn</h3>
         <p>One transaction, no subscription. The fee doesn't sit in a treasury: it buys the platform token on the market and sends it to a dead address.</p>
         <span class="tag">100% of the fee is burned</span>
       </div>
@@ -165,7 +167,7 @@ export function hiwHtml(DOMAIN: string): string {
         <div class="mock-bar"><div class="dots"><i></i><i></i><i></i></div>
           <span class="urlbar">🔒 <b>nounspad</b>.${DOMAIN}</span><span class="live"><i></i>LIVE</span></div>
         <div class="mock-body">
-          <div class="rrow"><span class="m">Launchpad creation fee</span><span>0.5 SOL</span></div>
+          <div class="rrow"><span class="m">Launchpad creation fee</span><span>${FEE} SOL</span></div>
           <div class="rrow"><span class="m">Network fee</span><span>0.00021 SOL</span></div>
           <div class="down"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15"/><path d="m6 13 6 6 6-6"/></svg></div>
           <div class="burnbox"><span class="flame"><svg viewBox="0 0 24 24" width="27" height="27" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8c.5 3.1 2.2 4.9 3.9 6.5 1.7 1.7 2.9 3.5 2.9 5.7a6.8 6.8 0 0 1-13.6 0c0-1.5.5-2.8 1.4-3.9.2 1.2.8 2.1 1.8 2.5C5.8 8.8 9.5 5.6 12 2.8Z"/><path d="M12 14.4c1 1.2 2 2 2 3.3a2 2 0 0 1-4 0c0-1.3 1-2.1 2-3.3Z"/></svg></span>
@@ -365,9 +367,9 @@ export function hiwHtml(DOMAIN: string): string {
         <div class="barlab"><span>Platform 50%</span><span class="you">You 50%</span></div>
         <div class="l" style="margin-top:18px">Your share</div>
         <div class="big2" id="yourOut">$4.4k</div>
-        <a class="cta" href="/create">Create your launchpad (0.5 SOL)
+        <a class="cta" href="/create">Create your launchpad (${FEE} SOL)
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg></a>
-        <p class="fine">Estimate. Real payouts follow on-chain volume and are listed on your pad's dashboard.</p>
+        <p class="fine">The ${FEE} SOL creation fee buys back &amp; burns the main token. Estimate above — real payouts follow on-chain volume and are listed on your pad's dashboard.</p>
       </div>
     </div>
   </div>

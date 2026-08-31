@@ -1,6 +1,7 @@
 import Nav from '@/components/Nav';
 import EarningsCalculator from '@/components/EarningsCalculator';
 import { SITE_NAME, CREATION_FEE_SOL, ROOT_DOMAIN } from '@/lib/env';
+import { WALLET_ICONS } from '@/components/wallet-icons';
 
 export const metadata = { title: `Flywheel — ${SITE_NAME}` };
 
@@ -375,17 +376,12 @@ function WalletRow({
       }`}
     >
       <div className="flex items-center gap-3">
-        <div
-          className={`flex h-8 w-8 items-center justify-center rounded-lg text-sm font-black text-cream ${
-            name === 'Phantom'
-              ? 'bg-[#7c5cff]'
-              : name === 'Solflare'
-                ? 'bg-[#e0a010]'
-                : 'bg-[#3b2210]'
-          }`}
-        >
-          {name[0]}
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="h-8 w-8 rounded-lg"
+          src={WALLET_ICONS[name.toLowerCase() as keyof typeof WALLET_ICONS]}
+          alt=""
+        />
         <div>
           <div className="text-sm font-bold text-white">{name}</div>
           <div className="text-xs text-gray-500">{note}</div>

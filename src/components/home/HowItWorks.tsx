@@ -4,6 +4,7 @@
 // (hiw-html.ts) + logica de tabs/animacoes/simulador portada do mock.
 import { useEffect, useRef } from 'react';
 import { hiwHtml } from './hiw-html';
+import { CREATION_FEE_SOL } from '@/lib/env';
 
 export default function HowItWorks({ domain }: { domain: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -202,7 +203,7 @@ export default function HowItWorks({ domain }: { domain: string }) {
     <div
       id="how-it-works"
       ref={ref}
-      dangerouslySetInnerHTML={{ __html: hiwHtml(domain) }}
+      dangerouslySetInnerHTML={{ __html: hiwHtml(domain, CREATION_FEE_SOL) }}
     />
   );
 }

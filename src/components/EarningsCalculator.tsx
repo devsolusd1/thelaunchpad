@@ -4,6 +4,7 @@
 // Matematica honesta: Meteora fica com 20% da fee; do resto, 50% dono / 50%
 // plataforma => dono = 40% da fee total.
 import { useState } from 'react';
+import { CREATION_FEE_SOL } from '@/lib/env';
 
 const OWNER_SHARE = 0.4;
 const PLATFORM_SHARE = 0.4;
@@ -104,8 +105,11 @@ export default function EarningsCalculator() {
         </p>
 
         <a href="/create" className="btn-primary mt-5 w-full py-3">
-          Create your launchpad (0.5 SOL)
+          Create your launchpad ({CREATION_FEE_SOL} SOL)
         </a>
+        <p className="mt-2 text-center text-xs text-gray-500">
+          The {CREATION_FEE_SOL} SOL fee buys back &amp; burns the main token.
+        </p>
       </div>
     </div>
   );

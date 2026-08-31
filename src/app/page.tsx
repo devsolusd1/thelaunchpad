@@ -131,6 +131,10 @@ export default async function Home() {
                 Explore pads
               </a>
             </div>
+            <p className="fine">
+              The {CREATION_FEE_SOL} SOL creation fee is used to buy back
+              &amp; burn the main token.
+            </p>
             <ul className="t-trust">
               <li>{CHECK}Audited Meteora DBC</li>
               <li>{CHECK}LP locked on graduation</li>
