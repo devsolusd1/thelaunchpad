@@ -42,10 +42,10 @@ export const padTokenHtml = `
           <feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#8a4a12" flood-opacity=".16"/></filter>
       </defs>
       <g fill="none" stroke-linecap="round">
-        <path id="p1" d="M312 96 C 470 96, 520 176, 690 176" stroke="var(--soft)" stroke-width="16"/>
+        <path id="p1" d="M312 96 C 470 96, 520 146, 706 146" stroke="var(--soft)" stroke-width="16"/>
         <path id="p2" d="M312 300 H 404" stroke="var(--soft)" stroke-width="16"/>
-        <path id="p3" d="M436 300 C 540 300, 560 202, 690 202" stroke="var(--soft)" stroke-width="16"/>
-        <path d="M436 300 C 520 300, 540 366, 636 366" stroke="var(--panel2)" stroke-width="14"/>
+        <path id="p3" d="M436 300 C 540 300, 560 172, 706 172" stroke="var(--soft)" stroke-width="16"/>
+        <path d="M436 300 C 520 300, 545 366, 660 366" stroke="var(--panel2)" stroke-width="14"/>
       </g>
       <g>
         <circle r="9" fill="url(#coin)"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#p1"/></animateMotion></circle>
@@ -65,19 +65,19 @@ export const padTokenHtml = `
       <text x="40" y="326" font-size="12.5" font-weight="700" fill="var(--muted)">on launchpads owned by third parties</text>
       <circle cx="420" cy="300" r="15" fill="var(--paper)" stroke="var(--accent)" stroke-width="3"/>
       <text x="420" y="258" text-anchor="middle" font-size="11.5" font-weight="900" fill="var(--muted)">SPLIT</text>
-      <text x="566" y="234" text-anchor="middle" font-size="14" font-weight="900" fill="var(--accent)">50% platform</text>
+      <text x="566" y="230" text-anchor="middle" font-size="14" font-weight="900" fill="var(--accent)">50% platform</text>
       <text x="520" y="404" font-size="14" font-weight="900" fill="var(--sand)">50% launchpad owner</text>
-      <g filter="url(#soft)"><rect x="636" y="336" width="270" height="60" rx="18" fill="var(--panel)" stroke="var(--line2)"/></g>
-      <text x="771" y="362" text-anchor="middle" font-size="13.5" font-weight="900" fill="#6f5c46">Never reaches Padcore</text>
-      <text x="771" y="382" text-anchor="middle" font-size="12" font-weight="700" fill="var(--muted)">paid straight to the pad's creator</text>
-      <g filter="url(#soft)"><circle cx="800" cy="188" r="86" fill="url(#hot)"/></g>
-      <g stroke="#2b1e13" stroke-width="4.4" fill="none" stroke-linecap="round" stroke-linejoin="round"
-         transform="translate(776,156) scale(2)">
+      <g filter="url(#soft)"><rect x="660" y="336" width="270" height="60" rx="18" fill="var(--panel)" stroke="var(--line2)"/></g>
+      <text x="795" y="362" text-anchor="middle" font-size="13.5" font-weight="900" fill="#6f5c46">Never reaches Padcore</text>
+      <text x="795" y="382" text-anchor="middle" font-size="12" font-weight="700" fill="var(--muted)">paid straight to the pad's creator</text>
+      <g filter="url(#soft)"><circle cx="800" cy="158" r="76" fill="url(#hot)"/></g>
+      <g stroke="#2b1e13" stroke-width="2.9" fill="none" stroke-linecap="round" stroke-linejoin="round"
+         transform="translate(762.8,120.4) scale(3.1)">
         <path d="M12 2.8c.5 3.1 2.2 4.9 3.9 6.5 1.7 1.7 2.9 3.5 2.9 5.7a6.8 6.8 0 0 1-13.6 0c0-1.5.5-2.8 1.4-3.9.2 1.2.8 2.1 1.8 2.5C5.8 8.8 9.5 5.6 12 2.8Z"/>
         <path d="M12 14.4c1 1.2 2 2 2 3.3a2 2 0 0 1-4 0c0-1.3 1-2.1 2-3.3Z"/>
       </g>
-      <text x="800" y="300" text-anchor="middle" font-size="14" font-weight="900" fill="var(--accent)">BOUGHT &amp; BURNED</text>
-      <text x="800" y="322" text-anchor="middle" font-size="12" font-weight="700" fill="var(--muted)">100% of what reaches us</text>
+      <text x="800" y="264" text-anchor="middle" font-size="14" font-weight="900" fill="var(--accent)">BOUGHT &amp; BURNED</text>
+      <text x="800" y="286" text-anchor="middle" font-size="12" font-weight="700" fill="var(--muted)">100% of what reaches us</text>
     </svg>
   </div>
 
