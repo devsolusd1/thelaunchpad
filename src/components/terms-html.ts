@@ -11,14 +11,6 @@ export function termsHtml(DOMAIN: string): string {
     </div>
   </div>
 
-  <div class="alert">
-    <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 21 19H3l9-14.5Z"/><path d="M12 10v4"/><path d="M12 17h.01"/></svg></span>
-    <div>
-      <h3>Draft — not legal advice</h3>
-      <p>This document is a starting template. It has not been reviewed by a lawyer and is not tailored to any jurisdiction. Every field marked in yellow must be filled in, and the whole text must be reviewed by counsel licensed where your entity operates before you publish it. Delete this box before going live.</p>
-    </div>
-  </div>
-
   <div class="cols">
     <nav class="toc" id="toc">
       <div class="t">Contents</div>
