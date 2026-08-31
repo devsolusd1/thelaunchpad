@@ -1,15 +1,24 @@
 'use client';
 
 // Pagina do $PAD — markup do mockup injetado + contadores animados.
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { padTokenHtml } from './padtoken-html';
+import { PAD_MINT } from '@/lib/env';
 
 export default function PadTokenClient() {
   const ref = useRef<HTMLDivElement>(null);
+  const html = useMemo(() => padTokenHtml(PAD_MINT), []);
 
   useEffect(() => {
     const root = ref.current;
     if (!root) return;
+    const cp = root.querySelector('#cpca');
+    cp?.addEventListener('click', () => {
+      navigator.clipboard.writeText(PAD_MINT).then(() => {
+        cp.textContent = 'Copied';
+        setTimeout(() => (cp.textContent = 'Copy'), 1200);
+      });
+    });
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     root.querySelectorAll<HTMLElement>('[data-to]').forEach((el) => {
       const to = Number(el.dataset.to || 0);
@@ -33,7 +42,7 @@ export default function PadTokenClient() {
     <div
       className="pg-padtoken"
       ref={ref}
-      dangerouslySetInnerHTML={{ __html: padTokenHtml }}
+      dangerouslySetInnerHTML={{ __html: html }}
     />
   );
 }

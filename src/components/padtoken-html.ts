@@ -1,7 +1,8 @@
 /* Conteudo da pagina $PAD — portado do mockup token (2).html do John.
- * Nav e contadores ficam no React (PadTokenClient); CSS em pg-padtoken.css. */
+ * Nav e contadores ficam no React (PadTokenClient); CSS em pg-padtoken.css.
+ * MINT vazio = pre-lancamento (aviso); preenchido = CA real + Solscan. */
 
-export const padTokenHtml = `
+export const padTokenHtml = (MINT: string) => `
 <div class="bgfx"></div>
 
 <div class="wrap">
@@ -10,10 +11,17 @@ export const padTokenHtml = `
   <span class="eyebrow">The platform token</span>
   <h1><em>$PAD</em></h1>
   <p class="lede">Padcore earns in two ways: a fee when someone creates a launchpad, and a share of the trading fees from tokens that <b>other people</b> launch on those launchpads. <b>100% of what reaches Padcore is spent buying $PAD on the open market and burning it.</b> The other half of every trading fee never reaches us — it belongs to whoever created that launchpad.</p>
-  <div class="ca">
+  ${MINT
+    ? `<div class="ca">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+    Contract address: <code id="padca" style="word-break:break-all">${MINT}</code>
+    <a href="https://solscan.io/token/${MINT}" target="_blank" rel="noopener" style="font-weight:900">Solscan</a>
+    <button id="cpca" type="button" style="border:0;background:none;cursor:pointer;font:inherit;font-weight:900;color:var(--accent);padding:0">Copy</button>
+  </div>`
+    : `<div class="ca">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="3"/><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7"/></svg>
     Contract address published at launch — beware of anything claiming to be $PAD before then
-  </div>
+  </div>`}
   <div class="stats">
     <div><div class="n">1,000,000,000</div><div class="l">Fixed supply</div></div>
     <div><div class="n hot" data-to="4182904">0</div><div class="l">$PAD burned</div></div>

@@ -3,6 +3,10 @@ export const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:300
 // Dominio de marca mostrado em textos/mockups ilustrativos. Links reais
 // continuam em ROOT_DOMAIN (que so vira padcore.io quando o DNS migrar).
 export const DISPLAY_DOMAIN = 'padcore.io';
+
+// Mint do $PAD. Vazio = pre-lancamento (a pagina /pad mostra o aviso);
+// preenchido, o CA aparece no hero com link pro Solscan.
+export const PAD_MINT = process.env.NEXT_PUBLIC_PAD_MINT || '';
 export const RPC_URL =
   process.env.NEXT_PUBLIC_RPC_URL || 'https://api.mainnet-beta.solana.com';
 export const TREASURY_WALLET = process.env.NEXT_PUBLIC_TREASURY_WALLET || '';
