@@ -4,13 +4,14 @@ export const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN || 'localhost:300
 // continuam em ROOT_DOMAIN (que so vira padcore.io quando o DNS migrar).
 export const DISPLAY_DOMAIN = 'padcore.io';
 
-// Mint do $PAD. Vazio = pre-lancamento (a pagina /pad mostra o aviso);
-// preenchido, o CA aparece no hero com link pro Solscan.
-// Valores que nao sao base58 valido (ex: placeholder "xxxx") sao ignorados.
+// Mint do $PAD (lancado 2026-08-31, supply 1B/6dec, mint authority revogada).
+// A env NEXT_PUBLIC_PAD_MINT sobrepoe se for um base58 valido; placeholder
+// invalido (ex: "xxxx") cai no oficial.
+const OFFICIAL_PAD_MINT = '2QChDZRA76jXfmMt6t1GC6SjsmUkpiD6jzimy4jHKPAD';
 const rawPadMint = (process.env.NEXT_PUBLIC_PAD_MINT || '').trim();
 export const PAD_MINT = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(rawPadMint)
   ? rawPadMint
-  : '';
+  : OFFICIAL_PAD_MINT;
 export const RPC_URL =
   process.env.NEXT_PUBLIC_RPC_URL || 'https://api.mainnet-beta.solana.com';
 export const TREASURY_WALLET = process.env.NEXT_PUBLIC_TREASURY_WALLET || '';
