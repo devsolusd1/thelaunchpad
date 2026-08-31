@@ -22,20 +22,26 @@ export default function TermsClient() {
           '[50% platform / 50% Pad Owner]',
           '50% platform / 50% Pad Owner (of net partner fees)'
         )
-        /* preenchimento padrao (generico, sujeito a revisao juridica) */
+        /* preenchimento padrao (generico e neutro, sujeito a revisao juridica) */
+        .replaceAll(
+          ', a <span class="ph">[ENTITY TYPE]</span> organized under the laws of <span class="ph">[JURISDICTION]</span>, with registered address at <span class="ph">[ADDRESS]</span>',
+          ''
+        )
+        .replaceAll(
+          'the laws of <span class="ph">[JURISDICTION]</span>',
+          'the laws of the jurisdiction in which the Company is established'
+        )
         .replaceAll('[DATE]', 'August 31, 2026')
         .replaceAll('[LEGAL ENTITY NAME]', SITE_NAME)
-        .replaceAll('[ENTITY TYPE]', 'software platform')
-        .replaceAll('[JURISDICTION]', 'the State of Delaware, United States')
-        .replaceAll('[ADDRESS]', 'address available upon written request')
-        .replaceAll('[OFAC / EU / UN / OTHER]', 'OFAC, EU or UN')
+        .replaceAll('[ADDRESS]', `legal@${DISPLAY_DOMAIN}`)
+        .replaceAll('[OFAC / EU / UN / OTHER]', 'any national or international authority')
         .replaceAll(
           '[LIST OF RESTRICTED JURISDICTIONS]',
-          'Cuba, Iran, North Korea, Syria, and the Crimea, Donetsk and Luhansk regions'
+          'any jurisdiction subject to comprehensive sanctions'
         )
         .replaceAll('[USD 100]', 'USD 100')
-        .replaceAll('[ARBITRAL INSTITUTION]', 'the American Arbitration Association (AAA)')
-        .replaceAll('[SEAT / CITY]', 'Wilmington, Delaware, United States')
+        .replaceAll('[ARBITRAL INSTITUTION]', 'a recognized arbitral institution')
+        .replaceAll('[SEAT / CITY]', 'a seat designated by the Company')
         .replaceAll('[LANGUAGE]', 'English')
         .replaceAll('[ONE / THREE]', 'one')
         .replaceAll('[30]', '30')
