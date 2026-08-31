@@ -134,6 +134,9 @@ export default function DocsClient() {
           <Link className="tlk" href="/">Platform</Link>
           <Link className="tlk" href="/pad">$PAD</Link>
           <Link className="tlk" href="/terms">Terms</Link>
+          <a className="tlk" href="https://x.com/padcore_io" target="_blank" rel="noopener" title="Padcore on X" aria-label="Padcore on X" style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 1.2h3.7l-8.1 9.3L24 22.8h-7.5l-5.9-7.7-6.7 7.7H.2l8.7-9.9L0 1.2h7.7l5.3 7 6-7Z" /></svg>
+          </a>
           <ThemeToggle />
         </div>
       </header>

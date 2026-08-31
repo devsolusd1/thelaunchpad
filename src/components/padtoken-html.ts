@@ -256,7 +256,7 @@ export const padTokenHtml = (MINT: string, STATS: PadStats = null) => `
 </div>
 
 <footer class="foot"><div class="foot-in">
-  <span>© 2026 Padcore · <a href="/terms">Terms</a></span>
+  <span>© 2026 Padcore · <a href="/terms">Terms</a> · <a href="https://x.com/padcore_io" target="_blank" rel="noopener">X</a></span>
   <span>Solana Mainnet · Meteora DBC</span>
 </div></footer>
 `;
