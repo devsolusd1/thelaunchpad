@@ -33,10 +33,15 @@ npm run dev
 ## Bots (rodar na sua maquina ou VPS, com o mesmo .env)
 
 ```bash
+npm run bot:monitor                  # painel ao vivo: saldo, fees pendentes, payouts ([c] clama na hora)
+npm run bot:monitor -- --auto        # painel + claim/split automatico a cada 30min
 node bots/split-fees.js --dry-run    # simula
-node bots/split-fees.js --loop       # clama fees e paga 50% aos donos, a cada 30min
+node bots/split-fees.js --loop       # clama fees e paga 50% aos donos, a cada 30min (sem painel)
 node bots/buyback-burn.js --loop     # compra e queima o token da plataforma
 ```
+
+Contra o banco de producao (Neon): `npm run bots:gen` antes de rodar,
+`npm run dev:gen` depois pra voltar o client do dev local.
 
 ## Deploy em producao (Vercel)
 

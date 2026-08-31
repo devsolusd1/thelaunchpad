@@ -9,6 +9,7 @@
     "start": "next start",
     "db:push": "prisma db push",
     "bot:fees": "node bots/split-fees.js",
+    "bot:monitor": "node bots/monitor.js",
     "bot:buyback": "node bots/buyback-burn.js",
     "bots:gen": "prisma generate --schema=prisma/schema.postgres.prisma",
     "dev:gen": "prisma generate"
