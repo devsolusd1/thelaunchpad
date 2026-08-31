@@ -9,7 +9,6 @@ import { shotHtml } from '@/components/home/shot-html';
 import { payoutTotalsByPad } from '@/lib/padstats';
 import {
   SITE_NAME,
-  ROOT_DOMAIN,
   DISPLAY_DOMAIN,
   CREATION_FEE_SOL,
   TREASURY_WALLET,
@@ -80,7 +79,7 @@ export default async function Home() {
     xVerified: p.xVerified,
     xHandle: p.xHandle,
     subUrl: launchpadUrl(p.slug),
-    subHost: `${p.slug}.${ROOT_DOMAIN}`,
+    subHost: `${p.slug}.${DISPLAY_DOMAIN}`,
     createdAt: p.createdAt.toISOString(),
   }));
 

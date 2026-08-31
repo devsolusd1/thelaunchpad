@@ -26,7 +26,7 @@ export default function TermsClient() {
         .replaceAll('[DATE]', 'August 31, 2026')
         .replaceAll('[LEGAL ENTITY NAME]', SITE_NAME)
         .replaceAll('[ENTITY TYPE]', 'software platform')
-        .replaceAll('[JURISDICTION]', 'the Federative Republic of Brazil')
+        .replaceAll('[JURISDICTION]', 'the State of Delaware, United States')
         .replaceAll('[ADDRESS]', 'address available upon written request')
         .replaceAll('[OFAC / EU / UN / OTHER]', 'OFAC, EU or UN')
         .replaceAll(
@@ -34,8 +34,8 @@ export default function TermsClient() {
           'Cuba, Iran, North Korea, Syria, and the Crimea, Donetsk and Luhansk regions'
         )
         .replaceAll('[USD 100]', 'USD 100')
-        .replaceAll('[ARBITRAL INSTITUTION]', 'the International Chamber of Commerce (ICC)')
-        .replaceAll('[SEAT / CITY]', 'São Paulo, Brazil')
+        .replaceAll('[ARBITRAL INSTITUTION]', 'the American Arbitration Association (AAA)')
+        .replaceAll('[SEAT / CITY]', 'Wilmington, Delaware, United States')
         .replaceAll('[LANGUAGE]', 'English')
         .replaceAll('[ONE / THREE]', 'one')
         .replaceAll('[30]', '30')

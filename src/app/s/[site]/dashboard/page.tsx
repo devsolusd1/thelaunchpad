@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/db';
 import AdminClient, { AdminData } from '@/components/pad/AdminClient';
 import { curveStats, padFees } from '@/lib/padstats';
-import { SITE_NAME, ROOT_DOMAIN, SOL_MINT } from '@/lib/env';
+import { SITE_NAME, DISPLAY_DOMAIN, SOL_MINT } from '@/lib/env';
 
 export const revalidate = 0;
 
@@ -30,7 +30,7 @@ export default async function PadDashboard({
 
   const data: AdminData = {
     siteName: SITE_NAME,
-    rootDomain: ROOT_DOMAIN,
+    rootDomain: DISPLAY_DOMAIN,
     slug: pad.slug,
     name: pad.name,
     description: pad.description,

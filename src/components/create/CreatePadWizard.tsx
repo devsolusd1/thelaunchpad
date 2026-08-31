@@ -24,7 +24,7 @@ import {
   QuoteSymbol,
   TREASURY_WALLET,
   CREATION_FEE_SOL,
-  ROOT_DOMAIN,
+  DISPLAY_DOMAIN,
   MIN_INITIAL_MC_USD,
   MAX_INITIAL_MC_USD,
   MIN_MIGRATION_RATIO,
@@ -145,7 +145,7 @@ export default function CreatePadWizard() {
   const totalSol = (isTreasury ? 0 : CREATION_FEE_SOL) + 0.03 + (tokOn ? 0.025 : 0);
 
   const pvName = name || 'Nounspad';
-  const pvSub = (sub || 'nounspad') + '.' + ROOT_DOMAIN;
+  const pvSub = (sub || 'nounspad') + '.' + DISPLAY_DOMAIN;
   const pvDesc = desc || 'Plain objects, priced by degens.';
   const pvTok = '$' + (tsym || 'NOUNS');
 
@@ -371,7 +371,7 @@ export default function CreatePadWizard() {
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"><path d="m5 13 4 4L19 7" /></svg>
                     available
                   </span>
-                  <span className="sfx">.{ROOT_DOMAIN}</span>
+                  <span className="sfx">.{DISPLAY_DOMAIN}</span>
                 </div>
                 <p className="hint">
                   {subFree === false ? (
@@ -676,7 +676,7 @@ export default function CreatePadWizard() {
             <div className="mock">
               <div className="mock-bar">
                 <div className="dots"><i></i><i></i><i></i></div>
-                <span className="urlbar">🔒 <b>{sub || 'nounspad'}</b>.{ROOT_DOMAIN}</span>
+                <span className="urlbar">🔒 <b>{sub || 'nounspad'}</b>.{DISPLAY_DOMAIN}</span>
               </div>
 
               <div className="pv-hero">
