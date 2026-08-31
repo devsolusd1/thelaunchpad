@@ -19,7 +19,9 @@ const AVATAR = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><d
 
 const out = (f) => path.join(__dirname, '..', 'public', f);
 
-const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs>${GRAD('g')}</defs><rect width="64" height="64" rx="14.08" fill="url(#g)"/><g transform="translate(32,32) scale(0.474) translate(0,8.25)">${MARK_CREAM}</g></svg>`;
+// favicon = mark cru em creme, sem tile (pedido do John 2026-08-31);
+// viewBox quadrado pro raster 64x64 do .ico nao distorcer
+const FAVICON = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-48 -56.25 96 96">${MARK_CREAM}</svg>`;
 
 // embrulha um PNG num container .ico (formato aceito por todo browser moderno)
 function pngToIco(png) {
