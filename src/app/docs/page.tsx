@@ -6,7 +6,7 @@ import {
   MAX_INITIAL_MC_USD,
   MIN_FEE_BPS,
   MAX_FEE_BPS,
-  ROOT_DOMAIN,
+  DISPLAY_DOMAIN,
 } from '@/lib/env';
 
 export const metadata = { title: `Docs — ${SITE_NAME}` };
@@ -48,7 +48,7 @@ export default function DocsPage() {
             <p>
               {SITE_NAME} is a launchpad of launchpads on Solana. Anyone can
               create their own branded launchpad on a subdomain
-              (yourname.{ROOT_DOMAIN}), define its bonding-curve economics
+              (yourname.{DISPLAY_DOMAIN}), define its bonding-curve economics
               once, and earn half of every trading fee from every token
               launched on it. All pools run on Meteora&apos;s audited Dynamic
               Bonding Curve (DBC) program — the platform never holds user

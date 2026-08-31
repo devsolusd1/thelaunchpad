@@ -1,6 +1,6 @@
 import Nav from '@/components/Nav';
 import EarningsCalculator from '@/components/EarningsCalculator';
-import { SITE_NAME, CREATION_FEE_SOL, ROOT_DOMAIN } from '@/lib/env';
+import { SITE_NAME, CREATION_FEE_SOL, DISPLAY_DOMAIN } from '@/lib/env';
 import { WALLET_ICONS } from '@/components/wallet-icons';
 
 export const metadata = { title: `Flywheel — ${SITE_NAME}` };
@@ -96,7 +96,7 @@ export default function FlywheelPage() {
             n="02"
             title="Name it and claim the subdomain"
             text="Logo, name, one line of description. The subdomain is checked live and becomes your launchpad's public address — creators land there, not on a shared feed."
-            chip={`frogpad.${ROOT_DOMAIN}`}
+            chip={`frogpad.${DISPLAY_DOMAIN}`}
           >
             <Mock title="Create launchpad">
               <div className="flex items-center gap-3">
@@ -113,7 +113,7 @@ export default function FlywheelPage() {
                 <div className="flex items-center justify-between rounded-lg border border-accent2 bg-cream/70 px-3 py-2 text-sm">
                   <span>
                     <b className="text-white">frogpad</b>
-                    <span className="text-gray-500">.{ROOT_DOMAIN}</span>
+                    <span className="text-gray-500">.{DISPLAY_DOMAIN}</span>
                   </span>
                   <span className="flex items-center gap-1 text-xs font-bold text-accent2">
                     <Check small /> available
@@ -161,7 +161,7 @@ export default function FlywheelPage() {
             text="One transaction. The creation fee isn't a subscription and it doesn't sit in a treasury: it goes straight into buying and burning the platform token. Then FrogPad is live at its own address."
             chip="100% of the fee is burned"
           >
-            <Mock title={`🔒 frogpad.${ROOT_DOMAIN}`} live>
+            <Mock title={`🔒 frogpad.${DISPLAY_DOMAIN}`} live>
               <Row k="Launchpad creation fee" v={`${CREATION_FEE_SOL} SOL`} />
               <Row k="Network fee" v="0.00021 SOL" />
               <div className="my-2 text-center text-accent">↓</div>

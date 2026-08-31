@@ -10,6 +10,7 @@ import { payoutTotalsByPad } from '@/lib/padstats';
 import {
   SITE_NAME,
   ROOT_DOMAIN,
+  DISPLAY_DOMAIN,
   CREATION_FEE_SOL,
   TREASURY_WALLET,
   launchpadUrl,
@@ -143,7 +144,7 @@ export default async function Home() {
           </header>
 
           {/* product shot ilustrativo (Nounspad, do mockup) */}
-          <div dangerouslySetInnerHTML={{ __html: shotHtml(ROOT_DOMAIN) }} />
+          <div dangerouslySetInnerHTML={{ __html: shotHtml(DISPLAY_DOMAIN) }} />
 
           {/* stats reais */}
           <div className="t-stats">
@@ -191,7 +192,7 @@ export default async function Home() {
       </section>
 
       {/* ══ how it works (ilustrativo) ══ */}
-      <HowItWorks domain={ROOT_DOMAIN} />
+      <HowItWorks domain={DISPLAY_DOMAIN} />
 
       {/* ══ features ══ */}
       <section className="t-feat">

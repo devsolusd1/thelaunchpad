@@ -7,16 +7,16 @@ import Link from 'next/link';
 import { termsHtml } from './terms-html';
 import { PadLockup } from './brand';
 import ThemeToggle from './ThemeToggle';
-import { SITE_NAME, ROOT_DOMAIN, CREATION_FEE_SOL } from '@/lib/env';
+import { SITE_NAME, DISPLAY_DOMAIN, CREATION_FEE_SOL } from '@/lib/env';
 
 export default function TermsClient() {
   const ref = useRef<HTMLDivElement>(null);
 
   const html = useMemo(
     () =>
-      termsHtml(ROOT_DOMAIN)
+      termsHtml(DISPLAY_DOMAIN)
         .replaceAll('[PLATFORM NAME]', SITE_NAME)
-        .replaceAll('[DOMAIN]', ROOT_DOMAIN)
+        .replaceAll('[DOMAIN]', DISPLAY_DOMAIN)
         .replaceAll('[0.5 SOL]', `${CREATION_FEE_SOL} SOL`)
         .replaceAll(
           '[50% platform / 50% Pad Owner]',
