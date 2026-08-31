@@ -2,9 +2,13 @@
 /*
  * Buyback & burn do token da plataforma.
  *
- * Pote = (n. de launchpads criadas * taxa de criacao) - ja gasto em buybacks.
+ * Pote = taxas de criacao (n. de pads pagantes * taxa) + a metade da
+ * plataforma nas trading fees ja clamadas (claimedRaw - amountRaw dos
+ * payouts em SOL) - o que ja foi gasto em buybacks.
  * Quando o pote passa do minimo: compra PLATFORM_TOKEN_MINT via Jupiter e
  * queima 100% do que comprou. Registra tudo no banco (aparece na home).
+ * A parte da plataforma em pads USDC ainda nao entra (precisa de swap
+ * USDC->token; fica na treasury ate implementarmos).
  *
  * Uso:
  *   node bots/buyback-burn.js --dry-run
@@ -27,18 +31,31 @@ const MIN_POT_SOL = Number(process.env.BOT_MIN_BUYBACK_SOL || 0.1);
 
 async function runRound({ connection, treasury, prisma, mint }) {
   // pads criadas pela wallet da plataforma nao pagaram a taxa — nao entram no pote
-  const [padCount, buybacks] = await Promise.all([
+  const [padCount, buybacks, payouts] = await Promise.all([
     prisma.launchpad.count({
       where: { ownerWallet: { not: treasury.publicKey.toBase58() } },
     }),
     prisma.buyback.findMany(),
+    prisma.feePayout.findMany({ select: { mint: true, claimedRaw: true, amountRaw: true } }),
   ]);
-  const collected = BigInt(Math.round(padCount * CREATION_FEE_SOL * LAMPORTS_PER_SOL));
+  const creation = BigInt(Math.round(padCount * CREATION_FEE_SOL * LAMPORTS_PER_SOL));
+  // metade da plataforma = clamado - pago ao dono, por payout (so quote SOL)
+  let trading = 0n;
+  let tradingUsdc = 0n;
+  for (const p of payouts) {
+    const share = BigInt(p.claimedRaw || 0) - BigInt(p.amountRaw || 0);
+    if (share <= 0n) continue;
+    if (p.mint === L.SOL_MINT) trading += share;
+    else tradingUsdc += share;
+  }
+  const collected = creation + trading;
   const spent = buybacks.reduce((s, b) => s + BigInt(b.spentLamports), 0n);
   const pot = collected > spent ? collected - spent : 0n;
   log(
-    `> ${padCount} launchpad(s) | arrecadado ${Number(collected) / 1e9} SOL | ja queimado ${Number(spent) / 1e9} SOL | pote ${Number(pot) / 1e9} SOL`
+    `> ${padCount} launchpad(s) | criacao ${Number(creation) / 1e9} SOL + fees ${Number(trading) / 1e9} SOL | ja queimado ${Number(spent) / 1e9} SOL | pote ${Number(pot) / 1e9} SOL`
   );
+  if (tradingUsdc > 0n)
+    log(`  (${Number(tradingUsdc) / 1e6} USDC de fees da plataforma fora do pote por enquanto)`);
 
   if (pot < BigInt(Math.round(MIN_POT_SOL * LAMPORTS_PER_SOL))) {
     log(`  pote abaixo do minimo (${MIN_POT_SOL} SOL), nada a fazer`);
