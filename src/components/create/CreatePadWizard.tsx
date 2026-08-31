@@ -19,7 +19,6 @@ import {
 import { buildLaunchpadCurve, validateLaunchpadCurve } from '@/lib/dbc';
 import { PadSpinner } from '@/components/brand';
 import { SolLogo, UsdcLogo } from '@/components/token-logos';
-import { mintKeypair } from '@/lib/vanity';
 import {
   QUOTES,
   QuoteSymbol,
@@ -44,7 +43,6 @@ type Phase =
   | 'price'
   | 'sign-config'
   | 'registering'
-  | 'grind-token'
   | 'sign-token'
   | 'confirm-token'
   | 'done';
@@ -54,7 +52,6 @@ const PHASE_LABEL: Record<Phase, string> = {
   price: 'Fetching quote price…',
   'sign-config': 'Confirm the pad creation in your wallet…',
   registering: 'Registering your pad…',
-  'grind-token': 'Forging your token’s …PAD address…',
   'sign-token': 'Confirm the pad token launch in your wallet…',
   'confirm-token': 'Confirming the token…',
   done: 'Done! Redirecting…',
@@ -257,9 +254,8 @@ export default function CreatePadWizard() {
       /* 4. pad token (opcional, 2a assinatura) */
       if (tokOn) {
         try {
-          setPhase('grind-token');
-          const mintKp = await mintKeypair();
           setPhase('sign-token');
+          const mintKp = Keypair.generate();
           const prep = await fetch('/api/tokens/prepare', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

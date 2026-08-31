@@ -1,8 +1,54 @@
 /* Conteudo da pagina $PAD — portado do mockup token (2).html do John.
  * Nav e contadores ficam no React (PadTokenClient); CSS em pg-padtoken.css.
- * MINT vazio = pre-lancamento (aviso); preenchido = CA real + Solscan. */
+ * MINT vazio = pre-lancamento (numeros ilustrativos + aviso); preenchido =
+ * CA real + stats reais (banco Buyback + supply on-chain). */
 
-export const padTokenHtml = (MINT: string) => `
+export type PadStats = {
+  circulating: number;
+  burned: number;
+  solSpent: number;
+  burns: { t: string; sol: number; amount: number; tx: string; supplyAfter: number }[];
+} | null;
+
+const int = (v: number) => Math.round(v).toLocaleString('en-US');
+const day = (iso: string) =>
+  new Date(iso).toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+
+// escada real de supply: 1B -> supply atual, um degrau por burn
+function chartSvg(stats: NonNullable<PadStats>): string {
+  const hi = 1e9;
+  const lo = stats.burns.length ? stats.burns[stats.burns.length - 1].supplyAfter : hi;
+  const range = Math.max(hi - lo, 1);
+  const y = (s: number) => 60 + ((hi - s) / range) * 138;
+  const n = stats.burns.length;
+  const x = (i: number) => 90 + ((i + 1) / (n + 1)) * 1020;
+  const fmtB = (v: number) => `${(v / 1e9).toFixed(range < 5e6 ? 4 : 3)}B`;
+
+  let d = `M90 ${y(hi).toFixed(1)}`;
+  stats.burns.forEach((b, i) => {
+    d += ` H${x(i).toFixed(0)} V${y(b.supplyAfter).toFixed(1)}`;
+  });
+  d += ' H1110';
+  const endY = n ? y(lo).toFixed(1) : y(hi).toFixed(1);
+
+  return `<svg viewBox="0 0 1160 260" role="img" aria-label="Circulating supply decreasing with each burn">
+      <g stroke="var(--line)" stroke-width="1" stroke-dasharray="4 8">
+        <line x1="90" y1="60" x2="1110" y2="60"/><line x1="90" y1="129" x2="1110" y2="129"/>
+        <line x1="90" y1="198" x2="1110" y2="198"/>
+      </g>
+      <text x="76" y="64" text-anchor="end" font-size="12" font-weight="800" fill="var(--muted)">${fmtB(hi)}</text>
+      <text x="76" y="133" text-anchor="end" font-size="12" font-weight="800" fill="var(--muted)">${fmtB(hi - range / 2)}</text>
+      <text x="76" y="202" text-anchor="end" font-size="12" font-weight="800" fill="var(--muted)">${fmtB(lo)}</text>
+      <g fill="none" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="${d}"/>
+      </g>
+      <circle cx="1110" cy="${endY}" r="7" fill="var(--accent)"/>
+      <text x="1096" y="228" text-anchor="end" font-size="12.5" font-weight="900" fill="var(--accent)">${int(stats.circulating)} today</text>
+      <line x1="90" y1="230" x2="1110" y2="230" stroke="var(--line2)"/>
+    </svg>`;
+}
+
+export const padTokenHtml = (MINT: string, STATS: PadStats = null) => `
 <div class="bgfx"></div>
 
 <div class="wrap">
@@ -22,7 +68,14 @@ export const padTokenHtml = (MINT: string) => `
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="3"/><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7"/></svg>
     Contract address published at launch — beware of anything claiming to be $PAD before then
   </div>`}
-  <div class="stats">
+  ${STATS
+    ? `<div class="stats">
+    <div><div class="n">1,000,000,000</div><div class="l">Fixed supply</div></div>
+    <div><div class="n hot" data-to="${Math.round(STATS.burned)}">0</div><div class="l">$PAD burned</div></div>
+    <div><div class="n" data-to="${Math.round(STATS.circulating)}">0</div><div class="l">In circulation</div></div>
+    <div><div class="n">${STATS.solSpent.toFixed(STATS.solSpent >= 100 ? 1 : 3)} SOL</div><div class="l">Spent buying it back</div></div>
+  </div>`
+    : `<div class="stats">
     <div><div class="n">1,000,000,000</div><div class="l">Fixed supply</div></div>
     <div><div class="n hot" data-to="4182904">0</div><div class="l">$PAD burned</div></div>
     <div><div class="n" data-to="995817096">0</div><div class="l">In circulation</div></div>
@@ -31,7 +84,7 @@ export const padTokenHtml = (MINT: string) => `
   <span class="demo">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
     Figures on this page are illustrative until launch
-  </span>
+  </span>`}
 </section>
 
 <section>
@@ -120,7 +173,9 @@ export const padTokenHtml = (MINT: string) => `
   <h2>One direction only</h2>
   <p class="sub">Supply is fixed at 1,000,000,000 with the mint authority revoked, so the only movement possible is downward. Each step below is one burn.</p>
   <div class="chart">
-    <svg viewBox="0 0 1160 260" role="img" aria-label="Step chart showing circulating supply decreasing with each burn">
+    ${STATS
+      ? chartSvg(STATS)
+      : `<svg viewBox="0 0 1160 260" role="img" aria-label="Step chart showing circulating supply decreasing with each burn">
       <g stroke="var(--line)" stroke-width="1" stroke-dasharray="4 8">
         <line x1="90" y1="60" x2="1110" y2="60"/><line x1="90" y1="120" x2="1110" y2="120"/>
         <line x1="90" y1="180" x2="1110" y2="180"/>
@@ -134,7 +189,7 @@ export const padTokenHtml = (MINT: string) => `
       <circle cx="1110" cy="198" r="7" fill="var(--accent)"/>
       <text x="1096" y="228" text-anchor="end" font-size="12.5" font-weight="900" fill="var(--accent)">995,817,096 today</text>
       <line x1="90" y1="230" x2="1110" y2="230" stroke="var(--line2)"/>
-    </svg>
+    </svg>`}
     <div class="legend"><span><i></i>Circulating supply</span><span>Each vertical drop is one executed burn · never reverses</span></div>
   </div>
 </section>
@@ -145,12 +200,23 @@ export const padTokenHtml = (MINT: string) => `
   <p class="sub">Every execution, with its signature. If it is not in this list with a hash next to it, it did not happen.</p>
   <div class="tbl">
     <div class="tr"><span>Date</span><span>SOL spent</span><span>$PAD burned</span><span>Transaction</span></div>
-    <div class="tr"><span>Mar 22</span><span>11.4 SOL</span><span class="amt">341,208</span><a href="#"><code>5Jd8…q2Xk</code></a></div>
+    ${STATS
+      ? STATS.burns.length
+        ? [...STATS.burns]
+            .reverse()
+            .slice(0, 10)
+            .map(
+              (b) =>
+                `<div class="tr"><span>${day(b.t)}</span><span>${b.sol.toFixed(3)} SOL</span><span class="amt">${int(b.amount)}</span><a href="https://solscan.io/tx/${b.tx}" target="_blank" rel="noopener"><code>${b.tx.slice(0, 4)}…${b.tx.slice(-4)}</code></a></div>`
+            )
+            .join('')
+        : `<div class="tr"><span colspan="4" style="grid-column:1/-1;color:var(--muted)">No burns executed yet — the first one lands once fees start flowing.</span></div>`
+      : `<div class="tr"><span>Mar 22</span><span>11.4 SOL</span><span class="amt">341,208</span><a href="#"><code>5Jd8…q2Xk</code></a></div>
         <div class="tr"><span>Mar 15</span><span>9.8 SOL</span><span class="amt">294,517</span><a href="#"><code>9Kmt…4Vbn</code></a></div>
         <div class="tr"><span>Mar 08</span><span>14.2 SOL</span><span class="amt">428,940</span><a href="#"><code>2Wne…8Rdq</code></a></div>
         <div class="tr"><span>Mar 01</span><span>8.1 SOL</span><span class="amt">243,662</span><a href="#"><code>7Ftz…Lp4x</code></a></div>
         <div class="tr"><span>Feb 22</span><span>12.6 SOL</span><span class="amt">379,104</span><a href="#"><code>4Rty…9Nbx</code></a></div>
-        <div class="tr"><span>Feb 15</span><span>7.3 SOL</span><span class="amt">219,880</span><a href="#"><code>6Lkm…1Qzv</code></a></div>
+        <div class="tr"><span>Feb 15</span><span>7.3 SOL</span><span class="amt">219,880</span><a href="#"><code>6Lkm…1Qzv</code></a></div>`}
   </div>
 </section>
 

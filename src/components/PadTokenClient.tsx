@@ -2,12 +2,13 @@
 
 // Pagina do $PAD — markup do mockup injetado + contadores animados.
 import { useEffect, useMemo, useRef } from 'react';
-import { padTokenHtml } from './padtoken-html';
+import { padTokenHtml, PadStats } from './padtoken-html';
 import { PAD_MINT } from '@/lib/env';
 
-export default function PadTokenClient() {
+export default function PadTokenClient({ stats = null }: { stats?: PadStats }) {
   const ref = useRef<HTMLDivElement>(null);
-  const html = useMemo(() => padTokenHtml(PAD_MINT), []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const html = useMemo(() => padTokenHtml(PAD_MINT, stats), [stats]);
 
   useEffect(() => {
     const root = ref.current;
