@@ -154,7 +154,12 @@ async function main() {
   }
 }
 
-main().catch((e) => {
-  console.error('\n[X]', e.stack || e.message);
-  process.exit(1);
-});
+// o monitor (bots/monitor.js) importa runRound pra rodar sob demanda ([b])
+module.exports = { runRound };
+
+if (require.main === module) {
+  main().catch((e) => {
+    console.error('\n[X]', e.stack || e.message);
+    process.exit(1);
+  });
+}

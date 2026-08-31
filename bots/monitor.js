@@ -21,6 +21,7 @@ const { getAssociatedTokenAddressSync } = require('@solana/spl-token');
 const { DynamicBondingCurveClient } = require('@meteora-ag/dynamic-bonding-curve-sdk');
 const L = require('./lib');
 const { runRound } = require('./split-fees');
+const { runRound: runBuybackRound } = require('./buyback-burn');
 
 const AUTO = process.argv.includes('--auto');
 const REFRESH_S = Math.max(15, Number(process.env.BOT_MONITOR_REFRESH_SECONDS || 60));
@@ -243,7 +244,7 @@ function draw(ctx, data, state) {
   const auto = AUTO
     ? `auto ${GR}ON${R}${DIM} (split a cada ${INTERVAL_MIN} min, proximo ${hhmmss(new Date(state.nextAutoAt))})${R}`
     : `auto ${DIM}OFF (use --auto para rodar sozinho)${R}`;
-  line(` ${readOnly ? `${DIM}[c] indisponivel sem TREASURY_SECRET_BASE58${R}` : `${B}[c]${R} clamar+pagar agora`}   ${B}[r]${R} atualizar   ${B}[q]${R} sair`);
+  line(` ${readOnly ? `${DIM}[c]/[b] indisponiveis sem TREASURY_SECRET_BASE58${R}` : `${B}[c]${R} clamar+pagar   ${B}[b]${R} buyback+burn`}   ${B}[r]${R} atualizar   ${B}[q]${R} sair`);
   line(` ${auto}${DIM} · atualizado ${hhmmss()} · refresh a cada ${REFRESH_S}s${R}`);
   line();
 
@@ -271,6 +272,30 @@ async function runSplitNow(ctx, state) {
   console.log(`${B}${CY}=== Rodando claim + split (${hhmmss()}) ===${R}\n`);
   try {
     await runRound(ctx);
+    console.log(`\n${GR}rodada concluida${R}`);
+  } catch (e) {
+    console.log(`\n${RD}[X] rodada falhou: ${e.message}${R}`);
+  }
+  console.log(`${DIM}voltando ao painel em 6s…${R}`);
+  await L.sleep(6000);
+  state.busy = false;
+  await refresh(ctx, state);
+}
+
+// [b]: uma rodada de buyback & burn — SO roda quando voce manda
+async function runBuybackNow(ctx, state) {
+  if (state.busy) return;
+  state.busy = true;
+  process.stdout.write('\x1b[2J\x1b[H');
+  console.log(`${B}${CY}=== Rodando buyback & burn (${hhmmss()}) ===${R}\n`);
+  try {
+    if (!PAD_MINT) throw new Error('PLATFORM_TOKEN_MINT nao definido no .env');
+    await runBuybackRound({
+      connection: ctx.connection,
+      treasury: ctx.treasury,
+      prisma: ctx.prisma,
+      mint: new PublicKey(PAD_MINT),
+    });
     console.log(`\n${GR}rodada concluida${R}`);
   } catch (e) {
     console.log(`\n${RD}[X] rodada falhou: ${e.message}${R}`);
@@ -313,6 +338,7 @@ async function main() {
       await runSplitNow(ctx, state);
       state.nextAutoAt = Date.now() + INTERVAL_MIN * 60_000;
     }
+    if (key.name === 'b' && !ctx.readOnly) await runBuybackNow(ctx, state);
   });
 
   await refresh(ctx, state);
