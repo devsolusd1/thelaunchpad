@@ -1,4 +1,5 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 import { prisma } from '@/lib/db';
 import PadNav from '@/components/pad/PadNav';
 import TradePanel from '@/components/TradePanel';
@@ -21,6 +22,16 @@ export default async function TokenPage({
     where: { mint: params.mint, launchpadId: pad.id, status: 'live' },
   });
   if (!token || !token.mint || !token.pool) notFound();
+
+  // O link do metadata aponta pro dominio raiz (subdominio recem-criado pode
+  // demorar a propagar). Passados 10 min do launch, o raiz redireciona pro
+  // endereco de marca no subdominio do pad.
+  const host = (headers().get('host') || '').toLowerCase();
+  const onRoot = host === ROOT_DOMAIN || host === `www.${ROOT_DOMAIN}`;
+  const ageMin = (Date.now() - token.createdAt.getTime()) / 60_000;
+  if (onRoot && ageMin > 10 && !ROOT_DOMAIN.includes('localhost')) {
+    redirect(`https://${pad.slug}.${ROOT_DOMAIN}/token/${token.mint}`);
+  }
 
   const quote = pad.quoteSymbol === 'USDC' ? QUOTES.USDC : QUOTES.SOL;
 

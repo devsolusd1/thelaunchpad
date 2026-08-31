@@ -72,7 +72,6 @@ export default function CreatePadWizard() {
   const [logo, setLogo] = useState<File | null>(null);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [color, setColor] = useState('#d9631c');
-  const [notified, setNotified] = useState(false);
 
   /* curva */
   const [quoteSymbol, setQuoteSymbol] = useState<QuoteSymbol>('SOL');
@@ -393,13 +392,6 @@ export default function CreatePadWizard() {
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="3" /><path d="M8.5 10.5V7.8a3.5 3.5 0 0 1 7 0v2.7" /></svg>
                   </span>
                   <input className="ip" placeholder="nounspad.com" disabled />
-                  <button
-                    className={`notify${notified ? ' done' : ''}`}
-                    type="button"
-                    onClick={() => setNotified(true)}
-                  >
-                    {notified ? "We'll ping you ✓" : 'Notify me'}
-                  </button>
                 </div>
                 <p className="hint">
                   Point a domain you already own straight at your pad — we
@@ -458,6 +450,10 @@ export default function CreatePadWizard() {
                         <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
                       </span>
                     </div>
+                    <p className="hint" style={{ margin: '12px 0 0' }}>
+                      More customization options for your launchpad are on the
+                      way — themes, layouts and beyond.
+                    </p>
                   </div>
                 </div>
               </div>
