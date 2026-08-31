@@ -8,3 +8,5 @@ prisma/dev.db-journal
 bots/state-*.json
 vanity/
 public/color-previews.html
+
+tsconfig.tsbuildinfo
