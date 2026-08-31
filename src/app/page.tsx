@@ -130,19 +130,15 @@ export default async function Home() {
               <Link className="t-btn" href="/create">
                 Create launchpad <span className="t-price">{CREATION_FEE_SOL} SOL</span>
                 {ARROW}
+                <span className="t-burntag">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.8c.5 3.1 2.2 4.9 3.9 6.5 1.7 1.7 2.9 3.5 2.9 5.7a6.8 6.8 0 0 1-13.6 0c0-1.5.5-2.8 1.4-3.9.2 1.2.8 2.1 1.8 2.5C5.8 8.8 9.5 5.6 12 2.8Z" /><path d="M12 14.4c1 1.2 2 2 2 3.3a2 2 0 0 1-4 0c0-1.3 1-2.1 2-3.3Z" /></svg>
+                  Used to buyback &amp; burn $PAD
+                </span>
               </Link>
               <a className="t-btn ghost" href="#launchpads">
                 Explore pads
               </a>
             </div>
-            <Link className="t-burnnote" href="/pad">
-              <span className="fl">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2.8c.5 3.1 2.2 4.9 3.9 6.5 1.7 1.7 2.9 3.5 2.9 5.7a6.8 6.8 0 0 1-13.6 0c0-1.5.5-2.8 1.4-3.9.2 1.2.8 2.1 1.8 2.5C5.8 8.8 9.5 5.6 12 2.8Z" /><path d="M12 14.4c1 1.2 2 2 2 3.3a2 2 0 0 1-4 0c0-1.3 1-2.1 2-3.3Z" /></svg>
-              </span>
-              <span>
-                The {CREATION_FEE_SOL} SOL is used to <b>buyback &amp; burn $PAD</b>
-              </span>
-            </Link>
             <ul className="t-trust">
               <li>{CHECK}Audited Meteora DBC</li>
               <li>{CHECK}LP locked on graduation</li>
