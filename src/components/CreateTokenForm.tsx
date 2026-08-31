@@ -38,7 +38,6 @@ export default function CreateTokenForm({
   const [symbol, setSymbol] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState<File | null>(null);
-  const [website, setWebsite] = useState('');
   const [twitter, setTwitter] = useState('');
   const [telegram, setTelegram] = useState('');
   const [devBuy, setDevBuy] = useState('');
@@ -78,7 +77,6 @@ export default function CreateTokenForm({
           description,
           imageBase64,
           imageMime,
-          website,
           twitter,
           telegram,
           asMain,
@@ -223,11 +221,14 @@ export default function CreateTokenForm({
           file={image}
           onChange={setImage}
         />
-        <div className="grid gap-3 md:grid-cols-3">
-          <input className="input" placeholder="Website" value={website} onChange={(e) => setWebsite(e.target.value)} />
+        <div className="grid gap-3 md:grid-cols-2">
           <input className="input" placeholder="Twitter/X" value={twitter} onChange={(e) => setTwitter(e.target.value)} />
           <input className="input" placeholder="Telegram" value={telegram} onChange={(e) => setTelegram(e.target.value)} />
         </div>
+        <p className="text-xs text-gray-500">
+          Website: your token gets its page on this pad as the official link
+          in the on-chain metadata, automatically.
+        </p>
         <div>
           <label className="label">
             Dev buy (optional, {quoteSymbol}) — buy your own token in the same
