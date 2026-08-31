@@ -19,6 +19,27 @@ export function fmtPct(n: number) {
   return `${(n * 100).toFixed(1)}%`;
 }
 
+// Normaliza links sociais digitados livremente (handle, dominio ou URL).
+// Sem isso, "meusite.com" vira link RELATIVO e quebra a navegacao.
+export function websiteUrl(v: string) {
+  const s = v.trim();
+  return /^https?:\/\//i.test(s) ? s : `https://${s}`;
+}
+export function xProfileUrl(v: string) {
+  const s = v.trim().replace(/^@/, '');
+  if (/^https?:\/\//i.test(s)) return s;
+  if (/^(x\.com|twitter\.com)\//i.test(s)) return `https://${s}`;
+  if (s.includes('/') || s.includes('.')) return `https://${s}`;
+  return `https://x.com/${s}`;
+}
+export function telegramUrl(v: string) {
+  const s = v.trim().replace(/^@/, '');
+  if (/^https?:\/\//i.test(s)) return s;
+  if (/^t\.me\//i.test(s)) return `https://${s}`;
+  if (s.includes('/') || s.includes('.')) return `https://${s}`;
+  return `https://t.me/${s}`;
+}
+
 // clareia/escurece um hex (#rrggbb); amt 1 = igual, >1 clareia, <1 escurece
 export function shadeHex(hex: string, amt: number): string {
   const n = parseInt(hex.replace('#', ''), 16);

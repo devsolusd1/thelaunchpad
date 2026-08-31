@@ -4,7 +4,7 @@ import PadNav from '@/components/pad/PadNav';
 import TradePanel from '@/components/TradePanel';
 import CreatorClaim from '@/components/CreatorClaim';
 import { QUOTES, SITE_NAME, ROOT_DOMAIN } from '@/lib/env';
-import { shortAddr } from '@/lib/format';
+import { shortAddr, websiteUrl, xProfileUrl, telegramUrl } from '@/lib/format';
 
 export const revalidate = 0;
 
@@ -51,9 +51,9 @@ export default async function TokenPage({
             </h1>
             <div className="mt-1 flex flex-wrap gap-3 text-xs text-gray-500">
               <span className="font-mono">{shortAddr(token.mint, 6)}</span>
-              {token.website && <a className="text-accent" href={token.website} target="_blank">website</a>}
-              {token.twitter && <a className="text-accent" href={token.twitter} target="_blank">twitter</a>}
-              {token.telegram && <a className="text-accent" href={token.telegram} target="_blank">telegram</a>}
+              {token.website && <a className="text-accent" href={websiteUrl(token.website)} target="_blank" rel="noopener">website</a>}
+              {token.twitter && <a className="text-accent" href={xProfileUrl(token.twitter)} target="_blank" rel="noopener">x</a>}
+              {token.telegram && <a className="text-accent" href={telegramUrl(token.telegram)} target="_blank" rel="noopener">telegram</a>}
               <a
                 className="text-accent"
                 href={`https://solscan.io/token/${token.mint}`}

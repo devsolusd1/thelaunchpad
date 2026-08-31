@@ -4,7 +4,7 @@ import PadNav from '@/components/pad/PadNav';
 import PadTokens, { TokRow } from '@/components/pad/PadTokens';
 import OwnerOnly from '@/components/OwnerOnly';
 import { curveStats, fmtUsdShort } from '@/lib/padstats';
-import { fmtUsd, shortAddr } from '@/lib/format';
+import { fmtUsd, shortAddr, websiteUrl, xProfileUrl, telegramUrl } from '@/lib/format';
 import { SITE_NAME, ROOT_DOMAIN, SOL_MINT } from '@/lib/env';
 
 export const revalidate = 0;
@@ -119,9 +119,21 @@ export default async function PadHome({
               )}
               <span className="chip">owner <code>{shortAddr(pad.ownerWallet)}</code></span>
               <span className="chip">since {since}</span>
-              {pad.twitter && <a className="chip" href={pad.twitter} target="_blank" style={{ textDecoration: 'none' }}>Twitter</a>}
-              {pad.telegram && <a className="chip" href={pad.telegram} target="_blank" style={{ textDecoration: 'none' }}>Telegram</a>}
-              {pad.website && <a className="chip" href={pad.website} target="_blank" style={{ textDecoration: 'none' }}>Website</a>}
+              {pad.twitter && (
+                <a className="chip" href={xProfileUrl(pad.twitter)} target="_blank" rel="noopener" title="X" aria-label="X" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 1.2h3.7l-8.1 9.3L24 22.8h-7.5l-5.9-7.7-6.7 7.7H.2l8.7-9.9L0 1.2h7.7l5.3 7 6-7Z" /></svg>
+                </a>
+              )}
+              {pad.telegram && (
+                <a className="chip" href={telegramUrl(pad.telegram)} target="_blank" rel="noopener" title="Telegram" aria-label="Telegram" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m22 3-11 11" /><path d="M22 3 15 21l-4-7-7-4 18-7Z" /></svg>
+                </a>
+              )}
+              {pad.website && (
+                <a className="chip" href={websiteUrl(pad.website)} target="_blank" rel="noopener" title="Website" aria-label="Website" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18" /><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z" /></svg>
+                </a>
+              )}
             </div>
           </div>
 
