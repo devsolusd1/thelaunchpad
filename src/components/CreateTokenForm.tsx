@@ -6,12 +6,13 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import BN from 'bn.js';
 import ImagePicker from '@/components/ImagePicker';
+import { mintKeypair } from '@/lib/vanity';
 import {
   DynamicBondingCurveClient,
   deriveDbcPoolAddress,
 } from '@meteora-ag/dynamic-bonding-curve-sdk';
 
-type Phase = 'form' | 'preparing' | 'sending' | 'confirming' | 'done';
+type Phase = 'form' | 'grinding' | 'preparing' | 'sending' | 'confirming' | 'done';
 
 export default function CreateTokenForm({
   slug,
@@ -46,6 +47,7 @@ export default function CreateTokenForm({
   const [phase, setPhase] = useState<Phase>('form');
   const [error, setError] = useState('');
   const [mintDone, setMintDone] = useState('');
+  const [grindTried, setGrindTried] = useState(0);
 
   const valid = name.trim().length > 0 && /^[A-Za-z0-9$]{1,10}$/.test(symbol);
 
@@ -63,9 +65,12 @@ export default function CreateTokenForm({
         imageBase64 = await fileToBase64(image);
         imageMime = image.type;
       }
-      // mint gerado ANTES do prepare: o metadata JSON fixa o link da pagina
-      // do token no campo website
-      const mintKp = Keypair.generate();
+      // mint gerado ANTES do prepare (o metadata JSON fixa o link da pagina
+      // no campo website) — vanity terminando em PAD, grind em web workers
+      setPhase('grinding');
+      setGrindTried(0);
+      const mintKp = await mintKeypair(setGrindTried);
+      setPhase('preparing');
       const prep = await fetch('/api/tokens/prepare', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -255,15 +260,17 @@ export default function CreateTokenForm({
         disabled={!valid || phase !== 'form'}
         onClick={submit}
       >
-        {phase === 'preparing'
-          ? 'Preparing metadata...'
-          : phase === 'sending'
-            ? 'Confirm in your wallet...'
-            : phase === 'confirming'
-              ? 'Confirming...'
-              : wallet.connected
-                ? 'Launch token'
-                : 'Connect wallet'}
+        {phase === 'grinding'
+          ? `Forging ...PAD address (${(grindTried / 1000).toFixed(0)}k tried)`
+          : phase === 'preparing'
+            ? 'Preparing metadata...'
+            : phase === 'sending'
+              ? 'Confirm in your wallet...'
+              : phase === 'confirming'
+                ? 'Confirming...'
+                : wallet.connected
+                  ? 'Launch token'
+                  : 'Connect wallet'}
       </button>
     </div>
   );
