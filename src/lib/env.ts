@@ -6,7 +6,11 @@ export const DISPLAY_DOMAIN = 'padcore.io';
 
 // Mint do $PAD. Vazio = pre-lancamento (a pagina /pad mostra o aviso);
 // preenchido, o CA aparece no hero com link pro Solscan.
-export const PAD_MINT = process.env.NEXT_PUBLIC_PAD_MINT || '';
+// Valores que nao sao base58 valido (ex: placeholder "xxxx") sao ignorados.
+const rawPadMint = (process.env.NEXT_PUBLIC_PAD_MINT || '').trim();
+export const PAD_MINT = /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(rawPadMint)
+  ? rawPadMint
+  : '';
 export const RPC_URL =
   process.env.NEXT_PUBLIC_RPC_URL || 'https://api.mainnet-beta.solana.com';
 export const TREASURY_WALLET = process.env.NEXT_PUBLIC_TREASURY_WALLET || '';
