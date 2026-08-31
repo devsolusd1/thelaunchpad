@@ -28,6 +28,8 @@ const INTERVAL_MIN = Math.max(1, Number(process.env.BOT_INTERVAL_MINUTES || 30))
 const MIN_SOL = Number(process.env.BOT_MIN_CLAIM_SOL || 0.02);
 const MIN_USDC = Number(process.env.BOT_MIN_CLAIM_USDC || 2);
 const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+const CREATION_FEE_SOL = Number(process.env.NEXT_PUBLIC_CREATION_FEE_SOL || 1);
+const PAD_MINT = (process.env.PLATFORM_TOKEN_MINT || '').trim();
 
 // ansi
 const R = '\x1b[0m';
@@ -113,7 +115,39 @@ async function fetchData(ctx) {
     hist[k].paid += BigInt(p.amountRaw || 0);
   }
 
-  return { rows, totalPending, hist, payouts: payouts.slice(0, 5), solBal, usdcBal, errors };
+  // buyback & burn: pote (mesma conta do bot) + rodadas executadas
+  const [payingPads, buybacks] = await Promise.all([
+    prisma.launchpad.count({ where: { ownerWallet: { not: treasuryPub.toBase58() } } }),
+    prisma.buyback.findMany({ orderBy: { createdAt: 'desc' } }),
+  ]);
+  const creationPot = payingPads * CREATION_FEE_SOL;
+  const tradingPot = Number(hist.SOL.claimed - hist.SOL.paid) / 1e9;
+  const burnSpent = buybacks.reduce((s, b) => s + Number(b.spentLamports), 0) / 1e9;
+  // decimals do token pra formatar o queimado (se ja existir on-chain)
+  if (ctx.padDec === undefined) {
+    ctx.padDec = null;
+    if (PAD_MINT) {
+      try {
+        const s = await connection.getTokenSupply(new PublicKey(PAD_MINT));
+        ctx.padDec = s.value.decimals;
+      } catch { /* mint ainda nao lancado */ }
+    }
+  }
+  const burn = {
+    pot: Math.max(0, creationPot + tradingPot - burnSpent),
+    creationPot,
+    tradingPot,
+    spent: burnSpent,
+    burnedUi:
+      ctx.padDec != null
+        ? buybacks.reduce((s, b) => s + Number(b.burnedRaw), 0) / 10 ** ctx.padDec
+        : null,
+    rounds: buybacks.length,
+    last: buybacks.slice(0, 3),
+    dec: ctx.padDec,
+  };
+
+  return { rows, totalPending, hist, payouts: payouts.slice(0, 5), solBal, usdcBal, errors, burn };
 }
 
 function draw(ctx, data, state) {
@@ -166,6 +200,25 @@ function draw(ctx, data, state) {
   }
   if (data.hist.SOL.claimed === 0n && data.hist.USDC.claimed === 0n)
     line(`${DIM}  nenhum payout registrado ainda${R}`);
+  line();
+
+  // buyback & burn
+  const bb = data.burn;
+  line(`${B} BUYBACK & BURN ${R}${DIM}${PAD_MINT ? `($PAD ${short(PAD_MINT)})` : '(token ainda nao definido)'}${R}`);
+  line(
+    `  pote ${B}${bb.pot.toFixed(4)} SOL${R} ${DIM}(criacao ${bb.creationPot.toFixed(2)} + fees ${bb.tradingPot.toFixed(4)} − queimado ${bb.spent.toFixed(4)})${R}`
+  );
+  if (bb.rounds > 0) {
+    line(
+      `  queimado ${CY}${bb.burnedUi != null ? bb.burnedUi.toLocaleString('en-US') + ' $PAD' : bb.last[0].burnedRaw + ' raw'}${R} em ${bb.rounds} rodada(s) · gasto ${bb.spent.toFixed(4)} SOL`
+    );
+    for (const b of bb.last) {
+      const when = new Date(b.createdAt).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      line(`  ${DIM}${when}  ${(Number(b.spentLamports) / 1e9).toFixed(4)} SOL · burn ${b.burnTx.slice(0, 12)}…${R}`);
+    }
+  } else {
+    line(`${DIM}  nenhum burn executado ainda${R}`);
+  }
   line();
 
   // ultimos payouts

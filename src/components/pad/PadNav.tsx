@@ -58,13 +58,15 @@ export default function PadNav({
         </a>
         <div className="right">
           {isOwner && (
-            <a className="btn ghost" href={`/s/${slug}/dashboard`}>
-              Manage
-            </a>
+            <>
+              <a className="btn ghost" href={`/s/${slug}/dashboard`}>
+                Manage
+              </a>
+              <a className="btn ghost" href={`/s/${slug}/dashboard`}>
+                Fees
+              </a>
+            </>
           )}
-          <a className="btn ghost" href={`/s/${slug}/dashboard`}>
-            Fees
-          </a>
           <ThemeToggle />
           <WalletMultiButton />
         </div>

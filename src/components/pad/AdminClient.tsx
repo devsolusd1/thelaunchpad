@@ -189,6 +189,34 @@ export default function AdminClient({ data }: { data: AdminData }) {
 
   const featuredTok = data.tokens.find((t) => t.mint === featured);
 
+  // dashboard so pra wallet dona do pad — sem ela conectada, mostra o gate
+  if (!isOwner) {
+    return (
+      <div className="pg-admin">
+        <div className="bgfx"></div>
+        <main className="wrap" style={{ maxWidth: 560, margin: '0 auto', padding: '110px 24px', textAlign: 'center' }}>
+          <span style={{ display: 'inline-grid', placeItems: 'center', width: 52, height: 52, borderRadius: 16, background: 'var(--soft)', color: 'var(--accent)', marginBottom: 18 }}>
+            {LOCK}
+          </span>
+          <h1 style={{ fontFamily: 'var(--display)', fontSize: 30, fontWeight: 800, letterSpacing: '-.03em', margin: 0 }}>
+            Owners only
+          </h1>
+          <p style={{ color: 'var(--muted)', fontWeight: 600, fontSize: 14.5, lineHeight: 1.65, margin: '12px 0 22px' }}>
+            This dashboard belongs to the wallet that created{' '}
+            <b style={{ color: 'var(--ink)' }}>{data.name}</b>. Connect it to
+            manage the pad and see the fee history.
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <WalletMultiButton />
+            <a className="btn ghost" href={`/s/${data.slug}`} style={{ textDecoration: 'none' }}>
+              Back to the pad
+            </a>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div ref={rootRef} className="pg-admin">
       <div className="bgfx"></div>

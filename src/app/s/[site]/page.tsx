@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/db';
 import PadNav from '@/components/pad/PadNav';
 import PadTokens, { TokRow } from '@/components/pad/PadTokens';
+import OwnerOnly from '@/components/OwnerOnly';
 import { curveStats, fmtUsdShort } from '@/lib/padstats';
 import { fmtUsd, shortAddr } from '@/lib/format';
 import { SITE_NAME, ROOT_DOMAIN, SOL_MINT } from '@/lib/env';
@@ -129,9 +130,11 @@ export default async function PadHome({
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14" /></svg>
               Launch token
             </a>
-            <a className="btn ghost" href={`/s/${pad.slug}/dashboard`}>
-              Fees dashboard
-            </a>
+            <OwnerOnly ownerWallet={pad.ownerWallet}>
+              <a className="btn ghost" href={`/s/${pad.slug}/dashboard`}>
+                Fees dashboard
+              </a>
+            </OwnerOnly>
           </div>
         </div>
 
