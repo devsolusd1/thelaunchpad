@@ -45,7 +45,10 @@ export function launchpadUrl(slug: string) {
 }
 
 // Link permanente da pagina do token — vai fixo no campo `website` do
-// metadata JSON de todo token criado (o /s/<slug>/ funciona em qualquer host).
+// metadata JSON de todo token criado. Usa o dominio raiz (www), nao o
+// subdominio do pad: subdominios recem-criados podem demorar a propagar.
 export function tokenPageUrl(slug: string, mint: string) {
-  return `${launchpadUrl(slug)}/s/${slug}/token/${mint}`;
+  if (ROOT_DOMAIN.includes('localhost'))
+    return `http://${ROOT_DOMAIN}/s/${slug}/token/${mint}`;
+  return `https://www.${ROOT_DOMAIN}/s/${slug}/token/${mint}`;
 }
